@@ -98,6 +98,31 @@ body {
   overflow-y: visible;
 }
 
+/* 모든 slick carousel 요소의 스크롤바 제거 */
+.slick-list,
+.slick-track,
+.slick-slide,
+.slick-slider {
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+
+.testimonial-block .slick-list,
+.testimonial-block .slick-track,
+.testimonial-block .slick-slide {
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+
+.testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list,
+.testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list .slick-track {
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+
 h1,
 h2,
 h3,
@@ -784,6 +809,10 @@ select {
   }
 }
 
+.pb-120 {
+  padding-bottom: 120px;
+}
+
 .pb-100 {
   padding-bottom: 100px;
 }
@@ -834,6 +863,14 @@ select {
 
 .pb-4 {
   padding-bottom: 4px !important;
+}
+
+.pt-150 {
+  padding-top: 150px;
+}
+
+.pt-120 {
+  padding-top: 120px;
 }
 
 .pt-100 {
@@ -3606,6 +3643,36 @@ Bread crum: End
   box-shadow: 0px -12px 60px 0px rgba(125, 146, 255, 0.3);
 }
 
+.section-form-chat .form-chat-block .form-content .heading .new-chat {
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.section-form-chat .form-chat-block .form-content .heading .new-chat:hover {
+  opacity: 0.8;
+}
+
+.section-form-chat .form-chat-block .form-content .chatbox {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  scroll-behavior: auto !important;
+  display: flex;
+  flex-direction: column;
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  /* 스크롤을 강제로 맨 아래로 */
+  scroll-snap-type: y proximity;
+}
+
+.section-form-chat .form-chat-block .form-content .chatbox::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+  width: 0;
+  height: 0;
+}
+
 .section-form-chat .form-chat-block .form-content .chatbox li {
   display: flex;
   padding-bottom: 24px;
@@ -3692,6 +3759,18 @@ Bread crum: End
 
   .section-form-chat .form-chat-block .form-content .content {
     padding: 28px 16px;
+  }
+
+  .section-form-chat .form-chat-block .form-content .content .chatbox {
+    max-height: 300px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .section-form-chat .form-chat-block .form-content .content .chatbox::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
   }
 
   .section-form-chat .form-chat-block .form-content .content .chatbox li {
@@ -4429,10 +4508,13 @@ Testimonial Home1: Start
   margin-left: -20px;
   margin-right: -20px;
   padding: 0 !important;
+  overflow: hidden !important;
 }
 
 .testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list .slick-track {
-  overflow: auto;
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
   padding-top: 70px;
   padding-bottom: 50px;
   display: flex !important;
@@ -4528,6 +4610,7 @@ Testimonial Home1: Start
   .testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list .slick-track {
     padding-top: 40px;
     padding-bottom: 30px;
+    overflow: hidden !important;
   }
 
   .testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list .slick-track .item {
@@ -5616,6 +5699,31 @@ Section Pricing Home3: End
 /*
 Our Blog Home1: Start
 */
+.list-blog[style*="display: none"] {
+  display: none !important;
+  overflow: hidden !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  visibility: hidden !important;
+}
+
+.list-blog[style*="display: none"] * {
+  display: none !important;
+  overflow: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
+}
+
+.list-blog[style*="display: none"] .slick-list,
+.list-blog[style*="display: none"] .slick-track,
+.list-blog[style*="display: none"] .slick-slide {
+  overflow: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  visibility: hidden !important;
+}
+
 .list-blog .cursor {
   background-color: #111;
   border-radius: 50%;
@@ -5632,6 +5740,7 @@ Our Blog Home1: Start
 .list-blog .list .slick-list {
   padding-left: 0;
   padding-right: 0;
+  overflow: hidden !important;
 }
 
 .list-blog .list .slick-list .item {
@@ -7355,6 +7464,10 @@ Page not found: End
     padding: 20px;
   }
 
+  .pb-120 {
+    padding-bottom: 80px;
+  }
+
   .pb-100 {
     padding-bottom: 60px;
   }
@@ -7381,6 +7494,14 @@ Page not found: End
 
   .pb-24 {
     padding-bottom: 20px;
+  }
+
+  .pt-150 {
+    padding-top: 80px;
+  }
+
+  .pt-120 {
+    padding-top: 70px;
   }
 
   .pt-100 {
@@ -7659,6 +7780,10 @@ Page not found: End
     padding: 6px;
   }
 
+  .pb-120 {
+    padding-bottom: 60px;
+  }
+
   .pb-100 {
     padding-bottom: 50px;
   }
@@ -7701,6 +7826,14 @@ Page not found: End
 
   .pb-8 {
     padding-bottom: 6px;
+  }
+
+  .pt-150 {
+    padding-top: 60px;
+  }
+
+  .pt-120 {
+    padding-top: 55px;
   }
 
   .pt-100 {

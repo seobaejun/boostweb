@@ -199,13 +199,75 @@ const formChat = document.querySelector('.section-form-chat .form-chat')
 const chatBox = document.querySelector('.section-form-chat .chatbox')
 const chatInput = document.querySelector('.section-form-chat .form-chat textarea')
 const sendChatBtn = document.querySelector('.section-form-chat .form-chat span')
+const newChatBtn = document.querySelector('.section-form-chat .new-chat')
 
+// 최대 메시지 수 (10줄 기준)
+const MAX_MESSAGES = 10
 
 let userMessage;
 // Get api keys on OpenAI
 const API_KEY = window.APP_CONFIG?.OPENAI_API_KEY || "";
 if (chatInput) {
   var inputInitHeight = chatInput.scrollHeight
+}
+
+// 스크롤을 맨 아래로 이동 - 강제 레이아웃 재계산 후 스크롤
+const scrollToBottom = () => {
+  if (!chatBox) return
+  
+  // 강제로 레이아웃 재계산 (reflow 트리거)
+  void chatBox.offsetHeight
+  
+  // scrollHeight를 강제로 계산한 후 스크롤
+  const scrollHeight = chatBox.scrollHeight
+  const clientHeight = chatBox.clientHeight
+  
+  // 즉시 스크롤
+  chatBox.scrollTop = scrollHeight
+  
+  // 다음 프레임에서도 확인 (렌더링 완료 후)
+  requestAnimationFrame(() => {
+    // 다시 한번 강제 레이아웃 재계산
+    void chatBox.offsetHeight
+    chatBox.scrollTop = chatBox.scrollHeight
+  })
+  
+  // 추가 안전장치: 짧은 딜레이 후 한번 더
+  setTimeout(() => {
+    void chatBox.offsetHeight
+    chatBox.scrollTop = chatBox.scrollHeight
+  }, 50)
+}
+
+// MutationObserver로 메시지 추가 감지 및 자동 스크롤
+if (chatBox) {
+  const observer = new MutationObserver(() => {
+    // MutationObserver 콜백에서는 즉시 실행하지 않고
+    // 다음 프레임에서 실행 (DOM 렌더링 완료 후)
+    requestAnimationFrame(() => {
+      scrollToBottom()
+    })
+  })
+  
+  observer.observe(chatBox, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  })
+}
+
+// 새 채팅 시작 (모든 메시지 삭제)
+const startNewChat = () => {
+  if (chatBox) {
+    chatBox.innerHTML = ''
+    scrollToBottom()
+  }
+}
+
+// 새 채팅 버튼 클릭 이벤트
+if (newChatBtn) {
+  newChatBtn.addEventListener('click', startNewChat)
+  newChatBtn.style.cursor = 'pointer'
 }
 
 const createChatLi = (message, className) => {
@@ -246,9 +308,17 @@ const generateResponse = (incomingChatLi) => {
     .then(res => res.json())
     .then(data => {
       messageResponse.textContent = data.choices[0].message.content
+      // 텍스트 변경 후 스크롤 (여러 번 시도)
+      setTimeout(() => scrollToBottom(), 0)
+      setTimeout(() => scrollToBottom(), 100)
+      setTimeout(() => scrollToBottom(), 200)
     })
     .catch(error => {
-      messageResponse.textContent = 'Answer: ' + userMessage
+      messageResponse.textContent = 'API 연결이 필요합니다. .env 파일에 OPENAI_API_KEY를 설정해주세요.'
+      // 에러 메시지 표시 후 스크롤 (여러 번 시도)
+      setTimeout(() => scrollToBottom(), 0)
+      setTimeout(() => scrollToBottom(), 100)
+      setTimeout(() => scrollToBottom(), 200)
     })
 }
 
@@ -262,12 +332,27 @@ const handleChat = () => {
   }
   formChat.style.borderRadius = '99px'
 
+  // 메시지가 10개를 넘으면 가장 오래된 메시지 삭제
+  const chatMessages = chatBox.querySelectorAll('li')
+  if (chatMessages.length >= MAX_MESSAGES) {
+    // 가장 오래된 메시지 2개 삭제 (사용자 메시지 + AI 응답)
+    const messagesToRemove = Math.min(2, chatMessages.length)
+    for (let i = 0; i < messagesToRemove; i++) {
+      chatMessages[i].remove()
+    }
+  }
+
   // Append the user's message to the chatbox
-  chatBox.appendChild(createChatLi(userMessage, 'outgoing'))
+  const userChatLi = createChatLi(userMessage, 'outgoing')
+  chatBox.appendChild(userChatLi)
+  // 스크롤 강제 실행
+  scrollToBottom()
 
   setTimeout(() => {
     const incomingChatLi = createChatLi('...', 'incoming')
     chatBox.appendChild(incomingChatLi)
+    // 스크롤 강제 실행
+    scrollToBottom()
     generateResponse(incomingChatLi)
   }, 600)
 }
@@ -336,6 +421,44 @@ $(".testimonial-block.style-one .container .row .list-avatar .avatar").slick({
     },
   ]
 });
+
+// Testimonial slick carousel 스크롤바 제거
+const removeTestimonialScrollbar = () => {
+  const testimonialSlickList = document.querySelectorAll('.testimonial-block.style-one .slick-list')
+  const testimonialSlickTrack = document.querySelectorAll('.testimonial-block.style-one .slick-track')
+  const allSlickList = document.querySelectorAll('.slick-list')
+  const allSlickTrack = document.querySelectorAll('.slick-track')
+  
+  const removeOverflow = (elements) => {
+    if (elements && elements.length > 0) {
+      elements.forEach(el => {
+        if (el) {
+          el.style.overflow = 'hidden'
+          el.style.overflowX = 'hidden'
+          el.style.overflowY = 'hidden'
+          el.style.setProperty('overflow', 'hidden', 'important')
+          el.style.setProperty('overflow-x', 'hidden', 'important')
+          el.style.setProperty('overflow-y', 'hidden', 'important')
+        }
+      })
+    }
+  }
+  
+  removeOverflow(testimonialSlickList)
+  removeOverflow(testimonialSlickTrack)
+  removeOverflow(allSlickList)
+  removeOverflow(allSlickTrack)
+}
+
+// 여러 번 실행하여 확실히 적용
+setTimeout(removeTestimonialScrollbar, 100)
+setTimeout(removeTestimonialScrollbar, 500)
+setTimeout(removeTestimonialScrollbar, 1000)
+
+// slick 초기화 후에도 실행
+$(document).on('init reInit', '.slick-slider', function() {
+  removeTestimonialScrollbar()
+})
 
 
 // Change avatar testimonial home1
@@ -443,76 +566,95 @@ if (listNav) {
 
 
 // Blogs home1
-$(".list-blog .container .list").slick({
-  dots: true,
-  arrows: false,
-  slidesToShow: 3,
-  slidesToScroll: 4,
-  touchThreshold: 1000,
-  waitForAnimate: false,
-  swipe: true,
-  swipeToSlide: true,
-  autoplay: false,
-  autoplaySpeed: 3000,
-  speed: 500,
-  pauseOnFocus: false,
-  pauseOnHover: false,
-  pauseOnDotsHover: false,
-  infinite: true,
-  responsive: [
-    {
-      breakpoint: 1170,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 1,
-      }
-    },
-    {
-      breakpoint: 992,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 1,
-      }
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-      }
-    },
-  ]
-});
+const blogSection = document.querySelector('.list-blog')
+const isBlogSectionVisible = blogSection && window.getComputedStyle(blogSection).display !== 'none'
 
+if (isBlogSectionVisible) {
+  $(".list-blog .container .list").slick({
+    dots: true,
+    arrows: false,
+    slidesToShow: 3,
+    slidesToScroll: 4,
+    touchThreshold: 1000,
+    waitForAnimate: false,
+    swipe: true,
+    swipeToSlide: true,
+    autoplay: false,
+    autoplaySpeed: 3000,
+    speed: 500,
+    pauseOnFocus: false,
+    pauseOnHover: false,
+    pauseOnDotsHover: false,
+    infinite: true,
+    responsive: [
+      {
+        breakpoint: 1170,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        }
+      },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        }
+      },
+    ]
+  });
 
-// Change cursor
-const listBlog = document.querySelectorAll('.list-blog .slick-list')
-const mouseCursor = document.querySelector('.cursor')
+  // Change cursor
+  const listBlog = document.querySelectorAll('.list-blog .slick-list')
+  const mouseCursor = document.querySelector('.cursor')
 
-if (listBlog) {
-  listBlog.forEach(listNew => {
-    listNew.addEventListener('mousemove', (e) => {
-      mouseCursor.style.top = e.pageY + 'px'
-      mouseCursor.style.left = e.pageX + 'px'
-      mouseCursor.style.opacity = '1'
+  if (listBlog) {
+    listBlog.forEach(listNew => {
+      listNew.addEventListener('mousemove', (e) => {
+        mouseCursor.style.top = e.pageY + 'px'
+        mouseCursor.style.left = e.pageX + 'px'
+        mouseCursor.style.opacity = '1'
+      })
+
+      listNew.addEventListener('mouseout', (e) => {
+        mouseCursor.style.opacity = '0'
+      })
+
+      listNew.addEventListener('mousedown', () => {
+        mouseCursor.style.width = '60px'
+        mouseCursor.style.height = '60px'
+        mouseCursor.style.gap = '4px'
+      })
+
+      listNew.addEventListener('mouseup', () => {
+        mouseCursor.style.width = '70px'
+        mouseCursor.style.height = '70px'
+        mouseCursor.style.gap = '12px'
+      })
     })
-
-    listNew.addEventListener('mouseout', (e) => {
-      mouseCursor.style.opacity = '0'
+  }
+} else {
+  // 블로그 섹션이 숨겨져 있을 때 slick carousel 제거
+  const blogSlickList = document.querySelector('.list-blog .container .list')
+  if (blogSlickList && $(blogSlickList).hasClass('slick-initialized')) {
+    $(blogSlickList).slick('unslick')
+  }
+  
+  // slick-list 요소들의 overflow 제거
+  const slickLists = document.querySelectorAll('.list-blog .slick-list')
+  if (slickLists) {
+    slickLists.forEach(slickList => {
+      slickList.style.overflow = 'hidden'
+      slickList.style.height = '0'
     })
-
-    listNew.addEventListener('mousedown', () => {
-      mouseCursor.style.width = '60px'
-      mouseCursor.style.height = '60px'
-      mouseCursor.style.gap = '4px'
-    })
-
-    listNew.addEventListener('mouseup', () => {
-      mouseCursor.style.width = '70px'
-      mouseCursor.style.height = '70px'
-      mouseCursor.style.gap = '12px'
-    })
-  })
+  }
 }
 
 

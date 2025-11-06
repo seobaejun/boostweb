@@ -17,3 +17,7 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Environment variables
+.env
+HTML/assets/js/config.js
+

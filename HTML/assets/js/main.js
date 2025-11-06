@@ -196,7 +196,7 @@ if (menuMobileMain) {
 
 // Chatbot AI Home1
 const formChat = document.querySelector('.section-form-chat .form-chat')
-const chatBox = document.querySelector('.section-form-chat .chatbox')
+const chatContainer = document.getElementById("chat-container")
 const chatInput = document.querySelector('.section-form-chat .form-chat textarea')
 const sendChatBtn = document.querySelector('.section-form-chat .form-chat span')
 const newChatBtn = document.querySelector('.section-form-chat .new-chat')
@@ -211,110 +211,63 @@ if (chatInput) {
   var inputInitHeight = chatInput.scrollHeight
 }
 
-// 스크롤을 맨 아래로 이동 - 완전히 새로운 접근
-const scrollToBottom = () => {
-  if (!chatBox) return
-  
-  // 방법 1: 마지막 자식 요소를 찾아서 scrollIntoView 사용
-  const lastChild = chatBox.lastElementChild
-  if (lastChild) {
-    // block: 'end'는 요소를 뷰포트 하단에 맞춤
-    lastChild.scrollIntoView({ 
-      behavior: 'auto', 
-      block: 'end',
-      inline: 'nearest'
-    })
-  }
-  
-  // 방법 2: scrollTop 직접 설정 (동시에 실행)
-  // 강제 레이아웃 재계산
-  void chatBox.offsetHeight
-  const maxScroll = chatBox.scrollHeight - chatBox.clientHeight
-  chatBox.scrollTop = maxScroll
-  
-  // 방법 3: 다음 프레임에서도 확인
-  requestAnimationFrame(() => {
-    void chatBox.offsetHeight
-    const maxScroll = chatBox.scrollHeight - chatBox.clientHeight
-    chatBox.scrollTop = maxScroll
-    
-    // 마지막 자식도 다시 확인
-    if (lastChild) {
-      lastChild.scrollIntoView({ 
-        behavior: 'auto', 
-        block: 'end',
-        inline: 'nearest'
-      })
-    }
-  })
-  
-  // 방법 4: 추가 안전장치
-  setTimeout(() => {
-    void chatBox.offsetHeight
-    const maxScroll = chatBox.scrollHeight - chatBox.clientHeight
-    chatBox.scrollTop = maxScroll
-    if (lastChild) {
-      lastChild.scrollIntoView({ 
-        behavior: 'auto', 
-        block: 'end',
-        inline: 'nearest'
-      })
-    }
-  }, 100)
-}
-
-// MutationObserver로 메시지 추가 감지 및 자동 스크롤
-if (chatBox) {
-  let scrollTimeout = null
-  
-  const observer = new MutationObserver((mutations) => {
-    // 변경사항이 있는지 확인
-    let hasChanges = false
-    mutations.forEach((mutation) => {
-      if (mutation.addedNodes.length > 0 || mutation.type === 'characterData') {
-        hasChanges = true
-      }
-    })
-    
-    if (hasChanges) {
-      // 기존 타이머 취소
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout)
-      }
-      
-      // 즉시 스크롤 시도
-      scrollToBottom()
-      
-      // DOM 렌더링 완료 후 다시 스크롤
-      requestAnimationFrame(() => {
-        scrollToBottom()
-        // 추가 안전장치: 짧은 딜레이 후 한번 더
-        scrollTimeout = setTimeout(() => {
-          scrollToBottom()
-        }, 150)
-      })
-    }
-  })
-  
-  observer.observe(chatBox, {
-    childList: true,
-    subtree: true,
-    characterData: true
-  })
+// AutoScroll 라이브러리 사용
+let autoScrollInstance = null;
+if (chatContainer && typeof AutoScroll !== 'undefined') {
+  autoScrollInstance = new AutoScroll(chatContainer, {
+    behavior: 'auto',
+    block: 'end',
+    debounce: 50
+  });
 }
 
 // 새 채팅 시작 (모든 메시지 삭제)
 const startNewChat = () => {
-  if (chatBox) {
-    chatBox.innerHTML = ''
-    scrollToBottom()
+  console.log('새 채팅 시작 - 메시지 삭제');
+  if (chatContainer) {
+    // 모든 메시지 삭제
+    chatContainer.innerHTML = '';
+    console.log('메시지 삭제 완료');
+    
+    // 스크롤을 맨 위로
+    chatContainer.scrollTop = 0;
   }
 }
 
-// 새 채팅 버튼 클릭 이벤트
+// 새 채팅 버튼 클릭 이벤트 - 더 강력한 방법
 if (newChatBtn) {
-  newChatBtn.addEventListener('click', startNewChat)
-  newChatBtn.style.cursor = 'pointer'
+  console.log('새 채팅 버튼 찾음:', newChatBtn);
+  
+  // 버튼 전체 영역 클릭 가능하도록
+  const handleNewChat = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('새 채팅 버튼 클릭됨');
+    startNewChat();
+    return false;
+  };
+  
+  newChatBtn.addEventListener('click', handleNewChat, true); // capture phase에서도 작동
+  newChatBtn.style.cursor = 'pointer';
+  newChatBtn.style.userSelect = 'none';
+  
+  // 자식 요소들도 클릭 가능하도록
+  const newChatChildren = newChatBtn.querySelectorAll('*');
+  newChatChildren.forEach(child => {
+    child.style.cursor = 'pointer';
+    child.style.pointerEvents = 'auto';
+    child.addEventListener('click', handleNewChat, true);
+  });
+  
+  // 버튼에 직접 스타일 추가
+  newChatBtn.setAttribute('role', 'button');
+  newChatBtn.setAttribute('tabindex', '0');
+  newChatBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      startNewChat();
+    }
+  });
 }
 
 const createChatLi = (message, className) => {
@@ -355,17 +308,11 @@ const generateResponse = (incomingChatLi) => {
     .then(res => res.json())
     .then(data => {
       messageResponse.textContent = data.choices[0].message.content
-      // 텍스트 변경 후 스크롤 (여러 번 시도)
-      setTimeout(() => scrollToBottom(), 0)
-      setTimeout(() => scrollToBottom(), 100)
-      setTimeout(() => scrollToBottom(), 200)
+      // MutationObserver가 자동으로 스크롤 처리
     })
     .catch(error => {
       messageResponse.textContent = 'API 연결이 필요합니다. .env 파일에 OPENAI_API_KEY를 설정해주세요.'
-      // 에러 메시지 표시 후 스크롤 (여러 번 시도)
-      setTimeout(() => scrollToBottom(), 0)
-      setTimeout(() => scrollToBottom(), 100)
-      setTimeout(() => scrollToBottom(), 200)
+      // MutationObserver가 자동으로 스크롤 처리
     })
 }
 
@@ -380,7 +327,7 @@ const handleChat = () => {
   formChat.style.borderRadius = '99px'
 
   // 메시지가 10개를 넘으면 가장 오래된 메시지 삭제
-  const chatMessages = chatBox.querySelectorAll('li')
+  const chatMessages = chatContainer.querySelectorAll('li')
   if (chatMessages.length >= MAX_MESSAGES) {
     // 가장 오래된 메시지 2개 삭제 (사용자 메시지 + AI 응답)
     const messagesToRemove = Math.min(2, chatMessages.length)
@@ -391,15 +338,13 @@ const handleChat = () => {
 
   // Append the user's message to the chatbox
   const userChatLi = createChatLi(userMessage, 'outgoing')
-  chatBox.appendChild(userChatLi)
-  // 스크롤 강제 실행
-  scrollToBottom()
+  chatContainer.appendChild(userChatLi)
+  // MutationObserver가 자동으로 스크롤 처리
 
   setTimeout(() => {
     const incomingChatLi = createChatLi('...', 'incoming')
-    chatBox.appendChild(incomingChatLi)
-    // 스크롤 강제 실행
-    scrollToBottom()
+    chatContainer.appendChild(incomingChatLi)
+    // MutationObserver가 자동으로 스크롤 처리
     generateResponse(incomingChatLi)
   }, 600)
 }
@@ -612,97 +557,6 @@ if (listNav) {
 }
 
 
-// Blogs home1
-const blogSection = document.querySelector('.list-blog')
-const isBlogSectionVisible = blogSection && window.getComputedStyle(blogSection).display !== 'none'
-
-if (isBlogSectionVisible) {
-  $(".list-blog .container .list").slick({
-    dots: true,
-    arrows: false,
-    slidesToShow: 3,
-    slidesToScroll: 4,
-    touchThreshold: 1000,
-    waitForAnimate: false,
-    swipe: true,
-    swipeToSlide: true,
-    autoplay: false,
-    autoplaySpeed: 3000,
-    speed: 500,
-    pauseOnFocus: false,
-    pauseOnHover: false,
-    pauseOnDotsHover: false,
-    infinite: true,
-    responsive: [
-      {
-        breakpoint: 1170,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 992,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        }
-      },
-    ]
-  });
-
-  // Change cursor
-  const listBlog = document.querySelectorAll('.list-blog .slick-list')
-  const mouseCursor = document.querySelector('.cursor')
-
-  if (listBlog) {
-    listBlog.forEach(listNew => {
-      listNew.addEventListener('mousemove', (e) => {
-        mouseCursor.style.top = e.pageY + 'px'
-        mouseCursor.style.left = e.pageX + 'px'
-        mouseCursor.style.opacity = '1'
-      })
-
-      listNew.addEventListener('mouseout', (e) => {
-        mouseCursor.style.opacity = '0'
-      })
-
-      listNew.addEventListener('mousedown', () => {
-        mouseCursor.style.width = '60px'
-        mouseCursor.style.height = '60px'
-        mouseCursor.style.gap = '4px'
-      })
-
-      listNew.addEventListener('mouseup', () => {
-        mouseCursor.style.width = '70px'
-        mouseCursor.style.height = '70px'
-        mouseCursor.style.gap = '12px'
-      })
-    })
-  }
-} else {
-  // 블로그 섹션이 숨겨져 있을 때 slick carousel 제거
-  const blogSlickList = document.querySelector('.list-blog .container .list')
-  if (blogSlickList && $(blogSlickList).hasClass('slick-initialized')) {
-    $(blogSlickList).slick('unslick')
-  }
-  
-  // slick-list 요소들의 overflow 제거
-  const slickLists = document.querySelectorAll('.list-blog .slick-list')
-  if (slickLists) {
-    slickLists.forEach(slickList => {
-      slickList.style.overflow = 'hidden'
-      slickList.style.height = '0'
-    })
-  }
-}
 
 
 // Count number Home2
@@ -1004,58 +858,4 @@ function removeOpen(index1) {
 }
 
 
-// Like Blog Detail
-const comments = document.querySelectorAll('.blog-detail .blog-comment .comment-item .like')
-
-if (comments) {
-  comments.forEach(cmt => {
-    cmt.addEventListener('click', () => {
-      cmt.classList.toggle('liked')
-      let heartIcon = cmt.querySelector('i')
-      let numberLiked = cmt.querySelector('.text-button-small')
-      let number = parseFloat(numberLiked.innerHTML);
-
-      if (cmt.classList.contains('liked')) {
-        heartIcon.classList.replace('ph', 'ph-fill')
-        number = number + 1
-        numberLiked.innerHTML = number.toString()
-      }
-      else {
-        heartIcon.classList.replace('ph-fill', 'ph')
-        number = number - 1
-        numberLiked.innerHTML = number.toString()
-      }
-    })
-  })
-}
-
-
-// Show, hide reply Blog Detail
-const showReplyBtn = document.querySelectorAll('.blog-detail .blog-comment .comment-item .cmt')
-const listReply = document.querySelectorAll('.blog-detail .blog-comment .list-reply')
-
-if (showReplyBtn) {
-  showReplyBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const parentCmt = btn.parentElement.parentElement.parentElement
-      const dataCmt = parentCmt.getAttribute('data-cmt')
-
-      listReply.forEach(reply => {
-        const dataReply = reply.getAttribute('data-cmt')
-
-        if (dataReply == dataCmt) {
-          reply.classList.toggle('show')
-          btn.classList.toggle('show')
-
-          const textShow = btn.querySelector('.text-button-small')
-          if (btn.classList.contains('show')) {
-            textShow.innerHTML = 'Hide Replies'
-          } else {
-            textShow.innerHTML = 'Show Replies'
-          }
-        }
-      })
-    })
-  })
-}
 

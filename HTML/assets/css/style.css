@@ -3654,17 +3654,17 @@ Bread crum: End
 
 .section-form-chat .form-chat-block .form-content .chatbox {
   max-height: 400px;
-  overflow-y: auto;
+  min-height: 200px;
+  overflow-y: auto !important;
   overflow-x: hidden;
   padding-right: 8px;
   scroll-behavior: auto !important;
-  display: flex;
-  flex-direction: column;
+  /* Flex 레이아웃 제거 - 일반 블록 레이아웃 사용 */
+  display: block !important;
+  position: relative;
   /* 스크롤바 숨기기 */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
-  /* 메시지가 아래에서 시작하도록 */
-  justify-content: flex-start;
 }
 
 .section-form-chat .form-chat-block .form-content .chatbox::-webkit-scrollbar {

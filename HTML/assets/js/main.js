@@ -211,42 +211,89 @@ if (chatInput) {
   var inputInitHeight = chatInput.scrollHeight
 }
 
-// 스크롤을 맨 아래로 이동 - 강제 레이아웃 재계산 후 스크롤
+// 스크롤을 맨 아래로 이동 - 완전히 새로운 접근
 const scrollToBottom = () => {
   if (!chatBox) return
   
-  // 강제로 레이아웃 재계산 (reflow 트리거)
+  // 방법 1: 마지막 자식 요소를 찾아서 scrollIntoView 사용
+  const lastChild = chatBox.lastElementChild
+  if (lastChild) {
+    // block: 'end'는 요소를 뷰포트 하단에 맞춤
+    lastChild.scrollIntoView({ 
+      behavior: 'auto', 
+      block: 'end',
+      inline: 'nearest'
+    })
+  }
+  
+  // 방법 2: scrollTop 직접 설정 (동시에 실행)
+  // 강제 레이아웃 재계산
   void chatBox.offsetHeight
+  const maxScroll = chatBox.scrollHeight - chatBox.clientHeight
+  chatBox.scrollTop = maxScroll
   
-  // scrollHeight를 강제로 계산한 후 스크롤
-  const scrollHeight = chatBox.scrollHeight
-  const clientHeight = chatBox.clientHeight
-  
-  // 즉시 스크롤
-  chatBox.scrollTop = scrollHeight
-  
-  // 다음 프레임에서도 확인 (렌더링 완료 후)
+  // 방법 3: 다음 프레임에서도 확인
   requestAnimationFrame(() => {
-    // 다시 한번 강제 레이아웃 재계산
     void chatBox.offsetHeight
-    chatBox.scrollTop = chatBox.scrollHeight
+    const maxScroll = chatBox.scrollHeight - chatBox.clientHeight
+    chatBox.scrollTop = maxScroll
+    
+    // 마지막 자식도 다시 확인
+    if (lastChild) {
+      lastChild.scrollIntoView({ 
+        behavior: 'auto', 
+        block: 'end',
+        inline: 'nearest'
+      })
+    }
   })
   
-  // 추가 안전장치: 짧은 딜레이 후 한번 더
+  // 방법 4: 추가 안전장치
   setTimeout(() => {
     void chatBox.offsetHeight
-    chatBox.scrollTop = chatBox.scrollHeight
-  }, 50)
+    const maxScroll = chatBox.scrollHeight - chatBox.clientHeight
+    chatBox.scrollTop = maxScroll
+    if (lastChild) {
+      lastChild.scrollIntoView({ 
+        behavior: 'auto', 
+        block: 'end',
+        inline: 'nearest'
+      })
+    }
+  }, 100)
 }
 
 // MutationObserver로 메시지 추가 감지 및 자동 스크롤
 if (chatBox) {
-  const observer = new MutationObserver(() => {
-    // MutationObserver 콜백에서는 즉시 실행하지 않고
-    // 다음 프레임에서 실행 (DOM 렌더링 완료 후)
-    requestAnimationFrame(() => {
-      scrollToBottom()
+  let scrollTimeout = null
+  
+  const observer = new MutationObserver((mutations) => {
+    // 변경사항이 있는지 확인
+    let hasChanges = false
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes.length > 0 || mutation.type === 'characterData') {
+        hasChanges = true
+      }
     })
+    
+    if (hasChanges) {
+      // 기존 타이머 취소
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout)
+      }
+      
+      // 즉시 스크롤 시도
+      scrollToBottom()
+      
+      // DOM 렌더링 완료 후 다시 스크롤
+      requestAnimationFrame(() => {
+        scrollToBottom()
+        // 추가 안전장치: 짧은 딜레이 후 한번 더
+        scrollTimeout = setTimeout(() => {
+          scrollToBottom()
+        }, 150)
+      })
+    }
   })
   
   observer.observe(chatBox, {

@@ -3663,8 +3663,8 @@ Bread crum: End
   /* 스크롤바 숨기기 */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
-  /* 스크롤을 강제로 맨 아래로 */
-  scroll-snap-type: y proximity;
+  /* 메시지가 아래에서 시작하도록 */
+  justify-content: flex-start;
 }
 
 .section-form-chat .form-chat-block .form-content .chatbox::-webkit-scrollbar {

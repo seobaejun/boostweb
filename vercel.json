@@ -1,17 +1,12 @@
 {
   "version": 2,
-  "builds": [
+  "buildCommand": null,
+  "outputDirectory": "HTML",
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/static"
+      "source": "/(.*)",
+      "destination": "/$1"
     }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/HTML/$1"
-    }
-  ],
-  "outputDirectory": "HTML"
+  ]
 }
 

@@ -1,0 +1,13 @@
+<svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="leftClip">
+      <polygon points="0,0 120,0 100,40 0,40" />
+    </clipPath>
+    <clipPath id="rightClip">
+      <polygon points="120,0 250,0 250,40 100,40" />
+    </clipPath>
+  </defs>
+  <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#3D89FB" clip-path="url(#leftClip)">BOOSTWEB</text>
+  <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" clip-path="url(#rightClip)">BOOSTWEB</text>
+  <line x1="100" y1="0" x2="120" y2="40" stroke="#3D89FB" stroke-width="2"/>
+</svg>

@@ -263,7 +263,7 @@
           <div class="row row-gap-40">
             <div class="col-lg-6"> 
               <div class="heading3">다국어 지원</div>
-              <div class="body2 text-placehover mt-24">AI 디지털 에이전시에 오신 것을 환영합니다. 우리는 다양한 청중과 글로벌 시장에 도달하는 것이 디지털 시대의 성공 열쇠라고 믿습니다. "다국어 지원" 서비스는 비즈니스가 언어 장벽을 극복하고, 새로운 고객 세그먼트와 연결하며, 국제적 범위를 확장할 수 있도록 특별히 설계되었습니다.</div>
+              <div class="body2 text-placehover mt-24">AI 웹 에이전시에 오신 것을 환영합니다. 우리는 다양한 청중과 글로벌 시장에 도달하는 것이 디지털 시대의 성공 열쇠라고 믿습니다. "다국어 지원" 서비스는 비즈니스가 언어 장벽을 극복하고, 새로운 고객 세그먼트와 연결하며, 국제적 범위를 확장할 수 있도록 특별히 설계되었습니다.</div>
               <div class="list-feature mt-32">
                 <div class="row row-gap-12">
                   <div class="col-sm-6">
@@ -847,75 +847,69 @@
         </div>
       </div>
 </style>
-        <script>
-      // jQuery가 로드될 때까지 대기 후 실행
+    <script>
+      // jQuery ready를 사용하여 확실하게 실행
       (function() {
-        var attempts = 0;
-        var maxAttempts = 50;
-        
         function initModal() {
-          attempts++;
-          
           if (typeof jQuery !== 'undefined' && typeof jQuery.fn !== 'undefined') {
-            var $ = jQuery;
-            
-            // 서비스 약관 모달 열기
-            $(document).on('click', '.terms-modal-btn', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var $modal = $('#terms-modal');
-              if ($modal.length) {
-                $modal.addClass('active');
-                $('body').css('overflow', 'hidden');
-              }
-            });            
-            
-            // 개인정보 처리방침 모달 열기
-            $(document).on('click', '.privacy-modal-btn', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var $modal = $('#privacy-modal');
-              if ($modal.length) {
-                $modal.addClass('active');
-                $('body').css('overflow', 'hidden');
-              }
-            });
-            
-            // 환불정책 모달 열기
-            $(document).on('click', '.refund-modal-btn', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var $modal = $('#refund-modal');
-              if ($modal.length) {
-                $modal.addClass('active');
-                $('body').css('overflow', 'hidden');
-              }
-            });
-            
-            // 모달 닫기
-            $(document).on('click', '.terms-modal-close, .terms-modal-overlay', function(e) {
-              e.stopPropagation();
-              $('#terms-modal, #privacy-modal, #refund-modal').removeClass('active');
-              $('body').css('overflow', '');
-            });
-            
-            // ESC 키로 모달 닫기
-            $(document).on('keydown', function(e) {
-              if (e.key === 'Escape' || e.keyCode === 27) {
+            jQuery(document).ready(function($) {
+              // 서비스 약관 모달 열기
+              $(document).on('click', '.terms-modal-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $modal = $('#terms-modal');
+                if ($modal.length) {
+                  $modal.addClass('active');
+                  $('body').css('overflow', 'hidden');
+                }
+              });            
+              
+              // 개인정보 처리방침 모달 열기
+              $(document).on('click', '.privacy-modal-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $modal = $('#privacy-modal');
+                if ($modal.length) {
+                  $modal.addClass('active');
+                  $('body').css('overflow', 'hidden');
+                }
+              });
+              
+              // 환불정책 모달 열기
+              $(document).on('click', '.refund-modal-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $modal = $('#refund-modal');
+                if ($modal.length) {
+                  $modal.addClass('active');
+                  $('body').css('overflow', 'hidden');
+                }
+              });
+              
+              // 모달 닫기
+              $(document).on('click', '.terms-modal-close, .terms-modal-overlay', function(e) {
+                e.stopPropagation();
                 $('#terms-modal, #privacy-modal, #refund-modal').removeClass('active');
                 $('body').css('overflow', '');
-              }
+              });
+              
+              // ESC 키로 모달 닫기
+              $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' || e.keyCode === 27) {
+                  $('#terms-modal, #privacy-modal, #refund-modal').removeClass('active');
+                  $('body').css('overflow', '');
+                }
+              });
             });
-          } else if (attempts < maxAttempts) {
-            setTimeout(initModal, 100);
+          } else {
+            setTimeout(initModal, 50);
           }
         }
         
-        // DOM이 준비되면 시작
+        // 즉시 실행하고, DOMContentLoaded도 대기
+        initModal();
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', initModal);
-        } else {
-          initModal();
         }
       })();
     </script>

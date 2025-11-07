@@ -635,52 +635,6 @@
     <script src="./assets/js/waypoints.min.js"></script>
     <script src="./assets/js/phosphor-icons.js"></script>
     <script src="./assets/js/main.min.js"></script>
-    <script>
-      // Team Slider
-      $(".team-slider").slick({
-        dots: false,
-        arrows: true,
-        prevArrow: '.team-prev-btn',
-        nextArrow: '.team-next-btn',
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        touchThreshold: 1000,
-        waitForAnimate: false,
-        swipe: true,
-        swipeToSlide: true,
-        autoplay: true,
-        autoplaySpeed: 3000,
-        pauseOnFocus: false,
-        pauseOnHover: true,
-        infinite: true,
-        responsive: [
-          {
-            breakpoint: 1200,
-            settings: {
-              slidesToShow: 3,
-            }
-          },
-          {
-            breakpoint: 992,
-            settings: {
-              slidesToShow: 2,
-            }
-          },
-          {
-            breakpoint: 768,
-            settings: {
-              slidesToShow: 2,
-            }
-          },
-          {
-            breakpoint: 576,
-            settings: {
-              slidesToShow: 1,
-            }
-          }
-        ]
-      });
-    </script>
     <!-- 서비스 약관 모달 -->
     <div id="terms-modal" class="terms-modal">
       <div class="terms-modal-overlay"></div>
@@ -749,7 +703,7 @@
               <p class="body3 text-placehover mt-12">③ "몰"이 회원 자격을 제한?정지 시킨 후, 동일한 행위가 2회 이상 반복되거나 30일 이내에 그 사유가 시정되지 아니하는 경우 "몰"은 회원자격을 상실시킬 수 있습니다.</p>
               <p class="body3 text-placehover mt-12">④ "몰"이 회원자격을 상실시키는 경우에는 회원등록을 말소합니다. 이 경우 회원에게 이를 통지하고, 회원등록 말소 전에 최소한 30일 이상의 기간을 정하여 소명할 기회를 부여합니다.</p>
             </div>
-          </div>
+                    </div>
         </div>
       </div>
     </div>
@@ -1000,75 +954,69 @@
         }
       }
     </style>
-        <script>
-      // jQuery가 로드될 때까지 대기 후 실행
+    <script>
+      // jQuery ready를 사용하여 확실하게 실행
       (function() {
-        var attempts = 0;
-        var maxAttempts = 50;
-        
         function initModal() {
-          attempts++;
-          
           if (typeof jQuery !== 'undefined' && typeof jQuery.fn !== 'undefined') {
-            var $ = jQuery;
-            
-            // 서비스 약관 모달 열기
-            $(document).on('click', '.terms-modal-btn', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var $modal = $('#terms-modal');
-              if ($modal.length) {
-                $modal.addClass('active');
-                $('body').css('overflow', 'hidden');
-              }
-            });            
-            
-            // 개인정보 처리방침 모달 열기
-            $(document).on('click', '.privacy-modal-btn', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var $modal = $('#privacy-modal');
-              if ($modal.length) {
-                $modal.addClass('active');
-                $('body').css('overflow', 'hidden');
-              }
-            });
-            
-            // 환불정책 모달 열기
-            $(document).on('click', '.refund-modal-btn', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var $modal = $('#refund-modal');
-              if ($modal.length) {
-                $modal.addClass('active');
-                $('body').css('overflow', 'hidden');
-              }
-            });
-            
-            // 모달 닫기
-            $(document).on('click', '.terms-modal-close, .terms-modal-overlay', function(e) {
-              e.stopPropagation();
-              $('#terms-modal, #privacy-modal, #refund-modal').removeClass('active');
-              $('body').css('overflow', '');
-            });
-            
-            // ESC 키로 모달 닫기
-            $(document).on('keydown', function(e) {
-              if (e.key === 'Escape' || e.keyCode === 27) {
+            jQuery(document).ready(function($) {
+              // 서비스 약관 모달 열기
+              $(document).on('click', '.terms-modal-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $modal = $('#terms-modal');
+                if ($modal.length) {
+                  $modal.addClass('active');
+                  $('body').css('overflow', 'hidden');
+                }
+              });            
+              
+              // 개인정보 처리방침 모달 열기
+              $(document).on('click', '.privacy-modal-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $modal = $('#privacy-modal');
+                if ($modal.length) {
+                  $modal.addClass('active');
+                  $('body').css('overflow', 'hidden');
+                }
+              });
+              
+              // 환불정책 모달 열기
+              $(document).on('click', '.refund-modal-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $modal = $('#refund-modal');
+                if ($modal.length) {
+                  $modal.addClass('active');
+                  $('body').css('overflow', 'hidden');
+                }
+              });
+              
+              // 모달 닫기
+              $(document).on('click', '.terms-modal-close, .terms-modal-overlay', function(e) {
+                e.stopPropagation();
                 $('#terms-modal, #privacy-modal, #refund-modal').removeClass('active');
                 $('body').css('overflow', '');
-              }
+              });
+              
+              // ESC 키로 모달 닫기
+              $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' || e.keyCode === 27) {
+                  $('#terms-modal, #privacy-modal, #refund-modal').removeClass('active');
+                  $('body').css('overflow', '');
+                }
+              });
             });
-          } else if (attempts < maxAttempts) {
-            setTimeout(initModal, 100);
+          } else {
+            setTimeout(initModal, 50);
           }
         }
         
-        // DOM이 준비되면 시작
+        // 즉시 실행하고, DOMContentLoaded도 대기
+        initModal();
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', initModal);
-        } else {
-          initModal();
         }
       })();
     </script>

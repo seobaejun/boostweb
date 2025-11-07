@@ -4524,14 +4524,30 @@ Testimonial Home1: Start
   padding-left: 10px;
   padding-right: 10px;
   transition: all ease 0.4s;
-  transform: scale(0.9);
-  border-radius: 50%;
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list .slick-track .item .bg-img {
-  border-radius: 50%;
+  border-radius: 50% !important;
   transition: all ease 0.4s;
-  padding: 10px;
+  padding: 0 !important;
+  overflow: hidden !important;
+  width: 76px !important;
+  height: 76px !important;
+  min-width: 76px !important;
+  min-height: 76px !important;
+  max-width: 76px !important;
+  max-height: 76px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list .slick-track .item .bg-img img {
@@ -4541,11 +4557,19 @@ Testimonial Home1: Start
 }
 
 .testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list .slick-track .item.slick-center {
-  transform: scale(1.2);
+  width: 91px;
+  height: 91px;
 }
 
 .testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list .slick-track .item.slick-center .bg-img {
+  width: 91px !important;
+  height: 91px !important;
+  min-width: 91px !important;
+  min-height: 91px !important;
+  max-width: 91px !important;
+  max-height: 91px !important;
   background-color: var(--line-dark);
+  border-radius: 50% !important;
 }
 
 .testimonial-block.style-one .container .row>div .list-avatar .prev-btn,
@@ -4620,6 +4644,8 @@ Testimonial Home1: Start
 
   .testimonial-block.style-one .container .row>div .list-avatar .avatar.slick-slider .slick-list .slick-track .item .bg-img {
     padding: 8px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
   }
 
   .testimonial-block.style-one .container .row>div .list-avatar .prev-btn {

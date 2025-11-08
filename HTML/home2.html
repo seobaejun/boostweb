@@ -91,7 +91,7 @@
                                                           <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="bwGradientHome2" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#3D89FB;stop-opacity:1" />
+                    <stop offset="0%" style="stop-color:#1FBE72;stop-opacity:1" />
                     <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
                   </linearGradient>
                 </defs>
@@ -108,7 +108,7 @@
                                                               <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="bwGradientHome2" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#3D89FB;stop-opacity:1" />
+                    <stop offset="0%" style="stop-color:#1FBE72;stop-opacity:1" />
                     <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
                   </linearGradient>
                 </defs>
@@ -618,6 +618,357 @@
           </div>
         </div>
       </div>
+      <div class="blog-analyzer-block style-two pt-100 pb-100 bg-white">
+        <div class="container">
+          <div class="wrap" style="max-width:1200px;margin:24px auto;padding:0 16px">
+            <header style="display:flex;gap:12px;align-items:center;margin-bottom:16px">
+              <h1 style="font-size:20px;margin:0">블로그 글 분석기</h1>
+              <span class="sub" style="color:#6b7280;font-size:14px">제목·본문을 붙여넣으면 우측에서 자동 분석합니다.</span>
+            </header>
+            <div class="grid" style="display:grid;grid-template-columns:1.1fr .9fr;gap:16px">
+              <style>
+                @media(max-width:980px){.blog-analyzer-block .grid{grid-template-columns:1fr}}
+                .blog-analyzer-block *{box-sizing:border-box}
+                .blog-analyzer-block .card{background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+                .blog-analyzer-block .card h3{margin:0 0 10px;font-size:16px}
+                .blog-analyzer-block label{font-weight:600;font-size:13px;margin-bottom:6px;display:block}
+                .blog-analyzer-block input[type="text"],.blog-analyzer-block textarea{width:100%;border:1px solid #e5e7eb;background:#fff;border-radius:10px;padding:10px 12px;font-size:14px;outline:none}
+                .blog-analyzer-block textarea{min-height:320px;resize:vertical;line-height:1.6}
+                .blog-analyzer-block .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+                .blog-analyzer-block .pill{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-size:13px}
+                .blog-analyzer-block .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+                @media(max-width:580px){.blog-analyzer-block .kpis{grid-template-columns:repeat(2,1fr)}}
+                .blog-analyzer-block .kpi{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px}
+                .blog-analyzer-block .kpi .name{font-size:12px;color:#6b7280}
+                .blog-analyzer-block .kpi .val{font-size:20px;font-weight:700;margin-top:4px}
+                .blog-analyzer-block .tag{display:inline-block;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;padding:4px 8px;border-radius:999px;font-size:12px;margin:4px 4px 0 0}
+                .blog-analyzer-block .list{display:flex;flex-wrap:wrap}
+                .blog-analyzer-block .warn{color:#f59e0b;font-weight:700}
+                .blog-analyzer-block .bad{color:#ef4444;font-weight:700}
+                .blog-analyzer-block .ok{color:#10b981;font-weight:700}
+                .blog-analyzer-block .muted{color:#6b7280}
+                .blog-analyzer-block .flex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+                .blog-analyzer-block .btn{border:1px solid #e5e7eb;background:#fff;border-radius:10px;padding:10px 12px;font-size:14px;cursor:pointer}
+                .blog-analyzer-block .btn.primary{background:#6366f1;border-color:#6366f1;color:#fff}
+                .blog-analyzer-block table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+                .blog-analyzer-block th,.blog-analyzer-block td{border-bottom:1px solid #e5e7eb;padding:8px 6px;text-align:left}
+                .blog-analyzer-block th{font-size:12px;color:#6b7280;font-weight:600}
+                .blog-analyzer-block .footer{margin-top:8px;font-size:12px;color:#6b7280}
+                .blog-analyzer-block .badge{font-size:12px;border-radius:8px;padding:4px 8px;border:1px solid #e5e7eb;background:#fff}
+                .blog-analyzer-block .rightCols{display:grid;grid-template-columns:1fr;gap:12px}
+                .blog-analyzer-block .chips{display:flex;flex-wrap:wrap;gap:6px}
+                .blog-analyzer-block .chip{border:1px solid #e5e7eb;padding:6px 8px;border-radius:999px;background:#fff;font-size:12px}
+              </style>
+              <section class="card">
+                <h3>입력 정보</h3>
+                <div class="row" style="margin-bottom:10px">
+                  <div>
+                    <label for="title">제목</label>
+                    <input id="title" type="text" placeholder="예) 대전 롯데백화점 주변 멋진 부모님 식사로 추천" />
+                  </div>
+                  <div>
+                    <label for="banned">금지어 (쉼표로 구분)</label>
+                    <input id="banned" type="text" placeholder="예) 광고, 무료, 무조건, 절대, 극혐" />
+                  </div>
+                </div>
+                <label for="content">본문</label>
+                <textarea id="content" placeholder="여기에 포스팅 본문을 붙여넣기/작성하세요."></textarea>
+                <div class="flex" style="margin-top:12px">
+                  <button id="analyzeBtn" class="btn primary">분석하기</button>
+                  <button id="clearBtn" class="btn">초기화</button>
+                  <span id="autosave" class="badge">자동 저장 활성</span>
+                </div>
+                <div class="footer">설정(금지어/반복기준)은 브라우저에 저장됩니다.</div>
+              </section>
+              <section class="rightCols">
+                <div class="card">
+                  <h3>요약 지표</h3>
+                  <div class="kpis">
+                    <div class="kpi">
+                      <div class="name">글자 수</div>
+                      <div class="val" id="chars">0</div>
+                    </div>
+                    <div class="kpi">
+                      <div class="name">단어 수</div>
+                      <div class="val" id="words">0</div>
+                    </div>
+                    <div class="kpi">
+                      <div class="name">문장 수</div>
+                      <div class="val" id="sents">0</div>
+                    </div>
+                    <div class="kpi">
+                      <div class="name">문단 수</div>
+                      <div class="val" id="paras">0</div>
+                    </div>
+                  </div>
+                  <div class="list" style="margin-top:10px">
+                    <span class="pill">오류율 <b id="errorRate" class="ok">0.0%</b></span>
+                    <span class="pill">금지어 <b id="banCount">0</b>개</span>
+                    <span class="pill">반복 기준 <b><span id="repeatThreshold">5</span>회</b></span>
+                    <span class="pill">예상 읽기시간 <b id="readTime">0:00</b></span>
+                  </div>
+                  <div class="flex" style="margin-top:10px">
+                    <button id="downloadJson" class="btn">JSON 저장</button>
+                    <button id="downloadCsv" class="btn">CSV 저장</button>
+                    <button id="resetSettings" class="btn">설정 초기화</button>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3>형태소/빈도 분석 (불용어 제거)</h3>
+                  <div class="chips" id="topTags"></div>
+                  <table id="freqTable">
+                    <thead><tr><th>단어</th><th>빈도</th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="card">
+                  <h3>금지어·반복어·오류</h3>
+                  <div id="alerts" class="muted">분석 결과 메시지가 여기에 표시됩니다.</div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+        <script>
+          // ---- 유틸/설정 ----
+          const els = {
+            title: document.getElementById('title'),
+            content: document.getElementById('content'),
+            banned: document.getElementById('banned'),
+            chars: document.getElementById('chars'),
+            words: document.getElementById('words'),
+            sents: document.getElementById('sents'),
+            paras: document.getElementById('paras'),
+            errorRate: document.getElementById('errorRate'),
+            banCount: document.getElementById('banCount'),
+            repeatThreshold: document.getElementById('repeatThreshold'),
+            readTime: document.getElementById('readTime'),
+            topTags: document.getElementById('topTags'),
+            freqBody: document.querySelector('#freqTable tbody'),
+            alerts: document.getElementById('alerts'),
+            analyzeBtn: document.getElementById('analyzeBtn'),
+            clearBtn: document.getElementById('clearBtn'),
+            downloadJson: document.getElementById('downloadJson'),
+            downloadCsv: document.getElementById('downloadCsv'),
+            resetSettings: document.getElementById('resetSettings'),
+          };
+          const DEFAULT_REPEAT = 5;
+          // 흔한 한국어 불용어(조사/접속사 등): 필요 시 추가/수정
+          const STOPWORDS = new Set([
+            "은","는","이","가","을","를","에","에서","에게","께","으로","로","와","과","도","만","의","랑",
+            "하다","되다","이다","했다","했다가","하고","그리고","그러나","하지만","또","또는","및",
+            "저","그","이","것","거","수","등","등의","때","중","대한","대한것","위해","대한",
+            "좀","더","덜","또한","즉","등등","하여","했다가","하며","하며","거나","보다","처럼","까지",
+            "요","네","죠","듯","듯이","수","때문","때문에","사실","정말","아주","매우"
+          ]);
+          // 저장된 설정 불러오기
+          const state = {
+            repeatThreshold: Number(localStorage.getItem('repeatThreshold') || DEFAULT_REPEAT),
+            bannedText: localStorage.getItem('bannedText') || '',
+          };
+          els.repeatThreshold.textContent = state.repeatThreshold;
+          els.banned.value = state.bannedText;
+          // ---- 토크나이저 (간단: 공백/문장부호 기준, 한글/영문/숫자만 유지) ----
+          const toTokens = (text) => {
+            return text
+              .toLowerCase()
+              .replace(/[^\uAC00-\uD7A3a-z0-9\s]/g, " ")
+              .split(/\s+/)
+              .filter(w => w && w.length > 1); // 한 글자 토큰 제외(원하면 바꾸세요)
+          };
+          const countChars = (text) => text.replace(/\s/g,"").length;
+          const countSents = (text) => {
+            const s = text.trim().split(/[.!?…‥。！？\n]+/).filter(Boolean).length;
+            return s || (text.trim() ? 1 : 0);
+          };
+          const countParas = (text) => text.split(/\n{2,}|(\r?\n)/g).filter(p => p && p.trim()).length;
+          // 간단 오류 패턴: 이중공백, 과도한 반복문자(ㅋㅋㅋ, !!!! 등), 공백+구두점
+          function detectSimpleErrors(text){
+            const patterns = [
+              /\s{2,}/g,        // 이중 공백
+              /([!?.ㅋㅎㄷㄱㅅ])\1{2,}/g, // 반복 문자 3회 이상
+              /\s+([,.!?])/g,   // 구두점 앞 공백
+            ];
+            let hits = 0;
+            patterns.forEach(re => {
+              const m = text.match(re);
+              if(m) hits += m.length;
+            });
+            return hits;
+          }
+          // 금지어 탐지
+          function findBanned(tokens, bannedList){
+            const bset = new Set(bannedList.map(v=>v.trim().toLowerCase()).filter(Boolean));
+            const hits = {};
+            tokens.forEach(t=>{
+              if(bset.has(t)) hits[t]=(hits[t]||0)+1;
+            });
+            return hits;
+          }
+          // 빈도 분석(불용어 제거)
+          function frequency(tokens){
+            const freq = {};
+            tokens.forEach(t=>{
+              if(!STOPWORDS.has(t)) freq[t] = (freq[t]||0)+1;
+            });
+            return freq;
+          }
+          // 반복 단어 경고
+          function repeatedWords(freq, threshold){
+            const out = [];
+            for(const [w,c] of Object.entries(freq)){
+              if(c >= threshold) out.push([w,c]);
+            }
+            out.sort((a,b)=>b[1]-a[1]);
+            return out;
+          }
+          // 읽기 시간(한국어 300자/분 대략)
+          function estimateReadTime(chars){
+            const minutes = Math.max(1, Math.ceil(chars / 300));
+            const mm = String(Math.floor(minutes)).padStart(1,'0');
+            const ss = "00";
+            return `${mm}:${ss}`;
+          }
+          // CSV/JSON 다운로드
+          function download(filename, content, mime='text/plain'){
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([content], {type:mime}));
+            a.download = filename; a.click();
+            URL.revokeObjectURL(a.href);
+          }
+          function toCSV(rows){
+            return rows.map(r => r.map(v => {
+              const s = String(v ?? '');
+              return /[",\n]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s;
+            }).join(',')).join('\n');
+          }
+          // ---- 분석 실행 ----
+          function analyze(){
+            // 설정 저장
+            localStorage.setItem('bannedText', els.banned.value);
+            localStorage.setItem('repeatThreshold', state.repeatThreshold);
+            const title = els.title.value || '';
+            const body = els.content.value || '';
+            const full = (title+'\n'+body).trim();
+            const tokens = toTokens(full);
+            const chars = countChars(full);
+            const sents = countSents(full);
+            const paras = countParas(body);
+            const errHits = detectSimpleErrors(full);
+            const errRate = (sents>0) ? Math.min(100, (errHits / sents) * 10) : (errHits>0?100:0); // 가중치 임의
+            const bannedList = els.banned.value.split(',').map(s=>s.trim()).filter(Boolean);
+            const bannedHits = findBanned(tokens, bannedList);
+            const freq = frequency(tokens);
+            const repeats = repeatedWords(freq, state.repeatThreshold);
+            // KPI
+            els.chars.textContent = chars.toLocaleString();
+            els.words.textContent = tokens.length.toLocaleString();
+            els.sents.textContent = sents.toLocaleString();
+            els.paras.textContent = paras.toLocaleString();
+            els.readTime.textContent = estimateReadTime(chars);
+            // 오류율 뱃지 색상
+            els.errorRate.textContent = `${errRate.toFixed(1)}%`;
+            els.errorRate.classList.remove('ok','warn','bad');
+            if(errRate < 5) els.errorRate.classList.add('ok');
+            else if(errRate < 15) els.errorRate.classList.add('warn');
+            else els.errorRate.classList.add('bad');
+            // 금지어 개수
+            const banTotal = Object.values(bannedHits).reduce((a,b)=>a+b,0);
+            els.banCount.textContent = banTotal;
+            // 상위 태그/표
+            const top = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,20);
+            els.topTags.innerHTML = top.map(([w,c])=>`<span class="tag">${w} × ${c}</span>`).join('');
+            els.freqBody.innerHTML = top.map(([w,c])=>`<tr><td>${w}</td><td>${c}</td></tr>`).join('');
+            // 메시지
+            const msgs = [];
+            if(repeats.length){
+              const list = repeats.slice(0,8).map(([w,c])=>`${w}(${c})`).join(', ');
+              msgs.push(`⚠️ 반복 단어(기준 ${state.repeatThreshold}회 이상): ${list}`);
+            }else{
+              msgs.push(`✅ 반복 단어 경고 없음 (기준 ${state.repeatThreshold}회)`);
+            }
+            if(banTotal>0){
+              const list = Object.entries(bannedHits).map(([w,c])=>`${w}(${c})`).join(', ');
+              msgs.push(`⛔ 금지어 발견: ${list}`);
+            }else{
+              msgs.push('✅ 금지어 미발견');
+            }
+            if(errHits>0){
+              msgs.push(`⚠️ 간단 오류 패턴 ${errHits}건(이중 공백/반복문자/구두점 앞 공백 등)`);
+            }else{
+              msgs.push('✅ 간단 오류 패턴 없음');
+            }
+            // 길이/가독성 힌트
+            if(chars < 800) msgs.push('ℹ️ 본문이 다소 짧습니다. 사례/근거/사진 설명을 보강해보세요.');
+            if(tokens.length > 1200) msgs.push('ℹ️ 단어 수가 많아 가독성이 떨어질 수 있어요. 소제목/리스트로 분할하세요.');
+            els.alerts.innerHTML = msgs.map(m=>`<div>${m}</div>`).join('');
+          }
+          // ---- 이벤트/동작 ----
+          // 입력 변화 → 디바운스 분석
+          let timer;
+          ['input','keyup','change'].forEach(ev=>{
+            [els.title, els.content, els.banned].forEach(el=>{
+              el.addEventListener(ev, ()=>{
+                clearTimeout(timer);
+                timer = setTimeout(()=>analyze(), 250);
+              });
+            });
+          });
+          els.analyzeBtn.addEventListener('click', analyze);
+          els.clearBtn.addEventListener('click', ()=>{
+            els.title.value = '';
+            els.content.value = '';
+            analyze();
+          });
+          // 반복 기준 조정(Alt + ↑/↓)
+          document.addEventListener('keydown', (e)=>{
+            if(e.altKey && (e.key==='ArrowUp' || e.key==='ArrowDown')){
+              if(e.key==='ArrowUp') state.repeatThreshold = Math.min(50, state.repeatThreshold+1);
+              else state.repeatThreshold = Math.max(2, state.repeatThreshold-1);
+              els.repeatThreshold.textContent = state.repeatThreshold;
+              analyze();
+            }
+          });
+          // 다운로드
+          els.downloadJson.addEventListener('click', ()=>{
+            const tbl = [...els.freqBody.querySelectorAll('tr')].map(tr=>{
+              const tds = tr.querySelectorAll('td');
+              return {word: tds[0].textContent, count: Number(tds[1].textContent)};
+            });
+            const data = {
+              title: els.title.value, contentLength: els.content.value.length,
+              summary:{
+                chars: els.chars.textContent,
+                words: els.words.textContent,
+                sents: els.sents.textContent,
+                paras: els.paras.textContent,
+                errorRate: els.errorRate.textContent,
+                bannedCount: Number(els.banCount.textContent),
+              },
+              topWords: tbl
+            };
+            download('analysis.json', JSON.stringify(data,null,2), 'application/json');
+          });
+          els.downloadCsv.addEventListener('click', ()=>{
+            const rows = [['word','count']];
+            [...els.freqBody.querySelectorAll('tr')].forEach(tr=>{
+              const [w,c] = [...tr.querySelectorAll('td')].map(td=>td.textContent);
+              rows.push([w,c]);
+            });
+            download('frequency.csv', toCSV(rows), 'text/csv');
+          });
+          els.resetSettings.addEventListener('click', ()=>{
+            state.repeatThreshold = DEFAULT_REPEAT;
+            els.repeatThreshold.textContent = state.repeatThreshold;
+            localStorage.removeItem('repeatThreshold');
+            localStorage.removeItem('bannedText');
+            els.banned.value = '';
+            analyze();
+          });
+          // 초기 분석
+          analyze();
+        </script>
+      </div>
       <div class="section-pricing style-two pt-100 pb-100 bg-white">
         <div class="container"> 
           <div class="heading flex-column-center row-gap-40">
@@ -869,7 +1220,7 @@
                                                             <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="bwGradientHome2" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#3D89FB;stop-opacity:1" />
+                    <stop offset="0%" style="stop-color:#1FBE72;stop-opacity:1" />
                     <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
                   </linearGradient>
                 </defs>

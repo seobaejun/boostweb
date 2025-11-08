@@ -2162,6 +2162,14 @@ Menu header: Start
   fill: var(--green);
 }
 
+.style-two .header-menu>.container .header-main .logo svg text {
+  fill: url(#bwGradientHome2) !important;
+}
+
+.style-two .header-menu>.container .header-main .logo svg stop[offset="0%"] {
+  stop-color: var(--green) !important;
+}
+
 .style-two .header-menu>.container .header-main .right-block a span:nth-child(2) {
   background-color: var(--green);
 }
@@ -2172,6 +2180,14 @@ Menu header: Start
 
 .style-two .header-menu>.container #menu-mobile-block .logo svg g path:first-child {
   fill: var(--green);
+}
+
+.style-two .header-menu>.container #menu-mobile-block .logo svg text {
+  fill: url(#bwGradientHome2) !important;
+}
+
+.style-two .header-menu>.container #menu-mobile-block .logo svg stop[offset="0%"] {
+  stop-color: var(--green) !important;
 }
 
 .style-two .header-menu>.container #menu-mobile-block .bg-blue {
@@ -7331,6 +7347,14 @@ Footer: Start
   #footer .footer-block .heading .list-social a .fs-12 {
     font-size: 10px;
   }
+}
+
+#footer .style-two .logo svg text {
+  fill: url(#bwGradientHome2) !important;
+}
+
+#footer .style-two .logo svg stop[offset="0%"] {
+  stop-color: var(--green) !important;
 }
 
 #footer .style-two .logo svg path:nth-child(1) {

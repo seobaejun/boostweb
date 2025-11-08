@@ -15,18 +15,133 @@
     <link rel="stylesheet" href="./assets/css/style.css"/>
     <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
     <style>
-      .team-slider .item {
-        padding: 0 12px;
+      /* 리더십 소개 - 한 줄에 4개씩 표시 (Grid) */
+      .our-leader .container .row .list-our-team,
+      .our-leader .container .list-our-team,
+      .our-leader .list-our-team {
+        width: 100% !important;
       }
-      .team-slider .slick-list {
-        margin: 0 -12px;
+      .our-leader .container .row .list-our-team .team-slider,
+      .our-leader .container .list-our-team .team-slider,
+      .our-leader .list-our-team .team-slider {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 24px !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
-      .slider-controls {
-        margin-top: 40px;
+      .our-leader .container .row .list-our-team .team-slider .item,
+      .our-leader .container .list-our-team .team-slider .item,
+      .our-leader .list-our-team .team-slider .item {
+        padding: 0 !important;
+        position: relative !important;
+        overflow: hidden !important;
+        width: 100% !important;
       }
-      .team-prev-btn:hover,
-      .team-next-btn:hover {
-        background: rgba(61, 137, 251, 0.2) !important;
+      /* slick 관련 클래스 제거 */
+      .our-leader .list-our-team .team-slider.slick-initialized,
+      .our-leader .list-our-team .team-slider .slick-list,
+      .our-leader .list-our-team .team-slider .slick-track {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 24px !important;
+        width: 100% !important;
+        transform: none !important;
+      }
+      .our-leader .list-our-team .team-slider .slick-slide {
+        width: 100% !important;
+        float: none !important;
+        display: block !important;
+      }
+      /* 반응형 */
+      @media (max-width: 1200px) {
+        .our-leader .container .row .list-our-team .team-slider,
+        .our-leader .container .list-our-team .team-slider,
+        .our-leader .list-our-team .team-slider {
+          grid-template-columns: repeat(3, 1fr) !important;
+        }
+      }
+      @media (max-width: 992px) {
+        .our-leader .container .row .list-our-team .team-slider,
+        .our-leader .container .list-our-team .team-slider,
+        .our-leader .list-our-team .team-slider {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+      }
+      @media (max-width: 768px) {
+        .our-leader .container .row .list-our-team .team-slider,
+        .our-leader .container .list-our-team .team-slider,
+        .our-leader .list-our-team .team-slider {
+          grid-template-columns: 1fr !important;
+        }
+      }
+      .our-leader .container .row .list-our-team .team-slider .item .bg-img,
+      .our-leader .container .list-our-team .team-slider .item .bg-img,
+      .our-leader .list-our-team .team-slider .item .bg-img {
+        width: 100% !important;
+        height: 400px !important;
+        margin: 0 auto !important;
+      }
+      /* 소셜 아이콘 - 기본 숨김, 호버 시 카드 안에 표시 */
+      .our-leader .container .row .list-our-team .team-slider .item .list-social,
+      .our-leader .container .list-our-team .team-slider .item .list-social,
+      .our-leader .list-our-team .team-slider .item .list-social {
+        right: -60px !important;
+        top: 10px !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: all 0.3s ease !important;
+      }
+      .our-leader .container .row .list-our-team .team-slider .item:hover .list-social,
+      .our-leader .container .list-our-team .team-slider .item:hover .list-social,
+      .our-leader .list-our-team .team-slider .item:hover .list-social {
+        right: 10px !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+      /* slick 관련 클래스 완전 제거 */
+      .our-leader .list-our-team .team-slider.slick-initialized,
+      .our-leader .list-our-team .team-slider .slick-list,
+      .our-leader .list-our-team .team-slider .slick-track,
+      .our-leader .list-our-team .team-slider .slick-slide {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 24px !important;
+        width: 100% !important;
+        transform: none !important;
+        float: none !important;
+      }
+      .our-leader .list-our-team .team-slider .slick-slide {
+        width: 100% !important;
+        float: none !important;
+        display: block !important;
+      }
+      /* 반응형 */
+      @media (max-width: 1200px) {
+        .our-leader .container .row .list-our-team .team-slider,
+        .our-leader .container .list-our-team .team-slider,
+        .our-leader .list-our-team .team-slider {
+          grid-template-columns: repeat(3, 1fr) !important;
+        }
+      }
+      @media (max-width: 992px) {
+        .our-leader .container .row .list-our-team .team-slider,
+        .our-leader .container .list-our-team .team-slider,
+        .our-leader .list-our-team .team-slider {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+      }
+      @media (max-width: 768px) {
+        .our-leader .container .row .list-our-team .team-slider,
+        .our-leader .container .list-our-team .team-slider,
+        .our-leader .list-our-team .team-slider {
+          grid-template-columns: 1fr !important;
+        }
+      }
+      /* 슬라이더 컨트롤 버튼 숨김 */
+      .our-leader .list-our-team .slider-controls {
+        display: none !important;
       }
     </style>
   </head>
@@ -584,7 +699,6 @@
               <div class="footer-navigate">
                 <ul class="flex-item-center gap-40">
                   <li class="flex-center"><a class="text-subtitle text-white" href="index.html">Home</a></li>
-                  <li class="flex-center"><a class="text-subtitle text-white" href="service-one.html">Services</a></li>
                   <li class="flex-center"><a class="text-subtitle text-white" href="about.html">About</a></li>
                   <li class="flex-center"><a class="text-subtitle text-white" href="contact.html">Contact</a></li>
                 </ul>
@@ -635,6 +749,25 @@
     <script src="./assets/js/waypoints.min.js"></script>
     <script src="./assets/js/phosphor-icons.js"></script>
     <script src="./assets/js/main.min.js"></script>
+    <script>
+      // slick 슬라이더 완전 제거
+      jQuery(document).ready(function($) {
+        var $slider = $('.our-leader .list-our-team .team-slider');
+        if ($slider.length) {
+          // slick 제거
+          if ($slider.hasClass('slick-initialized')) {
+            try {
+              $slider.slick('unslick');
+            } catch(e) {}
+          }
+          $slider.removeClass('slick-initialized slick-slider');
+          $slider.find('.slick-list, .slick-track').remove();
+          $slider.find('.slick-slide').each(function() {
+            $(this).removeClass('slick-slide').unwrap();
+          });
+        }
+      });
+    </script>
     <!-- 서비스 약관 모달 -->
     <div id="terms-modal" class="terms-modal">
       <div class="terms-modal-overlay"></div>
@@ -1019,6 +1152,7 @@
           document.addEventListener('DOMContentLoaded', initModal);
         }
       })();
+      
     </script>
   </body>
 </html>

@@ -14,7 +14,44 @@
     <link rel="stylesheet" href="./assets/icons/style.css"/>
     <link rel="stylesheet" href="./assets/css/style.css"/>
     <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
+    <script>
+      // AI 생성기 서브섹션 숨김 처리
+      (function() {
+        function hideAIGenerator() {
+          // 데스크톱 메뉴: home2.html 링크를 포함하는 .item 숨김
+          var items = document.querySelectorAll('.list-home .item');
+          items.forEach(function(item) {
+            var link = item.querySelector('a[href="home2.html"]');
+            if (link) {
+              item.style.display = 'none';
+            }
+          });
+          
+          // 모바일 메뉴: home2.html 링크 숨김
+          var mobileLinks = document.querySelectorAll('.list-home a[href="home2.html"]');
+          mobileLinks.forEach(function(link) {
+            link.style.display = 'none';
+          });
+        }
+        
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', hideAIGenerator);
+        } else {
+          hideAIGenerator();
+        }
+        setTimeout(hideAIGenerator, 100);
+        setTimeout(hideAIGenerator, 500);
+      })();
+    </script>
     <style>
+      /* AI 생성기 서브섹션 숨김 처리 */
+      .list-home a[href="home2.html"] {
+        display: none !important;
+      }
+      /* 데스크톱 메뉴: home2.html 링크를 포함하는 .item 숨김 */
+      .list-home .item:has(a[href="home2.html"]) {
+        display: none !important;
+      }
       /* 리더십 소개 - 3D Coverflow 스타일 */
       .our-leader {
         background: #000000 !important;

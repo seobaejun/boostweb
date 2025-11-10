@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>회원가입 - 부스트웹</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"/>
+    <link rel="shortcut icon" href="./assets/images/favicon.svg" type="image/svg+xml"/>
+    <link rel="stylesheet" href="./assets/css/animate.min.css"/>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./assets/css/slick.css"/>
+    <link rel="stylesheet" href="./assets/icons/style.css"/>
+    <link rel="stylesheet" href="./assets/css/style.css"/>
+    <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
+    <style>
+      .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        padding: 40px 20px;
+      }
+      .auth-box {
+        background: #1a1a1a;
+        border-radius: 16px;
+        padding: 48px;
+        max-width: 450px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        border: 1px solid #2a2a2a;
+      }
+      .auth-title {
+        color: #ffffff;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-align: center;
+      }
+      .auth-subtitle {
+        color: #999999;
+        font-size: 16px;
+        margin-bottom: 32px;
+        text-align: center;
+      }
+      .auth-form-group {
+        margin-bottom: 24px;
+      }
+      .auth-label {
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .auth-input {
+        width: 100%;
+        padding: 14px 16px;
+        background: #2a2a2a;
+        border: 1px solid #3a3a3a;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+      .auth-input:focus {
+        outline: none;
+        border-color: #7D3CF3;
+        background: #2f2f2f;
+      }
+      .auth-button {
+        width: 100%;
+        padding: 14px;
+        background: #7D3CF3;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 8px;
+      }
+      .auth-button:hover {
+        background: #6b2dd9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(125, 60, 243, 0.4);
+      }
+      .auth-button:disabled {
+        background: #555555;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .auth-link {
+        color: #7D3CF3;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+      }
+      .auth-link:hover {
+        color: #6b2dd9;
+        text-decoration: underline;
+      }
+      .auth-message {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        display: none;
+        font-size: 14px;
+      }
+      .auth-message.success {
+        background: #4caf50;
+        color: #ffffff;
+        display: block;
+      }
+      .auth-message.error {
+        background: #f44336;
+        color: #ffffff;
+        display: block;
+      }
+      .auth-footer {
+        text-align: center;
+        margin-top: 24px;
+        color: #999999;
+        font-size: 14px;
+      }
+      .back-link {
+        color: #ffffff;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px;
+        font-size: 14px;
+        transition: color 0.3s ease;
+      }
+      .back-link:hover {
+        color: #7D3CF3;
+      }
+      .password-requirements {
+        color: #999999;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-container">
+      <div class="auth-box">
+        <a href="index.html" class="back-link">
+          <i class="ph ph-arrow-left"></i> 홈으로 돌아가기
+        </a>
+        <h1 class="auth-title">회원가입</h1>
+        <p class="auth-subtitle">부스트웹에 가입하고 시작하세요</p>
+        
+        <div id="authMessage" class="auth-message"></div>
+        
+        <form id="signupForm">
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupName">이름</label>
+            <input 
+              type="text" 
+              id="signupName" 
+              class="auth-input" 
+              placeholder="이름을 입력하세요"
+              required
+            />
+          </div>
+          
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupEmail">이메일</label>
+            <input 
+              type="email" 
+              id="signupEmail" 
+              class="auth-input" 
+              placeholder="이메일을 입력하세요"
+              required
+            />
+          </div>
+          
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupPassword">비밀번호</label>
+            <input 
+              type="password" 
+              id="signupPassword" 
+              class="auth-input" 
+              placeholder="비밀번호를 입력하세요"
+              required
+              minlength="6"
+            />
+            <div class="password-requirements">비밀번호는 최소 6자 이상이어야 합니다.</div>
+          </div>
+          
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupPasswordConfirm">비밀번호 확인</label>
+            <input 
+              type="password" 
+              id="signupPasswordConfirm" 
+              class="auth-input" 
+              placeholder="비밀번호를 다시 입력하세요"
+              required
+            />
+          </div>
+          
+          <div class="auth-form-group">
+            <label class="auth-label" for="referralId">추천인 아이디 <span style="color: #999999; font-weight: 400;">(선택사항)</span></label>
+            <input 
+              type="text" 
+              id="referralId" 
+              class="auth-input" 
+              placeholder="추천인 이메일을 입력하세요 (선택사항)"
+            />
+            <div style="color: #999999; font-size: 12px; margin-top: 4px;">
+              추천인의 이메일 주소를 입력하세요. 비워두셔도 됩니다.
+            </div>
+          </div>
+          
+          <button type="submit" id="signupBtn" class="auth-button">회원가입</button>
+        </form>
+        
+        <div class="auth-footer">
+          이미 계정이 있으신가요? <a href="login.html" class="auth-link">로그인</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+      // 상수 정의
+      const ADMIN_EMAIL = 'sprince1004@naver.com';
+      const MIN_PASSWORD_LENGTH = 6;
+      const USER_ROLE_ADMIN = 'admin';
+      const USER_ROLE_USER = 'user';
+
+      // Firebase 설정
+      const firebaseConfig = {
+        apiKey: "AIzaSyCQP1vx3cEtQUYOOqMsKS5HPM3SFMNxasY",
+        authDomain: "boostweb-93027.firebaseapp.com",
+        projectId: "boostweb-93027",
+        storageBucket: "boostweb-93027.firebasestorage.app",
+        messagingSenderId: "402354704129",
+        appId: "1:402354704129:web:0c5cdd4f51b93ba4ef1500",
+        measurementId: "G-2C1TW1KZ7X"
+      };
+
+      // Firebase 초기화 (중복 초기화 방지)
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      
+      // Firestore 연결 확인
+      console.log('Firebase 초기화 완료');
+      console.log('Firestore 인스턴스:', db ? '생성됨' : '생성 실패');
+      console.log('Firestore 타입:', typeof db);
+
+      // 메시지 표시 함수
+      function showMessage(message, type) {
+        const messageDiv = document.getElementById('authMessage');
+        messageDiv.textContent = message;
+        messageDiv.className = 'auth-message ' + type;
+        messageDiv.style.display = 'block';
+        
+        if (type === 'success') {
+          setTimeout(() => {
+            messageDiv.style.display = 'none';
+          }, 3000);
+        }
+      }
+
+      // 사용자 역할 결정 함수
+      function determineUserRole(email) {
+        return email === ADMIN_EMAIL ? USER_ROLE_ADMIN : USER_ROLE_USER;
+      }
+
+      // 추천인 정보 조회 함수
+      async function getReferralInfo(referralId) {
+        if (!referralId || referralId.trim() === '') {
+          return null;
+        }
+
+        const trimmedReferralId = referralId.trim();
+
+        try {
+          // 추천인 아이디로 사용자 검색 (이메일 또는 UID로 검색)
+          // 1. 이메일로 검색
+          const usersSnapshot = await db.collection('users')
+            .where('email', '==', trimmedReferralId)
+            .limit(1)
+            .get();
+
+          if (!usersSnapshot.empty) {
+            const referralDoc = usersSnapshot.docs[0];
+            const referralData = referralDoc.data();
+            return {
+              uid: referralDoc.id,
+              email: referralData.email,
+              name: referralData.name || referralData.email.split('@')[0],
+              role: referralData.role || USER_ROLE_USER
+            };
+          }
+
+          // 2. UID로 검색 시도
+          const referralDoc = await db.collection('users').doc(trimmedReferralId).get();
+          if (referralDoc.exists) {
+            const referralData = referralDoc.data();
+            return {
+              uid: referralDoc.id,
+              email: referralData.email,
+              name: referralData.name || referralData.email.split('@')[0],
+              role: referralData.role || USER_ROLE_USER
+            };
+          }
+
+          // 추천인을 찾을 수 없음
+          console.log('추천인을 찾을 수 없음:', trimmedReferralId);
+          return null;
+        } catch (error) {
+          console.error('추천인 정보 조회 오류:', error);
+          // 권한 오류인 경우 더 명확한 메시지
+          if (error.code === 'permission-denied') {
+            console.error('Firestore 권한 오류: 보안 규칙을 확인하세요.');
+          }
+          return null;
+        }
+      }
+
+      // 회원가입 폼 제출
+      document.getElementById('signupForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const nameInput = document.getElementById('signupName');
+        const emailInput = document.getElementById('signupEmail');
+        const passwordInput = document.getElementById('signupPassword');
+        const passwordConfirmInput = document.getElementById('signupPasswordConfirm');
+        const referralIdInput = document.getElementById('referralId');
+        const signupBtn = document.getElementById('signupBtn');
+        
+        // 입력값 가져오기
+        const name = nameInput ? nameInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : '';
+        const password = passwordInput ? passwordInput.value : '';
+        const passwordConfirm = passwordConfirmInput ? passwordConfirmInput.value : '';
+        const referralId = referralIdInput ? referralIdInput.value.trim() : '';
+        
+        console.log('입력값 확인:', {
+          name: name,
+          email: email,
+          password: password ? '***' : '',
+          passwordConfirm: passwordConfirm ? '***' : '',
+          referralId: referralId
+        });
+        
+        // 유효성 검사
+        if (!name || name === '' || !email || !password || !passwordConfirm) {
+          showMessage('모든 필수 필드를 입력해주세요.', 'error');
+          return;
+        }
+        
+        // name 필드 추가 검증 (공백만 있는 경우)
+        if (name.trim().length === 0) {
+          showMessage('이름을 올바르게 입력해주세요.', 'error');
+          return;
+        }
+        
+        if (password.length < MIN_PASSWORD_LENGTH) {
+          showMessage(`비밀번호는 최소 ${MIN_PASSWORD_LENGTH}자 이상이어야 합니다.`, 'error');
+          return;
+        }
+        
+        if (password !== passwordConfirm) {
+          showMessage('비밀번호가 일치하지 않습니다.', 'error');
+          return;
+        }
+        
+        signupBtn.disabled = true;
+        signupBtn.textContent = '회원가입 중...';
+        
+        try {
+          // Firebase Authentication으로 사용자 생성
+          console.log('=== Firebase Authentication 시작 ===');
+          const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+          const user = userCredential.user;
+          console.log('✅ Firebase Authentication 성공, UID:', user.uid);
+          
+          // 회원가입 직후 자동 로그인 방지 - 즉시 로그아웃
+          console.log('자동 로그인 방지를 위해 즉시 로그아웃...');
+          await auth.signOut();
+          console.log('✅ 로그아웃 완료');
+          
+          // 잠시 대기
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          // 사용자 역할 결정 (어드민인지 일반인지)
+          const userRole = determineUserRole(email);
+          console.log('사용자 역할:', userRole);
+          
+          // name 필드 확인 - 입력된 이름 사용
+          console.log('=== 이름 필드 확인 ===');
+          console.log('원본 name 값:', name);
+          console.log('name 타입:', typeof name);
+          console.log('name 길이:', name ? name.length : 0);
+          
+          const finalName = name.trim();
+          console.log('trim 후 name:', finalName);
+          console.log('finalName 길이:', finalName.length);
+          
+          if (!finalName || finalName === '') {
+            console.error('❌ 이름이 비어있습니다!');
+            throw new Error('이름을 입력해주세요.');
+          }
+          
+          console.log('✅ 최종 이름:', finalName);
+          
+          // Firestore에 저장할 사용자 데이터 구성
+          const userData = {
+            name: finalName,
+            email: email,
+            role: userRole,  // 1. 어드민인지 일반인지
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          
+          // 2. 추천인 아이디 저장 (회원가입할 때 적는 추천인 아이디)
+          console.log('=== 추천인 ID 확인 ===');
+          console.log('원본 referralId 값:', referralId);
+          console.log('referralId 타입:', typeof referralId);
+          console.log('referralId 길이:', referralId ? referralId.length : 0);
+          
+          // 이름과 추천인 ID를 localStorage에 임시 저장 (로그인 시 사용)
+          if (finalName) {
+            localStorage.setItem(`name_${user.uid}`, finalName);
+            console.log('이름을 localStorage에 저장:', finalName);
+          }
+          
+          if (referralId && referralId.trim() !== '') {
+            const trimmedReferralId = referralId.trim();
+            localStorage.setItem(`referralId_${user.uid}`, trimmedReferralId);
+            userData.referralId = trimmedReferralId;
+            userData.referredAt = firebase.firestore.FieldValue.serverTimestamp();
+            console.log('✅ 추천인 ID 저장:', trimmedReferralId);
+            console.log('추천인 ID를 localStorage에 저장:', trimmedReferralId);
+          } else {
+            userData.referralId = null;
+            console.log('추천인 ID: 없음 (null로 저장)');
+          }
+          
+          console.log('=== 최종 저장할 데이터 ===');
+          console.log('userData.name:', userData.name, '타입:', typeof userData.name, '길이:', userData.name ? userData.name.length : 0);
+          console.log('userData.email:', userData.email);
+          console.log('userData.role:', userData.role);
+          console.log('userData.referralId:', userData.referralId, '타입:', typeof userData.referralId);
+          console.log('전체 userData:', JSON.stringify(userData, null, 2));
+          
+          // userData 객체 직접 확인
+          console.log('userData 객체 키:', Object.keys(userData));
+          console.log('userData.name 직접 접근:', userData['name']);
+          console.log('userData.referralId 직접 접근:', userData['referralId']);
+          
+          // Firestore에 사용자 정보 저장
+          console.log('=== Firestore 저장 시작 ===');
+          console.log('1. Firestore 인스턴스 확인:', db);
+          console.log('2. Firestore 타입:', typeof db);
+          console.log('3. Firestore collection 메서드 존재:', typeof db?.collection);
+          console.log('4. 사용자 UID:', user.uid);
+          console.log('5. 저장할 데이터:', userData);
+          console.log('6. 저장할 데이터 (JSON):', JSON.stringify(userData, null, 2));
+          
+          if (!db) {
+            console.error('❌ Firestore 인스턴스가 없습니다!');
+            throw new Error('Firestore가 초기화되지 않았습니다.');
+          }
+          
+          if (typeof db.collection !== 'function') {
+            console.error('❌ db.collection이 함수가 아닙니다!');
+            throw new Error('Firestore가 올바르게 초기화되지 않았습니다.');
+          }
+          
+          // 관리자 페이지 테스트 유저 생성 방식과 정확히 동일하게 저장
+          console.log('7. users 컬렉션에 저장 시도 (관리자 페이지 방식)...');
+          
+          try {
+            console.log('8. 저장할 데이터:', JSON.stringify(userData, null, 2));
+            console.log('9. 문서 참조 생성 (UID 사용)...');
+            console.log('9-1. 사용자 UID:', user.uid);
+            console.log('9-2. 현재 인증 상태:', auth.currentUser ? auth.currentUser.uid : '없음');
+            console.log('9-3. auth.currentUser와 user 일치:', auth.currentUser && auth.currentUser.uid === user.uid ? '✅' : '❌');
+            
+            // 관리자 페이지처럼 .doc(uid).set() 사용
+            const docRef = db.collection('users').doc(user.uid);
+            console.log('10. 문서 경로:', docRef.path);
+            console.log('10-1. 전체 경로:', `users/${user.uid}`);
+            
+            console.log('11. set() 호출 시작...');
+            console.log('11-1. userData 확인:', {
+              name: userData.name,
+              nameType: typeof userData.name,
+              nameLength: userData.name ? userData.name.length : 0,
+              email: userData.email,
+              role: userData.role,
+              referralId: userData.referralId,
+              referralIdType: typeof userData.referralId,
+              referralIdLength: userData.referralId ? userData.referralId.length : 0,
+              hasCreatedAt: !!userData.createdAt,
+              hasUpdatedAt: !!userData.updatedAt
+            });
+            console.log('11-2. userData 전체:', JSON.stringify(userData, null, 2));
+            console.log('11-3. userData 객체 키:', Object.keys(userData));
+            console.log('11-4. userData.name 존재:', userData.hasOwnProperty('name'));
+            console.log('11-5. userData.referralId 존재:', userData.hasOwnProperty('referralId'));
+            
+            // 저장 직전 최종 확인
+            const dataToSave = {
+              name: String(userData.name || '').trim(),
+              email: String(userData.email || '').trim(),
+              role: String(userData.role || 'user'),
+              referralId: userData.referralId ? String(userData.referralId).trim() : null,
+              createdAt: userData.createdAt,
+              updatedAt: userData.updatedAt
+            };
+            
+            if (dataToSave.referralId && dataToSave.referralId !== '') {
+              dataToSave.referredAt = firebase.firestore.FieldValue.serverTimestamp();
+            }
+            
+            console.log('11-6. 최종 저장할 dataToSave:', JSON.stringify(dataToSave, null, 2));
+            
+            // set() 호출 - 오류를 명시적으로 캐치
+            let setSuccess = false;
+            try {
+              const setPromise = docRef.set(dataToSave);
+              console.log('11-7. set() Promise 생성됨 (dataToSave 사용)');
+              
+              await setPromise;
+              console.log('12. ✅ Firestore set() 완료 - await 통과');
+              setSuccess = true;
+            } catch (setErr) {
+              console.error('12. ❌ Firestore set() 실패!');
+              console.error('오류 코드:', setErr.code);
+              console.error('오류 메시지:', setErr.message);
+              throw setErr;
+            }
+            
+            if (!setSuccess) {
+              throw new Error('set()이 실패했습니다.');
+            }
+            
+            // 저장 확인 (관리자 페이지와 동일한 방식)
+            console.log('12-1. 1초 대기 중...');
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            console.log('12-2. 저장된 문서 조회 시작...');
+            const savedDoc = await docRef.get();
+            console.log('12-3. 조회 결과:', savedDoc.exists ? '✅ 존재함' : '❌ 없음');
+            
+            if (savedDoc.exists) {
+              const savedData = savedDoc.data();
+              console.log('13. ✅ 저장 확인 성공!');
+              console.log('14. 저장된 데이터:', JSON.stringify(savedData, null, 2));
+              console.log('14-1. 저장된 name:', savedData.name, '타입:', typeof savedData.name);
+              console.log('14-2. 저장된 referralId:', savedData.referralId, '타입:', typeof savedData.referralId);
+              
+              // 필수 필드 확인
+              if (savedData.name && savedData.email && savedData.role) {
+                console.log('15. ✅ 모든 필수 필드 확인 완료');
+                console.log('16. ✅ 회원가입 완료 - Firestore 저장 성공');
+                
+                showMessage('회원가입 성공! 로그인 페이지에서 로그인해주세요.', 'success');
+                
+                // 이미 로그아웃 상태이므로 바로 로그인 페이지로 이동
+                setTimeout(() => {
+                  window.location.href = 'login.html';
+                }, 2000);
+                return;
+              } else {
+                console.error('15. ❌ 필수 필드 누락:', {
+                  name: savedData.name || '없음',
+                  email: savedData.email || '없음',
+                  role: savedData.role || '없음'
+                });
+              }
+            } else {
+              console.error('13. ❌ 문서가 존재하지 않습니다!');
+              console.error('14. Firestore 보안 규칙을 확인하세요.');
+            }
+            
+            throw new Error('문서가 저장되지 않았습니다.');
+            
+          } catch (firestoreError) {
+            console.error('❌ Firestore 저장 오류 발생!');
+            console.error('오류 타입:', typeof firestoreError);
+            console.error('오류 객체:', firestoreError);
+            console.error('오류 코드:', firestoreError?.code);
+            console.error('오류 메시지:', firestoreError?.message);
+            console.error('오류 스택:', firestoreError?.stack);
+            
+            // 오류를 화면에 명확히 표시
+            alert('Firestore 저장 오류!\n\n오류 코드: ' + (firestoreError?.code || '없음') + '\n오류 메시지: ' + (firestoreError?.message || '알 수 없는 오류') + '\n\n브라우저 콘솔(F12)을 확인하세요.');
+            
+            // 롤백
+            try {
+              console.log('롤백: Firebase Authentication 사용자 삭제 시도...');
+              await user.delete();
+              console.log('✅ 롤백 완료');
+            } catch (deleteError) {
+              console.error('❌ 롤백 실패:', deleteError);
+            }
+            
+            let errorMsg = 'Firestore 저장 실패: ';
+            if (firestoreError?.code === 'permission-denied') {
+              errorMsg += '권한 오류입니다. Firebase Console → Firestore Database → Rules에서 "allow read, write: if true;"로 설정하고 "게시" 버튼을 클릭하세요.';
+            } else if (firestoreError?.message) {
+              errorMsg += firestoreError.message;
+            } else {
+              errorMsg += '알 수 없는 오류가 발생했습니다. 브라우저 콘솔을 확인하세요.';
+            }
+            
+            showMessage(errorMsg, 'error');
+            signupBtn.disabled = false;
+            signupBtn.textContent = '회원가입';
+            return;
+          }
+          
+        } catch (error) {
+          console.error('❌ 회원가입 오류:', error);
+          console.error('오류 코드:', error.code);
+          console.error('오류 메시지:', error.message);
+          console.error('오류 전체:', JSON.stringify(error, null, 2));
+          
+          let errorMessage = '회원가입 중 오류가 발생했습니다.';
+          
+          if (error.code === 'auth/email-already-in-use') {
+            errorMessage = '이미 사용 중인 이메일입니다.';
+          } else if (error.code === 'auth/invalid-email') {
+            errorMessage = '올바른 이메일 형식이 아닙니다.';
+          } else if (error.code === 'auth/weak-password') {
+            errorMessage = '비밀번호가 너무 약합니다.';
+          } else if (error.code === 'permission-denied') {
+            errorMessage = '권한 오류: Firestore 보안 규칙을 확인하세요. Firebase Console → Firestore Database → Rules에서 "allow read, write: if true;"로 설정하고 배포하세요.';
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+          
+          // 상세한 오류 메시지 표시
+          showMessage(errorMessage + ' (콘솔에서 자세한 오류 확인 가능)', 'error');
+          signupBtn.disabled = false;
+          signupBtn.textContent = '회원가입';
+        }
+      });
+
+      // 인증 상태 확인
+      auth.onAuthStateChanged(function(user) {
+        if (user) {
+          // 이미 로그인된 경우 홈페이지로 이동
+          window.location.href = 'index.html';
+        }
+      });
+    </script>
+    <script src="./assets/js/phosphor-icons.js"></script>
+  </body>
+</html>
+

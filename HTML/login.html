@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>로그인 - 부스트웹</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"/>
+    <link rel="shortcut icon" href="./assets/images/favicon.svg" type="image/svg+xml"/>
+    <link rel="stylesheet" href="./assets/css/animate.min.css"/>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./assets/css/slick.css"/>
+    <link rel="stylesheet" href="./assets/icons/style.css"/>
+    <link rel="stylesheet" href="./assets/css/style.css"/>
+    <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
+    <style>
+      .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        padding: 40px 20px;
+      }
+      .auth-box {
+        background: #1a1a1a;
+        border-radius: 16px;
+        padding: 48px;
+        max-width: 450px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        border: 1px solid #2a2a2a;
+      }
+      .auth-title {
+        color: #ffffff;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-align: center;
+      }
+      .auth-subtitle {
+        color: #999999;
+        font-size: 16px;
+        margin-bottom: 32px;
+        text-align: center;
+      }
+      .auth-form-group {
+        margin-bottom: 24px;
+      }
+      .auth-label {
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .auth-input {
+        width: 100%;
+        padding: 14px 16px;
+        background: #2a2a2a;
+        border: 1px solid #3a3a3a;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+      .auth-input:focus {
+        outline: none;
+        border-color: #7D3CF3;
+        background: #2f2f2f;
+      }
+      .auth-button {
+        width: 100%;
+        padding: 14px;
+        background: #7D3CF3;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 8px;
+      }
+      .auth-button:hover {
+        background: #6b2dd9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(125, 60, 243, 0.4);
+      }
+      .auth-button:disabled {
+        background: #555555;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .auth-link {
+        color: #7D3CF3;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+      }
+      .auth-link:hover {
+        color: #6b2dd9;
+        text-decoration: underline;
+      }
+      .auth-message {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        display: none;
+        font-size: 14px;
+      }
+      .auth-message.success {
+        background: #4caf50;
+        color: #ffffff;
+        display: block;
+      }
+      .auth-message.error {
+        background: #f44336;
+        color: #ffffff;
+        display: block;
+      }
+      .auth-footer {
+        text-align: center;
+        margin-top: 24px;
+        color: #999999;
+        font-size: 14px;
+      }
+      .back-link {
+        color: #ffffff;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px;
+        font-size: 14px;
+        transition: color 0.3s ease;
+      }
+      .back-link:hover {
+        color: #7D3CF3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-container">
+      <div class="auth-box">
+        <a href="index.html" class="back-link">
+          <i class="ph ph-arrow-left"></i> 홈으로 돌아가기
+        </a>
+        <h1 class="auth-title">로그인</h1>
+        <p class="auth-subtitle">부스트웹에 오신 것을 환영합니다</p>
+        
+        <div id="authMessage" class="auth-message"></div>
+        
+        <form id="loginForm">
+          <div class="auth-form-group">
+            <label class="auth-label" for="loginName">이름</label>
+            <input 
+              type="text" 
+              id="loginName" 
+              class="auth-input" 
+              placeholder="이름을 입력하세요"
+              required
+            />
+          </div>
+          
+          <div class="auth-form-group">
+            <label class="auth-label" for="loginEmail">이메일</label>
+            <input 
+              type="email" 
+              id="loginEmail" 
+              class="auth-input" 
+              placeholder="이메일을 입력하세요"
+              required
+            />
+          </div>
+          
+          <div class="auth-form-group">
+            <label class="auth-label" for="loginPassword">비밀번호</label>
+            <input 
+              type="password" 
+              id="loginPassword" 
+              class="auth-input" 
+              placeholder="비밀번호를 입력하세요"
+              required
+            />
+          </div>
+          
+          <div class="auth-form-group">
+            <label class="auth-label" for="loginReferralId">추천인 아이디 <span style="color: #999999; font-weight: 400;">(정보가 없을 경우만 입력)</span></label>
+            <input 
+              type="text" 
+              id="loginReferralId" 
+              class="auth-input" 
+              placeholder="추천인 이메일을 입력하세요 (선택사항)"
+            />
+          </div>
+          
+          <button type="submit" id="loginBtn" class="auth-button">로그인</button>
+        </form>
+        
+        <div class="auth-footer">
+          계정이 없으신가요? <a href="signup.html" class="auth-link">회원가입</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+      // 상수 정의
+      const ADMIN_EMAIL = 'sprince1004@naver.com';
+      const USER_ROLE_ADMIN = 'admin';
+      const USER_ROLE_USER = 'user';
+
+      // Firebase 설정
+      const firebaseConfig = {
+        apiKey: "AIzaSyCQP1vx3cEtQUYOOqMsKS5HPM3SFMNxasY",
+        authDomain: "boostweb-93027.firebaseapp.com",
+        projectId: "boostweb-93027",
+        storageBucket: "boostweb-93027.firebasestorage.app",
+        messagingSenderId: "402354704129",
+        appId: "1:402354704129:web:0c5cdd4f51b93ba4ef1500",
+        measurementId: "G-2C1TW1KZ7X"
+      };
+
+      // Firebase 초기화
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // 메시지 표시 함수
+      function showMessage(message, type) {
+        const messageDiv = document.getElementById('authMessage');
+        messageDiv.textContent = message;
+        messageDiv.className = 'auth-message ' + type;
+        messageDiv.style.display = 'block';
+        
+        if (type === 'success') {
+          setTimeout(() => {
+            messageDiv.style.display = 'none';
+          }, 3000);
+        }
+      }
+
+      // 사용자 역할 결정 함수
+      function determineUserRole(email) {
+        return email === ADMIN_EMAIL ? USER_ROLE_ADMIN : USER_ROLE_USER;
+      }
+
+      // 추천인 정보 조회 함수
+      async function getReferralInfo(referralId) {
+        if (!referralId) {
+          return null;
+        }
+
+        try {
+          // 추천인 아이디로 사용자 검색 (이메일 또는 UID로 검색)
+          const usersSnapshot = await db.collection('users')
+            .where('email', '==', referralId)
+            .limit(1)
+            .get();
+
+          if (!usersSnapshot.empty) {
+            const referralDoc = usersSnapshot.docs[0];
+            const referralData = referralDoc.data();
+            return {
+              uid: referralDoc.id,
+              email: referralData.email,
+              name: referralData.name,
+              role: referralData.role || USER_ROLE_USER
+            };
+          }
+
+          // UID로도 검색 시도
+          const referralDoc = await db.collection('users').doc(referralId).get();
+          if (referralDoc.exists) {
+            const referralData = referralDoc.data();
+            return {
+              uid: referralDoc.id,
+              email: referralData.email,
+              name: referralData.name,
+              role: referralData.role || USER_ROLE_USER
+            };
+          }
+
+          return null;
+        } catch (error) {
+          console.error('추천인 정보 조회 오류:', error);
+          return null;
+        }
+      }
+
+      // 로그인 시 사용자 데이터 업데이트 함수
+      async function updateUserDataOnLogin(user, inputName, inputReferralId) {
+        try {
+          const userDocRef = db.collection('users').doc(user.uid);
+          const userDoc = await userDocRef.get();
+          
+          const updates = {};
+          let hasUpdates = false;
+          
+          // 입력된 이름이 있으면 저장
+          if (inputName && inputName.trim() !== '') {
+            updates.name = inputName.trim();
+            hasUpdates = true;
+            console.log('이름 업데이트:', user.email, '->', inputName.trim());
+          }
+          
+          // 입력된 추천인 ID가 있으면 저장
+          if (inputReferralId && inputReferralId.trim() !== '') {
+            updates.referralId = inputReferralId.trim();
+            updates.referredAt = firebase.firestore.FieldValue.serverTimestamp();
+            hasUpdates = true;
+            console.log('추천인 ID 업데이트:', user.email, '->', inputReferralId.trim());
+          }
+          
+          if (hasUpdates) {
+            updates.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+            
+            if (userDoc.exists) {
+              await userDocRef.update(updates);
+              console.log('사용자 데이터 업데이트 완료:', user.email);
+            } else {
+              // 문서가 없으면 새로 생성
+              const userRole = determineUserRole(user.email);
+              const newUserData = {
+                name: inputName && inputName.trim() ? inputName.trim() : '',
+                email: user.email,
+                role: userRole,
+                referralId: inputReferralId && inputReferralId.trim() ? inputReferralId.trim() : null,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+              };
+              
+              if (inputReferralId && inputReferralId.trim()) {
+                newUserData.referredAt = firebase.firestore.FieldValue.serverTimestamp();
+              }
+              
+              await userDocRef.set(newUserData);
+              console.log('새 사용자 데이터 생성:', user.email);
+            }
+          }
+        } catch (error) {
+          console.error('사용자 데이터 업데이트 오류:', error);
+        }
+      }
+
+      // 기존 사용자 데이터 마이그레이션 함수
+      async function migrateUserData(user, inputName, inputReferralId) {
+        try {
+          const userDocRef = db.collection('users').doc(user.uid);
+          const userDoc = await userDocRef.get();
+          
+          if (!userDoc.exists) {
+            // 사용자 문서가 없는 경우 새로 생성
+            const userRole = determineUserRole(user.email);
+            const userData = {
+              name: inputName && inputName.trim() ? inputName.trim() : (user.displayName || ''),
+              email: user.email,
+              role: userRole,
+              referralId: inputReferralId && inputReferralId.trim() ? inputReferralId.trim() : null,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            if (inputReferralId && inputReferralId.trim()) {
+              userData.referredAt = firebase.firestore.FieldValue.serverTimestamp();
+            }
+            
+            await userDocRef.set(userData);
+            console.log('새 사용자 데이터 생성:', user.email);
+            return;
+          }
+
+          const userData = userDoc.data();
+          const updates = {};
+          let hasUpdates = false;
+
+          // 입력된 이름이 있으면 우선 사용, 없으면 기존 로직 사용
+          if (inputName && inputName.trim() !== '') {
+            updates.name = inputName.trim();
+            hasUpdates = true;
+            console.log('이름 필드 업데이트 (입력값):', user.email, '->', inputName.trim());
+          } else {
+            // name 필드 확인 및 추가 (비어있거나 공백만 있는 경우)
+            const userName = userData.name ? userData.name.trim() : '';
+            if (!userName || userName === '') {
+              // localStorage에서 확인
+              const savedName = localStorage.getItem(`name_${user.uid}`);
+              if (savedName) {
+                updates.name = savedName;
+                localStorage.removeItem(`name_${user.uid}`);
+                hasUpdates = true;
+                console.log('이름 필드 추가 (localStorage에서):', user.email, '->', savedName);
+              } else {
+                // 이메일 앞부분을 이름으로 사용하거나 기본값 사용
+                const defaultName = user.displayName || user.email.split('@')[0] || '사용자';
+                updates.name = defaultName;
+                hasUpdates = true;
+                console.log('이름 필드 추가/수정:', user.email, '->', defaultName);
+              }
+            }
+          }
+
+          // 역할 업데이트 (없거나 잘못된 경우)
+          const correctRole = determineUserRole(user.email);
+          if (!userData.role || userData.role !== correctRole) {
+            updates.role = correctRole;
+            hasUpdates = true;
+            console.log('역할 업데이트:', user.email, '->', correctRole);
+          }
+
+          // 입력된 추천인 ID가 있으면 우선 사용
+          if (inputReferralId && inputReferralId.trim() !== '') {
+            updates.referralId = inputReferralId.trim();
+            updates.referredAt = firebase.firestore.FieldValue.serverTimestamp();
+            hasUpdates = true;
+            console.log('추천인 ID 필드 업데이트 (입력값):', user.email, '->', inputReferralId.trim());
+          } else if (!userData.hasOwnProperty('referralId')) {
+            // referralId 필드 확인 및 추가 (필드가 없는 경우 null로 초기화)
+            // localStorage에서 회원가입 시 입력한 referralId 확인
+            const savedReferralId = localStorage.getItem(`referralId_${user.uid}`);
+            if (savedReferralId) {
+              updates.referralId = savedReferralId;
+              updates.referredAt = firebase.firestore.FieldValue.serverTimestamp();
+              localStorage.removeItem(`referralId_${user.uid}`);
+              console.log('추천인 ID 필드 추가 (localStorage에서):', user.email, '->', savedReferralId);
+            } else {
+              updates.referralId = null;
+              console.log('추천인 ID 필드 추가 (null):', user.email);
+            }
+            hasUpdates = true;
+          }
+
+          // 추천인 정보 마이그레이션 (referralId는 있지만 referralInfo가 없는 경우)
+          if (userData.referralId && !userData.referralInfo) {
+            const referralInfo = await getReferralInfo(userData.referralId);
+            if (referralInfo) {
+              updates.referralInfo = {
+                uid: referralInfo.uid,
+                email: referralInfo.email,
+                name: referralInfo.name,
+                role: referralInfo.role
+              };
+              if (!userData.referredAt) {
+                updates.referredAt = firebase.firestore.FieldValue.serverTimestamp();
+              }
+              hasUpdates = true;
+              console.log('추천인 정보 추가:', user.email, '->', referralInfo.email);
+            }
+          }
+
+          // updatedAt 업데이트
+          if (hasUpdates) {
+            updates.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+            await userDocRef.update(updates);
+            console.log('사용자 데이터 마이그레이션 완료:', user.email);
+          }
+        } catch (error) {
+          console.error('사용자 데이터 마이그레이션 오류:', error);
+          // 마이그레이션 오류는 로그인을 막지 않음
+        }
+      }
+
+      // 로그인 폼 제출
+      document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('loginName').value.trim();
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        const referralId = document.getElementById('loginReferralId').value.trim();
+        const loginBtn = document.getElementById('loginBtn');
+        
+        if (!name || !email || !password) {
+          showMessage('이름, 이메일, 비밀번호를 모두 입력해주세요.', 'error');
+          return;
+        }
+        
+        loginBtn.disabled = true;
+        loginBtn.textContent = '로그인 중...';
+        
+        try {
+          const userCredential = await auth.signInWithEmailAndPassword(email, password);
+          const user = userCredential.user;
+          
+          console.log('로그인 성공:', user.email);
+          console.log('입력된 이름:', name);
+          console.log('입력된 추천인 ID:', referralId);
+          
+          // 입력된 이름이나 추천인 ID가 있으면 Firestore에 저장
+          if (name || referralId) {
+            console.log('이름 또는 추천인 ID가 입력되었습니다. Firestore에 저장합니다...');
+            await updateUserDataOnLogin(user, name, referralId);
+          }
+          
+          // 기존 사용자 데이터 마이그레이션
+          await migrateUserData(user, name, referralId);
+          
+          showMessage('로그인 성공! 홈페이지로 이동합니다...', 'success');
+          
+          // 로그인 성공 후 홈페이지로 이동
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1500);
+          
+        } catch (error) {
+          console.error('로그인 오류:', error);
+          let errorMessage = '로그인 중 오류가 발생했습니다.';
+          
+          if (error.code === 'auth/user-not-found') {
+            errorMessage = '등록되지 않은 이메일입니다.';
+          } else if (error.code === 'auth/wrong-password') {
+            errorMessage = '비밀번호가 올바르지 않습니다.';
+          } else if (error.code === 'auth/invalid-email') {
+            errorMessage = '올바른 이메일 형식이 아닙니다.';
+          } else if (error.code === 'auth/user-disabled') {
+            errorMessage = '비활성화된 계정입니다.';
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+          
+          showMessage(errorMessage, 'error');
+          loginBtn.disabled = false;
+          loginBtn.textContent = '로그인';
+        }
+      });
+
+      // 인증 상태 확인 - 이미 로그인된 경우 안내 메시지 표시
+      auth.onAuthStateChanged(async function(user) {
+        if (user) {
+          // 기존 사용자 데이터 마이그레이션 (입력값 없이)
+          await migrateUserData(user, '', '');
+          
+          // 이미 로그인된 경우 안내 메시지 표시
+          const loginForm = document.getElementById('loginForm');
+          const authMessage = document.getElementById('authMessage');
+          
+          if (loginForm && authMessage) {
+            loginForm.style.display = 'none';
+            showMessage('이미 로그인되어 있습니다. 홈페이지로 이동합니다...', 'success');
+            
+            // 2초 후 홈페이지로 이동
+            setTimeout(function() {
+              window.location.href = 'index.html';
+            }, 2000);
+          }
+        }
+      });
+    </script>
+    <script src="./assets/js/phosphor-icons.js"></script>
+  </body>
+</html>
+

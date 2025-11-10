@@ -42,9 +42,20 @@ Main_marketing/
 
 ## 개발 서버 실행
 
+### 빠른 시작 (Windows)
+
+1. **더블클릭으로 실행**: 프로젝트 폴더에서 `start-server.bat` 파일을 더블클릭
+2. 자동으로 의존성 설치 및 서버 실행
+
+### 수동 실행
+
 개발 서버를 시작하려면 다음 명령어를 실행하세요:
 
 ```bash
+# 1. 의존성 설치 (최초 1회만)
+npm install
+
+# 2. 개발 서버 실행
 npm run dev
 ```
 
@@ -56,11 +67,29 @@ npm start
 
 서버가 실행되면 브라우저가 자동으로 열리고 `http://localhost:3000/index.html`에서 사이트를 확인할 수 있습니다.
 
+### 주요 페이지 URL
+
+- **홈페이지**: http://localhost:3000/index.html
+- **회원가입**: http://localhost:3000/signup.html
+- **로그인**: http://localhost:3000/login.html
+- **Admin 초기화**: http://localhost:3000/admin-init.html
+- **문의하기**: http://localhost:3000/contact.html
+
 ### 개발 서버 기능
 
 - **자동 새로고침**: 파일을 저장하면 브라우저가 자동으로 새로고침됩니다
 - **포트**: 기본 포트는 3000번입니다
 - **핫 리로드**: HTML, CSS, JS 파일 변경 시 즉시 반영됩니다
+
+### 문제 해결
+
+**포트가 이미 사용 중인 경우:**
+- `package.json`의 포트 번호를 변경하거나
+- 다른 터미널에서 실행 중인 서버를 종료하세요
+
+**페이지를 연결할 수 없는 경우:**
+- 반드시 개발 서버를 통해 실행해야 합니다 (파일을 직접 열면 CORS 오류 발생)
+- `npm install`로 의존성이 설치되었는지 확인하세요
 
 ## 사용 방법
 

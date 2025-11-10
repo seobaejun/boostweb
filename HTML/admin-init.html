@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>관리자 페이지 - 부스트웹</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"/>
+    <link rel="shortcut icon" href="./assets/images/favicon.svg" type="image/svg+xml"/>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: #1a1a1a;
+        border-radius: 16px;
+        padding: 48px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        border: 1px solid #2a2a2a;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+      }
+      h1 {
+        color: #ffffff;
+        font-size: 32px;
+        font-weight: 700;
+      }
+      .back-link {
+        color: #ffffff;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        transition: color 0.3s ease;
+      }
+      .back-link:hover {
+        color: #7D3CF3;
+      }
+      .refresh-btn {
+        padding: 10px 20px;
+        background: #7D3CF3;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .refresh-btn:hover {
+        background: #6b2dd9;
+      }
+      .refresh-btn:disabled {
+        background: #555555;
+        cursor: not-allowed;
+      }
+      .message {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        display: none;
+        font-size: 14px;
+      }
+      .message.success {
+        background: #4caf50;
+        color: #ffffff;
+        display: block;
+      }
+      .message.error {
+        background: #f44336;
+        color: #ffffff;
+        display: block;
+      }
+      .section-title {
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 32px 0 16px 0;
+      }
+      .data-table {
+        width: 100%;
+        margin-top: 24px;
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #2a2a2a;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #3a3a3a;
+      }
+      th {
+        background: #1a1a1a;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      td {
+        color: #cccccc;
+        font-size: 14px;
+      }
+      tr:hover {
+        background: #2f2f2f;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .badge.admin {
+        background: #7D3CF3;
+        color: #ffffff;
+      }
+      .badge.user {
+        background: #4caf50;
+        color: #ffffff;
+      }
+      .badge.new {
+        background: #2196F3;
+        color: #ffffff;
+      }
+      .badge.processed {
+        background: #ff9800;
+        color: #ffffff;
+      }
+      .action-btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-right: 4px;
+      }
+      .action-btn.delete {
+        background: #f44336;
+        color: #ffffff;
+      }
+      .action-btn.delete:hover {
+        background: #d32f2f;
+      }
+      .action-btn.status {
+        background: #2196F3;
+        color: #ffffff;
+      }
+      .action-btn.status:hover {
+        background: #1976D2;
+      }
+      .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: #999999;
+      }
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: #999999;
+      }
+      .message-cell {
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+        color: #7D3CF3;
+        transition: color 0.3s ease;
+      }
+      .message-cell:hover {
+        color: #6b2dd9;
+        text-decoration: underline;
+      }
+      .message-detail {
+        display: none;
+        padding: 16px;
+        background: #2a2a2a;
+        border-top: 1px solid #3a3a3a;
+        color: #cccccc;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      .message-detail.expanded {
+        display: table-cell;
+      }
+      tr.expanded-row .message-detail {
+        display: table-cell;
+      }
+      tr.expanded-row {
+        background: #2f2f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div>
+          <a href="index.html" class="back-link">
+            ← 홈으로 돌아가기
+          </a>
+          <h1 style="margin-top: 16px;">관리자 페이지</h1>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <button id="createTestUserBtn" class="refresh-btn" style="background: #4caf50;">테스트 유저 생성</button>
+          <button id="refreshBtn" class="refresh-btn">새로고침</button>
+        </div>
+      </div>
+      
+      <div id="message" class="message"></div>
+      
+      <!-- 회원 목록 섹션 -->
+      <div id="usersSection">
+        <h2 class="section-title">👥 회원 목록</h2>
+        <div class="data-table">
+          <div id="usersTableContainer" class="loading">로딩 중...</div>
+        </div>
+      </div>
+      
+      <!-- 문의 내역 섹션 -->
+      <div id="contactsSection" style="margin-top: 48px;">
+        <h2 class="section-title">📝 문의 내역</h2>
+        <div class="data-table">
+          <div id="contactsTableContainer" class="loading">로딩 중...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+      // 상수 정의
+      const ADMIN_EMAIL = 'sprince1004@naver.com';
+
+      // Firebase 설정
+      const firebaseConfig = {
+        apiKey: "AIzaSyCQP1vx3cEtQUYOOqMsKS5HPM3SFMNxasY",
+        authDomain: "boostweb-93027.firebaseapp.com",
+        projectId: "boostweb-93027",
+        storageBucket: "boostweb-93027.firebasestorage.app",
+        messagingSenderId: "402354704129",
+        appId: "1:402354704129:web:0c5cdd4f51b93ba4ef1500",
+        measurementId: "G-2C1TW1KZ7X"
+      };
+
+      // Firebase 초기화
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // 메시지 표시 함수
+      function showMessage(message, type) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = message;
+        messageDiv.className = 'message ' + type;
+        messageDiv.style.display = 'block';
+        
+        if (type === 'success') {
+          setTimeout(() => {
+            messageDiv.style.display = 'none';
+          }, 3000);
+        }
+      }
+
+      // 날짜 포맷 함수
+      function formatDate(timestamp) {
+        if (!timestamp) return '알 수 없음';
+        try {
+          return new Date(timestamp.toDate()).toLocaleString('ko-KR');
+        } catch (e) {
+          return '알 수 없음';
+        }
+      }
+
+      // 회원 목록 실시간 업데이트 함수
+      let usersUnsubscribe = null;
+      
+      function setupUsersRealtimeListener() {
+        const usersTableContainer = document.getElementById('usersTableContainer');
+        
+        // 기존 리스너가 있으면 제거
+        if (usersUnsubscribe) {
+          console.log('기존 리스너 제거');
+          usersUnsubscribe();
+          usersUnsubscribe = null;
+        }
+        
+        if (!db) {
+          console.error('Firestore 인스턴스가 없습니다.');
+          usersTableContainer.innerHTML = '<div class="empty-state">Firestore가 초기화되지 않았습니다.</div>';
+          return;
+        }
+        
+        usersTableContainer.innerHTML = '<div class="loading">로딩 중...</div>';
+        
+        console.log('실시간 리스너 설정 시작...');
+        console.log('Firestore 인스턴스:', db ? '존재함' : '없음');
+        
+        // 실시간 리스너 설정
+        try {
+          usersUnsubscribe = db.collection('users').onSnapshot(
+            (snapshot) => {
+              console.log('=== 회원 목록 실시간 업데이트 감지 ===');
+              console.log('전체 회원 수:', snapshot.size, '명');
+              console.log('변경된 문서 수:', snapshot.docChanges().length);
+              
+              // 변경 사항 상세 로그
+              snapshot.docChanges().forEach(change => {
+                if (change.type === 'added') {
+                  const data = change.doc.data();
+                  console.log('✅ 새 회원 추가:', {
+                    id: change.doc.id,
+                    name: data.name,
+                    email: data.email,
+                    role: data.role,
+                    referralId: data.referralId || '없음'
+                  });
+                } else if (change.type === 'modified') {
+                  console.log('📝 회원 정보 수정:', change.doc.id);
+                } else if (change.type === 'removed') {
+                  console.log('❌ 회원 삭제:', change.doc.id);
+                }
+              });
+            
+            // 클라이언트에서 날짜순 정렬
+            const usersArray = [];
+            snapshot.forEach(doc => {
+              if (doc.exists) {
+                usersArray.push({ id: doc.id, data: doc.data() });
+              }
+            });
+            
+            console.log('처리할 회원 수:', usersArray.length);
+            
+            // 최신순 정렬
+            usersArray.sort((a, b) => {
+              try {
+                const aTime = a.data.createdAt ? a.data.createdAt.toDate().getTime() : 0;
+                const bTime = b.data.createdAt ? b.data.createdAt.toDate().getTime() : 0;
+                return bTime - aTime;
+              } catch (e) {
+                return 0;
+              }
+            });
+            
+            if (usersArray.length === 0) {
+              usersTableContainer.innerHTML = '<div class="empty-state">등록된 회원이 없습니다.</div>';
+              console.log('회원이 없습니다.');
+              return;
+            }
+            
+            let tableHTML = '<table><thead><tr><th>이름</th><th>이메일</th><th>역할</th><th>추천인 ID</th><th>가입일</th><th>관리</th></tr></thead><tbody>';
+            
+            // XSS 방지를 위한 이스케이프 함수
+            const escapeHtml = (text) => {
+              if (!text) return '-';
+              const div = document.createElement('div');
+              div.textContent = text;
+              return div.innerHTML;
+            };
+            
+            usersArray.forEach(item => {
+              const userData = item.data;
+              const userId = item.id;
+              const createdAt = formatDate(userData.createdAt);
+              const roleBadge = userData.role === 'admin' ? 
+                '<span class="badge admin">Admin</span>' : 
+                '<span class="badge user">User</span>';
+              
+              // 디버깅: 각 사용자 데이터 확인
+              console.log('사용자 데이터 (실시간):', {
+                id: userId,
+                name: userData.name,
+                nameType: typeof userData.name,
+                nameExists: userData.hasOwnProperty('name'),
+                email: userData.email,
+                referralId: userData.referralId,
+                referralIdType: typeof userData.referralId,
+                referralIdExists: userData.hasOwnProperty('referralId'),
+                role: userData.role,
+                전체데이터: userData
+              });
+              
+              // 이름과 추천인 ID 표시 (더 명확한 체크)
+              let displayName = '-';
+              if (userData.hasOwnProperty('name') && userData.name !== null && userData.name !== undefined) {
+                const nameStr = String(userData.name).trim();
+                if (nameStr.length > 0) {
+                  displayName = nameStr;
+                }
+              }
+              
+              let displayReferralId = '-';
+              if (userData.hasOwnProperty('referralId') && userData.referralId !== null && userData.referralId !== undefined) {
+                const referralStr = String(userData.referralId).trim();
+                if (referralStr.length > 0) {
+                  displayReferralId = referralStr;
+                }
+              }
+              
+              console.log('표시할 값:', {
+                displayName: displayName,
+                displayReferralId: displayReferralId
+              });
+              
+              tableHTML += `
+                <tr>
+                  <td>${escapeHtml(displayName)}</td>
+                  <td>${escapeHtml(userData.email || '-')}</td>
+                  <td>${roleBadge}</td>
+                  <td>${escapeHtml(displayReferralId)}</td>
+                  <td>${createdAt}</td>
+                  <td>
+                    <button class="action-btn delete" onclick="deleteUser('${userId}', '${escapeHtml(userData.email || '')}')">삭제</button>
+                  </td>
+                </tr>
+              `;
+            });
+            
+              tableHTML += '</tbody></table>';
+              usersTableContainer.innerHTML = tableHTML;
+              console.log('✅ 회원 목록 업데이트 완료:', usersArray.length, '명');
+            },
+            (error) => {
+              console.error('❌ 회원 목록 실시간 리스너 오류:', error);
+              console.error('오류 코드:', error.code);
+              console.error('오류 메시지:', error.message);
+              console.error('오류 스택:', error.stack);
+              usersTableContainer.innerHTML = `<div class="empty-state">회원 목록을 불러오는 중 오류가 발생했습니다.<br>오류: ${error.message || '알 수 없는 오류'}<br>코드: ${error.code || '없음'}</div>`;
+              showMessage('실시간 업데이트 오류: ' + error.message, 'error');
+            }
+          );
+          
+          console.log('✅ 실시간 리스너 설정 완료');
+        } catch (listenerError) {
+          console.error('❌ 리스너 설정 중 오류:', listenerError);
+          usersTableContainer.innerHTML = `<div class="empty-state">리스너 설정 중 오류가 발생했습니다.<br>${listenerError.message}</div>`;
+          showMessage('리스너 설정 오류: ' + listenerError.message, 'error');
+        }
+      }
+      
+      // 회원 목록 불러오기 및 표시 (Firestore에서)
+      async function loadUsers() {
+        const usersTableContainer = document.getElementById('usersTableContainer');
+        usersTableContainer.innerHTML = '<div class="loading">로딩 중...</div>';
+        
+        try {
+          console.log('회원 목록 조회 시작...');
+          console.log('Firestore 인스턴스:', db ? '존재함' : '없음');
+          
+          // Firestore에서 모든 회원 조회
+          const usersSnapshot = await db.collection('users').get();
+          console.log('조회된 회원 수:', usersSnapshot.size);
+          
+          // 클라이언트에서 날짜순 정렬
+          const usersArray = [];
+          usersSnapshot.forEach(doc => {
+            if (doc.exists) {
+              const data = doc.data();
+              usersArray.push({ 
+                id: doc.id, 
+                data: data 
+              });
+              console.log('회원 데이터:', {
+                id: doc.id,
+                name: data.name,
+                email: data.email,
+                role: data.role
+              });
+            }
+          });
+          
+          console.log('처리할 회원 수:', usersArray.length);
+          
+          // 최신순 정렬
+          usersArray.sort((a, b) => {
+            try {
+              const aTime = a.data.createdAt ? a.data.createdAt.toDate().getTime() : 0;
+              const bTime = b.data.createdAt ? b.data.createdAt.toDate().getTime() : 0;
+              return bTime - aTime;
+            } catch (e) {
+              return 0;
+            }
+          });
+          
+          if (usersArray.length === 0) {
+            usersTableContainer.innerHTML = '<div class="empty-state">등록된 회원이 없습니다.</div>';
+            console.log('회원이 없습니다.');
+            return;
+          }
+          
+          let tableHTML = '<table><thead><tr><th>이름</th><th>이메일</th><th>역할</th><th>추천인 ID</th><th>가입일</th><th>관리</th></tr></thead><tbody>';
+          
+          // XSS 방지를 위한 이스케이프 함수
+          const escapeHtml = (text) => {
+            if (!text) return '-';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+          };
+          
+          usersArray.forEach(item => {
+            const userData = item.data;
+            const userId = item.id;
+            const createdAt = formatDate(userData.createdAt);
+            const roleBadge = userData.role === 'admin' ? 
+              '<span class="badge admin">Admin</span>' : 
+              '<span class="badge user">User</span>';
+            
+            // 디버깅: 각 사용자 데이터 확인
+            console.log('사용자 데이터 (loadUsers):', {
+              id: userId,
+              name: userData.name,
+              nameType: typeof userData.name,
+              nameExists: userData.hasOwnProperty('name'),
+              email: userData.email,
+              referralId: userData.referralId,
+              referralIdType: typeof userData.referralId,
+              referralIdExists: userData.hasOwnProperty('referralId'),
+              role: userData.role,
+              전체데이터: userData
+            });
+            
+            // 이름과 추천인 ID 표시 (더 명확한 체크)
+            let displayName = '-';
+            if (userData.hasOwnProperty('name') && userData.name !== null && userData.name !== undefined) {
+              const nameStr = String(userData.name).trim();
+              if (nameStr.length > 0) {
+                displayName = nameStr;
+              }
+            }
+            
+            let displayReferralId = '-';
+            if (userData.hasOwnProperty('referralId') && userData.referralId !== null && userData.referralId !== undefined) {
+              const referralStr = String(userData.referralId).trim();
+              if (referralStr.length > 0) {
+                displayReferralId = referralStr;
+              }
+            }
+            
+            console.log('표시할 값 (loadUsers):', {
+              displayName: displayName,
+              displayReferralId: displayReferralId
+            });
+            
+            tableHTML += `
+              <tr>
+                <td>${escapeHtml(displayName)}</td>
+                <td>${escapeHtml(userData.email || '-')}</td>
+                <td>${roleBadge}</td>
+                <td>${escapeHtml(displayReferralId)}</td>
+                <td>${createdAt}</td>
+                <td>
+                  <button class="action-btn delete" onclick="deleteUser('${userId}', '${escapeHtml(userData.email || '')}')">삭제</button>
+                </td>
+              </tr>
+            `;
+          });
+          
+          tableHTML += '</tbody></table>';
+          usersTableContainer.innerHTML = tableHTML;
+          console.log('회원 목록 표시 완료:', usersArray.length, '명');
+          
+        } catch (error) {
+          console.error('❌ 회원 목록 조회 오류:', error);
+          console.error('오류 코드:', error.code);
+          console.error('오류 메시지:', error.message);
+          console.error('오류 스택:', error.stack);
+          
+          let errorMsg = '회원 목록을 불러올 수 없습니다.';
+          if (error.code === 'permission-denied') {
+            errorMsg += '<br><br>⚠️ 권한 오류입니다!<br>Firebase Console → Firestore Database → Rules에서 다음 규칙을 설정하고 "배포" 버튼을 클릭하세요:<br><br><code style="background: #2a2a2a; padding: 8px; border-radius: 4px; display: block; margin-top: 8px;">allow read, write: if true;</code>';
+          } else if (error.code === 'unavailable') {
+            errorMsg += '<br><br>⚠️ Firestore 서비스를 사용할 수 없습니다. 네트워크 연결을 확인하세요.';
+          } else {
+            errorMsg += `<br><br>오류: ${error.message || '알 수 없는 오류'}<br>코드: ${error.code || '없음'}`;
+          }
+          
+          usersTableContainer.innerHTML = `<div class="empty-state">${errorMsg}</div>`;
+          showMessage('회원 목록 조회 중 오류가 발생했습니다. 콘솔을 확인하세요.', 'error');
+        }
+      }
+
+      // 문의 내역 불러오기 및 표시
+      async function loadContacts() {
+        const contactsTableContainer = document.getElementById('contactsTableContainer');
+        contactsTableContainer.innerHTML = '<div class="loading">로딩 중...</div>';
+        
+        try {
+          console.log('문의 내역 조회 시작...');
+          
+          // 모든 문의 내역 조회
+          const contactsSnapshot = await db.collection('contacts').get();
+          console.log('문의 내역 조회 완료, 문서 수:', contactsSnapshot.size);
+          
+          // 클라이언트에서 날짜순 정렬
+          const contactsArray = [];
+          contactsSnapshot.forEach(doc => {
+            if (doc.exists) {
+              contactsArray.push({ id: doc.id, data: doc.data() });
+            }
+          });
+          
+          console.log('문의 배열 생성 완료, 개수:', contactsArray.length);
+          
+          // 최신순 정렬
+          contactsArray.sort((a, b) => {
+            try {
+              const aTime = a.data.createdAt ? a.data.createdAt.toDate().getTime() : 0;
+              const bTime = b.data.createdAt ? b.data.createdAt.toDate().getTime() : 0;
+              return bTime - aTime;
+            } catch (e) {
+              console.warn('정렬 오류:', e);
+              return 0;
+            }
+          });
+          
+          if (contactsArray.length === 0) {
+            contactsTableContainer.innerHTML = '<div class="empty-state">등록된 문의가 없습니다.</div>';
+            console.log('문의 내역이 없습니다.');
+            return;
+          }
+          
+          console.log('테이블 생성 시작, 문의 개수:', contactsArray.length);
+          
+          let tableHTML = '<table><thead><tr><th>이름</th><th>전화번호</th><th>이메일</th><th>문의내용</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead><tbody>';
+          
+          // XSS 방지를 위한 이스케이프 함수
+          const escapeHtml = (text) => {
+            if (!text) return '-';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+          };
+          
+          contactsArray.forEach((item, index) => {
+            const contactData = item.data;
+            const contactId = item.id;
+            const createdAt = formatDate(contactData.createdAt);
+            const currentStatus = contactData.status || 'new';
+            const statusBadge = currentStatus === 'new' ? 
+              '<span class="badge new">신규</span>' : 
+              '<span class="badge processed">처리됨</span>';
+            const statusBtnText = currentStatus === 'new' ? '처리완료' : '신규로 변경';
+            const rowId = `contact-row-${index}`;
+            const messageText = escapeHtml(contactData.message || '-');
+            const shortMessage = contactData.message && contactData.message.length > 50 
+              ? contactData.message.substring(0, 50) + '...' 
+              : contactData.message || '-';
+            
+            tableHTML += `
+              <tr id="${rowId}" class="contact-row">
+                <td>${escapeHtml(contactData.name)}</td>
+                <td>${escapeHtml(contactData.phone)}</td>
+                <td>${escapeHtml(contactData.email)}</td>
+                <td class="message-cell" onclick="toggleMessageDetail('${rowId}')" title="클릭하여 전체 내용 보기">${escapeHtml(shortMessage)}</td>
+                <td>${statusBadge}</td>
+                <td>${createdAt}</td>
+                <td>
+                  <button class="action-btn status" onclick="toggleContactStatus('${contactId}', '${currentStatus}')">${statusBtnText}</button>
+                  <button class="action-btn delete" onclick="deleteContact('${contactId}')">삭제</button>
+                </td>
+              </tr>
+              <tr id="${rowId}-detail" class="message-detail-row" style="display: none;">
+                <td colspan="7" class="message-detail">
+                  <strong style="color: #7D3CF3;">문의 내용:</strong><br>
+                  ${messageText}
+                </td>
+              </tr>
+            `;
+          });
+          
+          tableHTML += '</tbody></table>';
+          contactsTableContainer.innerHTML = tableHTML;
+          console.log('문의 내역 표시 완료');
+          
+        } catch (error) {
+          console.error('문의 내역 조회 오류:', error);
+          console.error('오류 상세:', {
+            code: error.code,
+            message: error.message,
+            stack: error.stack
+          });
+          contactsTableContainer.innerHTML = `<div class="empty-state">문의 내역을 불러오는 중 오류가 발생했습니다.<br>오류: ${error.message || '알 수 없는 오류'}</div>`;
+          // 오류 메시지는 콘솔에만 표시하고 화면에는 표시하지 않음 (이미 표시된 데이터가 있을 수 있으므로)
+        }
+      }
+
+      // 회원 삭제 함수
+      async function deleteUser(userId, userEmail) {
+        if (!confirm(`정말로 ${userEmail} 회원을 삭제하시겠습니까?`)) {
+          return;
+        }
+        
+        try {
+          await db.collection('users').doc(userId).delete();
+          showMessage('회원이 성공적으로 삭제되었습니다.', 'success');
+          loadUsers();
+        } catch (error) {
+          console.error('회원 삭제 오류:', error);
+          showMessage('회원 삭제 중 오류가 발생했습니다: ' + error.message, 'error');
+        }
+      }
+
+      // 문의 상태 변경 함수
+      async function toggleContactStatus(contactId, currentStatus) {
+        try {
+          const newStatus = currentStatus === 'new' ? 'processed' : 'new';
+          await db.collection('contacts').doc(contactId).update({
+            status: newStatus,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          showMessage('문의 상태가 변경되었습니다.', 'success');
+          loadContacts();
+        } catch (error) {
+          console.error('문의 상태 변경 오류:', error);
+          showMessage('문의 상태 변경 중 오류가 발생했습니다: ' + error.message, 'error');
+        }
+      }
+
+      // 문의 삭제 함수
+      async function deleteContact(contactId) {
+        if (!confirm('정말로 이 문의를 삭제하시겠습니까?')) {
+          return;
+        }
+        
+        try {
+          await db.collection('contacts').doc(contactId).delete();
+          showMessage('문의가 성공적으로 삭제되었습니다.', 'success');
+          loadContacts();
+        } catch (error) {
+          console.error('문의 삭제 오류:', error);
+          showMessage('문의 삭제 중 오류가 발생했습니다: ' + error.message, 'error');
+        }
+      }
+
+      // 테스트 유저 생성 함수 (users 컬렉션 생성 확인용)
+      async function createTestUser() {
+        const createBtn = document.getElementById('createTestUserBtn');
+        
+        if (!auth.currentUser) {
+          showMessage('먼저 로그인해주세요.', 'error');
+          return;
+        }
+        
+        if (auth.currentUser.email !== ADMIN_EMAIL) {
+          showMessage('관리자만 접근할 수 있습니다.', 'error');
+          return;
+        }
+        
+        createBtn.disabled = true;
+        createBtn.textContent = '생성 중...';
+        
+        try {
+          // 테스트용 추천인 ID (예시)
+          const testReferralId = 'test-referrer@example.com';
+          
+          const testUserData = {
+            name: '테스트 사용자',
+            email: 'test@example.com',
+            role: 'user',
+            referralId: testReferralId,  // 추천인 ID 포함
+            referredAt: firebase.firestore.FieldValue.serverTimestamp(),
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          
+          console.log('테스트 유저 생성 시작...');
+          console.log('저장할 데이터:', JSON.stringify(testUserData, null, 2));
+          console.log('추천인 ID:', testReferralId);
+          
+          // users 컬렉션에 테스트 문서 생성
+          const testDocRef = db.collection('users').doc('test-user-' + Date.now());
+          
+          // set() 사용
+          await testDocRef.set(testUserData);
+          console.log('✅ 테스트 유저 set() 완료');
+          
+          // 저장 확인
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          const savedDoc = await testDocRef.get();
+          
+          if (savedDoc.exists) {
+            const savedData = savedDoc.data();
+            console.log('✅ 저장 확인 성공!');
+            console.log('저장된 데이터:', JSON.stringify(savedData, null, 2));
+            console.log('저장된 추천인 ID:', savedData.referralId || '없음');
+            
+            showMessage('테스트 유저가 성공적으로 생성되었습니다! (추천인 ID 포함)', 'success');
+            // 실시간 리스너가 자동으로 업데이트하므로 loadUsers() 호출 불필요
+          } else {
+            showMessage('테스트 유저 생성은 완료되었지만 확인에 실패했습니다.', 'error');
+          }
+          
+        } catch (error) {
+          console.error('테스트 유저 생성 오류:', error);
+          console.error('오류 코드:', error.code);
+          console.error('오류 메시지:', error.message);
+          showMessage('테스트 유저 생성 중 오류가 발생했습니다: ' + error.message, 'error');
+        } finally {
+          createBtn.disabled = false;
+          createBtn.textContent = '테스트 유저 생성';
+        }
+      }
+
+      // 모든 데이터 불러오기
+      async function loadAllData() {
+        const refreshBtn = document.getElementById('refreshBtn');
+        refreshBtn.disabled = true;
+        refreshBtn.textContent = '로딩 중...';
+        
+        // 각 함수를 독립적으로 실행 (하나가 실패해도 다른 것은 계속 실행)
+        const results = await Promise.allSettled([loadUsers(), loadContacts()]);
+        
+        // 결과 확인
+        const errors = results.filter(r => r.status === 'rejected');
+        if (errors.length > 0) {
+          console.warn('일부 데이터 로드 실패:', errors);
+        } else {
+          console.log('모든 데이터 로드 완료');
+        }
+        
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = '새로고침';
+      }
+      
+      // 실시간 데이터 업데이트 시작
+      function startRealtimeUpdates() {
+        console.log('실시간 업데이트 시작 함수 호출');
+        try {
+          if (!db) {
+            console.error('Firestore 인스턴스가 없습니다.');
+            showMessage('Firestore가 초기화되지 않았습니다.', 'error');
+            return;
+          }
+          setupUsersRealtimeListener();
+          console.log('회원 목록 실시간 리스너 시작 완료');
+        } catch (error) {
+          console.error('실시간 업데이트 시작 오류:', error);
+          console.error('오류 상세:', error.message, error.stack);
+          showMessage('실시간 업데이트 시작 중 오류가 발생했습니다: ' + error.message, 'error');
+        }
+        // contacts도 실시간 업데이트가 필요하면 여기에 추가
+      }
+
+      // 문의 내용 상세 보기 토글 함수
+      function toggleMessageDetail(rowId) {
+        const detailRow = document.getElementById(rowId + '-detail');
+        const mainRow = document.getElementById(rowId);
+        
+        if (detailRow && mainRow) {
+          if (detailRow.style.display === 'none') {
+            detailRow.style.display = 'table-row';
+            mainRow.classList.add('expanded-row');
+          } else {
+            detailRow.style.display = 'none';
+            mainRow.classList.remove('expanded-row');
+          }
+        }
+      }
+
+      // 전역 함수로 등록 (onclick에서 사용하기 위해)
+      window.deleteUser = deleteUser;
+      window.toggleContactStatus = toggleContactStatus;
+      window.deleteContact = deleteContact;
+      window.toggleMessageDetail = toggleMessageDetail;
+
+      // 이벤트 리스너
+      document.getElementById('refreshBtn').addEventListener('click', loadAllData);
+      document.getElementById('createTestUserBtn').addEventListener('click', createTestUser);
+
+      // 페이지 로드 시 데이터 불러오기 및 실시간 업데이트 시작
+      auth.onAuthStateChanged(function(user) {
+        if (user && user.email === ADMIN_EMAIL) {
+          console.log('관리자 로그인 확인, 실시간 업데이트 시작');
+          console.log('현재 사용자:', user.email);
+          
+          // 먼저 초기 데이터 로드
+          loadAllData();
+          
+          // 실시간 업데이트 시작 (회원가입 시 자동으로 표시됨)
+          setTimeout(() => {
+            startRealtimeUpdates();
+            console.log('실시간 리스너 시작 완료');
+          }, 500);
+        } else if (user) {
+          showMessage('관리자만 접근할 수 있습니다.', 'error');
+          document.body.innerHTML = '<div class="container"><h1 style="color: #ffffff; text-align: center; padding: 40px;">접근 권한이 없습니다.</h1></div>';
+        } else {
+          window.location.href = 'login.html';
+        }
+      });
+      
+      // 페이지를 떠날 때 리스너 정리
+      window.addEventListener('beforeunload', function() {
+        if (usersUnsubscribe) {
+          usersUnsubscribe();
+        }
+      });
+    </script>
+  </body>
+</html>

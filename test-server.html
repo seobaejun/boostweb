@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서버 연결 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .status {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        h1 { color: #333; }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+        }
+        .button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🔍 서버 연결 테스트</h1>
+    
+    <div id="status" class="status info">
+        테스트 중...
+    </div>
+    
+    <div class="status">
+        <h3>연결 방법</h3>
+        <p>1. 터미널에서 프로젝트 폴더로 이동</p>
+        <p>2. 다음 명령어 실행:</p>
+        <code>npm run dev</code>
+        <p>3. 브라우저에서 다음 URL로 접속:</p>
+        <code>http://localhost:3000/index.html</code>
+    </div>
+    
+    <div class="status">
+        <h3>빠른 실행</h3>
+        <p>Windows: <code>start-server.bat</code> 파일을 더블클릭</p>
+        <p>또는 터미널에서:</p>
+        <code>npm install</code><br>
+        <code>npm run dev</code>
+    </div>
+    
+    <div class="status">
+        <h3>문제 해결</h3>
+        <p><strong>포트 3000이 사용 중인 경우:</strong></p>
+        <p><code>package.json</code>에서 포트 번호를 변경하세요 (예: 3001)</p>
+        <p><strong>의존성이 없는 경우:</strong></p>
+        <p><code>npm install</code> 실행</p>
+    </div>
+    
+    <script>
+        // 서버 연결 테스트
+        fetch('http://localhost:3000/index.html')
+            .then(response => {
+                const statusDiv = document.getElementById('status');
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = '✅ 서버가 정상적으로 실행 중입니다!<br>http://localhost:3000/index.html 로 접속할 수 있습니다.';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.innerHTML = '⚠️ 서버에 연결되었지만 응답이 예상과 다릅니다.';
+                }
+            })
+            .catch(error => {
+                const statusDiv = document.getElementById('status');
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '❌ 서버에 연결할 수 없습니다.<br><br><strong>가능한 원인:</strong><br>1. 개발 서버가 실행되지 않았습니다<br>2. 포트 3000이 다른 프로그램에서 사용 중입니다<br>3. 방화벽이 연결을 차단하고 있습니다<br><br><strong>해결 방법:</strong><br>터미널에서 <code>npm run dev</code> 명령어를 실행하세요.';
+            });
+    </script>
+</body>
+</html>
+

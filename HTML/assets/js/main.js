@@ -1,13 +1,30 @@
-// Preload app
-const preload = document.querySelector('#preload')
-
-window.addEventListener('load', () => {
-  setTimeout(() => {
+// Preload app - 완전히 비활성화
+(function() {
+  function hidePreload() {
+    const preload = document.getElementById('preload');
     if (preload) {
-      preload.classList.add('disable')
+      preload.style.display = 'none';
+      preload.style.visibility = 'hidden';
+      preload.style.opacity = '0';
+      preload.classList.add('disable');
+      preload.remove();
     }
-  }, 0)
-})
+  }
+  
+  // 즉시 실행
+  hidePreload();
+  
+  // 여러 이벤트에서도 실행
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', hidePreload);
+  }
+  window.addEventListener('load', hidePreload);
+  
+  // 즉시 다시 실행
+  setTimeout(hidePreload, 0);
+  setTimeout(hidePreload, 50);
+  setTimeout(hidePreload, 100);
+})();
 
 
 // Animation when scroll 

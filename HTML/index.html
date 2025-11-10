@@ -7,13 +7,58 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"/>
-    <link rel="shortcut icon" href="./assets/images/fav.png"/>
+    <link rel="shortcut icon" href="./assets/images/favicon.svg" type="image/svg+xml"/>
     <link rel="stylesheet" href="./assets/css/animate.min.css"/>
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="./assets/css/slick.css"/>
     <link rel="stylesheet" href="./assets/icons/style.css"/>
     <link rel="stylesheet" href="./assets/css/style.css"/>
     <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
+    <script>
+      // 로딩 화면 완전 제거
+      (function() {
+        function removePreload() {
+          var preload = document.getElementById('preload');
+          if (preload) {
+            preload.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; position: absolute !important; left: -9999px !important; pointer-events: none !important;';
+            preload.remove();
+          }
+          // 모든 preload 관련 요소 제거
+          var allPreloads = document.querySelectorAll('[id*="preload"], .preload, [class*="preload"]');
+          allPreloads.forEach(function(el) {
+            el.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important;';
+            el.remove();
+          });
+        }
+        
+        // 즉시 실행 (여러 번)
+        removePreload();
+        setTimeout(removePreload, 0);
+        setTimeout(removePreload, 10);
+        setTimeout(removePreload, 50);
+        setTimeout(removePreload, 100);
+        
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', removePreload);
+        }
+        window.addEventListener('load', removePreload);
+        document.addEventListener('DOMContentLoaded', removePreload);
+      })();
+    </script>
+    <style>
+      /* 로딩 화면 완전 제거 */
+      #preload, #preload *, [id*="preload"], .preload, [class*="preload"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        left: -9999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+      }
+    </style>
   </head>
   <body> 
     <div id="header">
@@ -29,16 +74,16 @@
                         <div class="col-9">
                           <div class="list-home p-32 flex-between gap-30">
                             <div class="item"> <i class="icon-chat-bot text-white fs-32"> </i><a class="display-block mt-20" href="index.html">
-                                <div class="text-button text-white">홈 챗봇</div>
+                                <div class="text-button text-white">AI 챗봇</div>
                                 <div class="caption1 text-placehover mt-8">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                             <div class="item"> <i class="icon-image text-white fs-32"> </i><a class="display-block mt-20" href="home2.html">
-                                <div class="text-button text-white">홈 이미지 생성기</div>
+                                <div class="text-button text-white">AI 생성기</div>
                                 <div class="caption1 text-placehover mt-8">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                             <div class="item"> <i class="icon-laptop text-white fs-32"> </i><a class="display-block mt-20" href="home3.html">
-                                <div class="text-button text-white">홈 디지털 에이전시</div>
+                                <div class="text-button text-white">웹 에이전시</div>
                                 <div class="caption1 text-placehover mt-8">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                             <div class="item"> <i class="icon-clip text-white fs-32"> </i><a class="display-block mt-20" href="home4.html">
-                                <div class="text-button text-white">홈 비즈니스 에이전시</div>
+                                <div class="text-button text-white">마케팅 에이전시</div>
                                 <div class="caption1 text-placehover mt-8">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                           </div>
                         </div>
@@ -46,36 +91,6 @@
                           <div class="explore-block bg-line-dark p-24 bora-12">
                             <div class="heading7 text-white">AI로 비즈니스 성장하기</div>
                             <div class="text-placehover mt-12">AI 기술을 활용하여 비즈니스를 혁신하고 성장시키세요. 지금 바로 시작하세요.</div><a class="button bg-blue button-blue-hover text-white mt-12" href="about.html"> <span> <span> </span></span><span class="bg-blue">지금 탐색하기</span></a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li class="flex-center"><a class="text-subtitle" href="#!">Services</a>
-                  <div class="sub-nav">
-                    <div class="sub-nav-main bg-black-surface p-24">
-                      <div class="row">
-                        <div class="col-8">
-                          <div class="list-home flex-between gap-30">
-                            <div class="item"> <a class="flex-column-center" href="service-one.html">
-                                <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                                <div class="text-button text-white text-center mt-8">AI 챗봇</div></a></div>
-                            <div class="item"> <a class="flex-column-center" href="service-two.html">
-                                <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                                <div class="text-button text-white text-center mt-8">AI 이미지 생성기</div></a></div>
-                            <div class="item"> <a class="flex-column-center" href="service-three.html">
-                                <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                                <div class="text-button text-white text-center mt-8">디지털 에이전시</div></a></div>
-                            <div class="item"> <a class="flex-column-center" href="service-four.html">
-                                <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                                <div class="text-button text-white text-center mt-8">비즈니스 에이전시</div></a></div>
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <div class="explore-block bg-line-dark p-24 bora-12">
-                            <div class="heading7 text-white">AI 이미지 생성</div>
-                            <div class="text-placehover mt-12">최첨단 AI 기술로 원하는 이미지를 생성하세요. 창의적인 아이디어를 현실로 만들어보세요.</div><a class="button bg-blue button-blue-hover text-white mt-12" href="about.html"> <span> <span> </span></span><span class="bg-blue">지금 탐색하기</span></a>
                           </div>
                         </div>
                       </div>
@@ -117,18 +132,14 @@
                 <li class="flex-center"><a class="text-subtitle" href="contact.html">Contact</a></li>
               </ul>
             </div><a class="logo" href=""> 
-                                          <svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
                 <defs>
-                  <clipPath id="leftClipindex">
-                    <polygon points="0,0 120,0 100,40 0,40" />
-                  </clipPath>
-                  <clipPath id="rightClipindex">
-                    <polygon points="120,0 250,0 250,40 100,40" />
-                  </clipPath>
+                  <linearGradient id="bwGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#3D89FB;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+                  </linearGradient>
                 </defs>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#3D89FB" clip-path="url(#leftClipindex)">BOOSTWEB</text>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" clip-path="url(#rightClipindex)">BOOSTWEB</text>
-                <line x1="100" y1="0" x2="120" y2="40" stroke="#3D89FB" stroke-width="2"/>
+                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="url(#bwGradient)">BW</text>
               </svg></a>
             <div class="right-block flex-item-center">
               <div class="search-icon pr-24 pointer"><i class="ph ph-magnifying-glass text-white fs-24"></i></div>
@@ -138,18 +149,14 @@
           <div id="menu-mobile-block">
             <div class="menu-mobile-main"> 
               <div class="heading flex-between"><a class="logo" href=""> 
-                                              <svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                              <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
                 <defs>
-                  <clipPath id="leftClipindex">
-                    <polygon points="0,0 120,0 100,40 0,40" />
-                  </clipPath>
-                  <clipPath id="rightClipindex">
-                    <polygon points="120,0 250,0 250,40 100,40" />
-                  </clipPath>
+                  <linearGradient id="bwGradientMobile" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#3D89FB;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+                  </linearGradient>
                 </defs>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#3D89FB" clip-path="url(#leftClipindex)">BOOSTWEB</text>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" clip-path="url(#rightClipindex)">BOOSTWEB</text>
-                <line x1="100" y1="0" x2="120" y2="40" stroke="#3D89FB" stroke-width="2"/>
+                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="url(#bwGradientMobile)">BW</text>
               </svg></a>
                 <div class="close-block"> <i class="ph-bold ph-x d-block fs-18 text-white pointer"></i></div>
               </div>
@@ -162,47 +169,18 @@
                       <div class="close-block"> <i class="ph-bold ph-x d-block fs-18 text-white pointer"></i></div>
                     </div>
                     <div class="list-home"><a class="display-block item" href="index.html"> <i class="icon-chat-bot text-white fs-32"> </i>
-                        <div class="text-button text-white">홈 챗봇</div>
+                        <div class="text-button text-white">AI 챗봇</div>
                         <div class="caption1 text-placehover mt-4">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a><a class="display-block item mt-24" href="home2.html"><i class="icon-image text-white fs-32"> </i>
-                        <div class="text-button text-white">홈 이미지 생성기</div>
+                        <div class="text-button text-white">AI 생성기</div>
                         <div class="caption1 text-placehover mt-4">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a><a class="display-block item mt-24" href="home3.html"><i class="icon-laptop text-white fs-32"> </i>
-                        <div class="text-button text-white">홈 디지털 에이전시</div>
+                        <div class="text-button text-white">웹 에이전시</div>
                         <div class="caption1 text-placehover mt-4">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a><a class="display-block item mt-24" href="home4.html"><i class="icon-clip text-white fs-32"> </i>
-                        <div class="text-button text-white">홈 비즈니스 에이전시</div>
+                        <div class="text-button text-white">마케팅 에이전시</div>
                         <div class="caption1 text-placehover mt-4">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                     <div class="explore-block">
                       <div class="main bg-line-dark p-16 bora-12">
                         <div class="heading7 text-white">AI로 비즈니스 성장하기</div>
                         <div class="text-placehover mt-12">AI 기술을 활용하여 비즈니스를 혁신하고 성장시키세요. 지금 바로 시작하세요.</div><a class="button bg-blue button-blue-hover text-white mt-12" href="about.html"> <span> <span> </span></span><span class="bg-blue">지금 탐색하기</span></a>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li><a class="text-subtitle text-white flex-between" href="#!"><span>Services</span><i class="ph ph-caret-right text-white fs-12"></i></a>
-                  <div class="sub-nav-mobile bg-black-surface">
-                    <div class="heading flex-between"> 
-                      <div class="back-block pointer"><i class="ph ph-caret-left text-white fs-18 d-block"></i></div>
-                        <div class="heading7 text-uppercase text-white">Services</div>
-                      <div class="close-block"> <i class="ph-bold ph-x d-block fs-18 text-white pointer"></i></div>
-                    </div>
-                    <div class="list-home">
-                      <div class="item"> <a class="flex-column-center" href="service-one.html">
-                          <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                          <div class="text-button text-white text-center mt-8">AI 챗봇</div></a></div>
-                      <div class="item mt-24"><a class="flex-column-center" href="service-two.html">
-                          <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                          <div class="text-button text-white text-center mt-8">AI 이미지 생성기</div></a></div>
-                      <div class="item mt-24"><a class="flex-column-center" href="service-three.html">
-                          <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                          <div class="text-button text-white text-center mt-8">디지털 에이전시</div></a></div>
-                      <div class="item mt-24"><a class="flex-column-center" href="service-four.html">
-                          <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                          <div class="text-button text-white text-center mt-8">비즈니스 에이전시</div></a></div>
-                    </div>
-                    <div class="explore-block"> 
-                      <div class="main bg-line-dark p-16 bora-12">
-                        <div class="heading7 text-white">AI 이미지 생성</div>
-                        <div class="text-placehover mt-12">최첨단 AI 기술로 원하는 이미지를 생성하세요. 창의적인 아이디어를 현실로 만들어보세요.</div><a class="button bg-blue button-blue-hover text-white mt-12" href="about.html"> <span> <span> </span></span><span class="bg-blue">지금 탐색하기</span></a>
                       </div>
                     </div>
                   </div>
@@ -354,7 +332,7 @@
       <div class="about-us style-one pt-100 pb-100 bg-black-surface">
         <div class="container pb-60">
           <div class="row row-gap-40 flex-between">
-            <div class="col-12 col-lg-5 flex-column row-gap-20">
+            <div class="col-12 col-lg-5 flex-column row-gap-20" style="position: relative; z-index: 10;">
               <div class="heading3">우리는 <span>훌륭한 </span>
                 <p>아이디어를 제공합니다</p>
               </div>
@@ -374,7 +352,7 @@
             </div>
             <div class="col-12 col-xl-6">
               <div class="bg w-100 h-100"></div>
-              <div class="bg-img" style="position: relative; width: 100%; max-width: 300px;">
+              <div class="bg-img" style="position: relative; width: 100%; max-width: 300px; margin-bottom: 40px;">
                 <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 24px; padding: 32px; box-shadow: 0px 10px 40px rgba(61, 137, 251, 0.2); width: 100%; height: 280px; display: flex; flex-direction: column; justify-content: space-between;">
                   <div>
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
@@ -398,11 +376,11 @@
                     <div style="font-size: 12px; color: #8b949e;">반응형 디자인</div>
                   </div>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="66" height="68" viewbox="0 0 66 68" fill="none" style="position: absolute; bottom: -50px; left: -55px; z-index: 1;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="66" height="68" viewbox="0 0 66 68" fill="none" style="position: absolute; bottom: -30px; left: -40px; z-index: 1; pointer-events: none;">
                   <path d="M45.5642 19.8299C37.8449 23.8759 19.0379 35.9403 5.56419 51.8299M63.1383 32.3997C60.9145 37.4912 56.3949 51.105 56.1059 64.8286M35.2242 3.30982C29.6733 3.54696 15.4573 5.46251 3 11.2275" stroke="#3D89FB" stroke-width="5" stroke-linecap="round"></path>
                 </svg>
               </div>
-              <div class="bg-img" style="position: relative; width: 100%; max-width: 300px; padding-right: 45px;">
+              <div class="bg-img" style="position: relative; width: 100%; max-width: 300px; padding-right: 45px; margin-bottom: 40px;">
                 <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 24px; padding: 32px; box-shadow: 0px 10px 40px rgba(61, 137, 251, 0.2); width: 100%; height: 280px; display: flex; flex-direction: column; justify-content: space-between;">
                   <div>
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
@@ -435,7 +413,7 @@
                     <div style="font-size: 12px; color: #8b949e;">자동 분석 및 최적화</div>
                   </div>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="68" height="67" viewbox="0 0 68 67" fill="none" style="position: absolute; top: -54px; right: -16px; z-index: 1;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="68" height="67" viewbox="0 0 68 67" fill="none" style="position: absolute; top: -30px; right: -10px; z-index: 1; pointer-events: none;">
                   <path d="M19.5201 46C23.5661 38.2807 35.6305 19.4737 51.5201 5.99999M32.0899 63.5741C37.1813 61.3503 50.7952 56.8307 64.5187 56.5417M3 35.66C3.23715 30.1091 5.1527 15.8931 10.9177 3.43579" stroke="#3D89FB" stroke-width="5" stroke-linecap="round"></path>
                 </svg>
               </div><img src="./assets/images/components/line-about1.png" alt=""/>
@@ -1013,16 +991,6 @@
           </div>
         </div>
       </div>
-      <div class="style-blue">
-        <div id="preload"> 
-          <div class="main-content flex-center">
-            <div class="circle flex-center"><span></span>
-              <div class="circle-child"></div>
-            </div>
-            <div class="circle flex-center"></div>
-          </div>
-        </div>
-      </div>
       <div id="popup-newsletter-block" style="display: none !important;">
         <div class="popup-newsletter-main">
           <div class="bg-img"> <img class="w-100 h-100" src="./assets/images/components/bg-popup-newsletter.png" alt=""/></div>
@@ -1049,23 +1017,18 @@
         <div class="container">
           <div class="heading flex-between">
             <div class="footer-company-infor d-flex flex-column gap-20"><a class="logo" href=""> 
-                                            <svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
                 <defs>
-                  <clipPath id="leftClipindex">
-                    <polygon points="0,0 120,0 100,40 0,40" />
-                  </clipPath>
-                  <clipPath id="rightClipindex">
-                    <polygon points="120,0 250,0 250,40 100,40" />
-                  </clipPath>
+                  <linearGradient id="bwGradientFooter" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#3D89FB;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+                  </linearGradient>
                 </defs>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#3D89FB" clip-path="url(#leftClipindex)">BOOSTWEB</text>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" clip-path="url(#rightClipindex)">BOOSTWEB</text>
-                <line x1="100" y1="0" x2="120" y2="40" stroke="#3D89FB" stroke-width="2"/>
+                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="url(#bwGradientFooter)">BW</text>
               </svg></a></div>
             <div class="footer-navigate">
               <ul class="flex-item-center gap-40">
                 <li class="flex-center"><a class="text-subtitle text-white" href="index.html">Home</a></li>
-                <li class="flex-center"><a class="text-subtitle text-white" href="service-one.html">Services</a></li>
                 <li class="flex-center"><a class="text-subtitle text-white" href="about.html">About</a></li>
                 <li class="flex-center"><a class="text-subtitle text-white" href="contact.html">Contact</a></li>
               </ul>

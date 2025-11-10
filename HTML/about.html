@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"/>
-    <link rel="shortcut icon" href="./assets/images/fav.png"/>
+    <link rel="shortcut icon" href="./assets/images/favicon.svg" type="image/svg+xml"/>
     <link rel="stylesheet" href="./assets/css/animate.min.css"/>
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="./assets/css/slick.css"/>
@@ -15,18 +15,300 @@
     <link rel="stylesheet" href="./assets/css/style.css"/>
     <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
     <style>
-      .team-slider .item {
-        padding: 0 12px;
+      /* 리더십 소개 - 3D Coverflow 스타일 */
+      .our-leader {
+        background: #000000 !important;
+        position: relative !important;
+        overflow: hidden !important;
       }
-      .team-slider .slick-list {
-        margin: 0 -12px;
+      .our-leader .flat-pages-title {
+        position: relative !important;
+        padding: 100px 0 !important;
+        min-height: 800px !important;
       }
-      .slider-controls {
-        margin-top: 40px;
+      /* 배경 격자선 */
+      .our-leader .widget-bg-line {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 0 !important;
       }
-      .team-prev-btn:hover,
-      .team-next-btn:hover {
-        background: rgba(61, 137, 251, 0.2) !important;
+      .our-leader .widget-bg-line .wraper {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+      .our-leader .bg-grid-line {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        perspective: 1000px !important;
+        transform-style: preserve-3d !important;
+      }
+      .our-leader .bg-grid-line .bg-line {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 200px !important;
+        background-image: 
+          linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px) !important;
+        background-size: 50px 50px !important;
+        transform: perspective(500px) rotateX(60deg) !important;
+        transform-origin: bottom center !important;
+        opacity: 0.3 !important;
+      }
+      /* 컨테이너 */
+      .our-leader .themesflat-container {
+        max-width: 1490px !important;
+        margin: 0 auto !important;
+        padding: 0 20px !important;
+        position: relative !important;
+        z-index: 1 !important;
+      }
+      /* 상단 콘텐츠 */
+      .our-leader .pages-title {
+        position: relative !important;
+        z-index: 2 !important;
+      }
+      .our-leader .pages-title .content {
+        text-align: left !important;
+        margin-bottom: 60px !important;
+      }
+      .our-leader .pages-title .content h1 {
+        color: #ffffff !important;
+        margin-bottom: 20px !important;
+      }
+      .our-leader .pages-title .content p {
+        color: rgba(255, 255, 255, 0.7) !important;
+        max-width: 700px !important;
+        margin: 0 !important;
+      }
+      /* 버튼 스타일 */
+      .our-leader .flat-button {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 16px !important;
+        flex-wrap: wrap !important;
+      }
+      .our-leader .tf-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 12px 24px !important;
+        border-radius: 8px !important;
+        text-decoration: none !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        border: 2px solid transparent !important;
+      }
+      .our-leader .tf-button.style-1 {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+      }
+      .our-leader .tf-button.style-1.active {
+        background: #3D89FB !important;
+        color: #ffffff !important;
+        border-color: #3D89FB !important;
+      }
+      .our-leader .tf-button.style-1:hover {
+        background: #3D89FB !important;
+        border-color: #3D89FB !important;
+        transform: translateY(-2px) !important;
+      }
+      /* Swiper 컨테이너 */
+      .our-leader .swiper-3d-7 {
+        width: 100% !important;
+        padding: 60px 0 80px 0 !important;
+        position: relative !important;
+      }
+      .our-leader .swiper-3d-7 .swiper-wrapper {
+        align-items: center !important;
+      }
+      .our-leader .swiper-3d-7 .swiper-slide {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        transition: all 0.3s ease !important;
+      }
+      /* 카드 박스 스타일 */
+      .our-leader .tf-card-box {
+        width: 100% !important;
+        max-width: 300px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-radius: 16px !important;
+        overflow: hidden !important;
+        transition: all 0.3s ease !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+      .our-leader .tf-card-box:hover {
+        transform: translateY(-10px) !important;
+        box-shadow: 0 20px 40px rgba(61, 137, 251, 0.3) !important;
+        border-color: rgba(61, 137, 251, 0.5) !important;
+      }
+      .our-leader .card-media {
+        position: relative !important;
+        width: 100% !important;
+        padding-top: 133.33% !important;
+        overflow: hidden !important;
+      }
+      .our-leader .card-media img {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+      }
+      .our-leader .wishlist-button {
+        position: absolute !important;
+        top: 16px !important;
+        right: 16px !important;
+        width: 40px !important;
+        height: 40px !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #ffffff !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        z-index: 2 !important;
+      }
+      .our-leader .wishlist-button:hover {
+        background: rgba(61, 137, 251, 0.8) !important;
+      }
+      .our-leader .button-place-bid {
+        position: absolute !important;
+        bottom: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 2 !important;
+        opacity: 0 !important;
+        transition: all 0.3s ease !important;
+      }
+      .our-leader .tf-card-box:hover .button-place-bid {
+        opacity: 1 !important;
+      }
+      .our-leader .button-place-bid .tf-button {
+        background: #3D89FB !important;
+        color: #ffffff !important;
+        padding: 10px 24px !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        border: none !important;
+      }
+      .our-leader .button-place-bid .tf-button:hover {
+        background: #2563eb !important;
+      }
+      .our-leader .meta-info {
+        padding: 20px !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+      }
+      .our-leader .meta-info .name {
+        margin: 0 0 8px 0 !important;
+        font-size: 20px !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+      }
+      .our-leader .meta-info .name a {
+        color: #ffffff !important;
+        text-decoration: none !important;
+      }
+      .our-leader .meta-info .price {
+        margin: 0 !important;
+        font-size: 16px !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+      }
+      .our-leader .meta-info .price i {
+        color: #3D89FB !important;
+      }
+      /* 네비게이션 버튼 */
+      .our-leader .next-3d,
+      .our-leader .prev-3d {
+        width: 48px !important;
+        height: 48px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 50% !important;
+        color: #ffffff !important;
+        transition: all 0.3s ease !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        z-index: 10 !important;
+      }
+      .our-leader .next-3d:hover,
+      .our-leader .prev-3d:hover {
+        background: rgba(61, 137, 251, 0.8) !important;
+        border-color: #3D89FB !important;
+        transform: scale(1.1) !important;
+      }
+      .our-leader .next-3d::after,
+      .our-leader .prev-3d::after {
+        font-size: 20px !important;
+        font-weight: bold !important;
+      }
+      /* 페이지네이션 */
+      .our-leader .swiper-pagination {
+        position: relative !important;
+        margin-top: 40px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 8px !important;
+      }
+      .our-leader .swiper-pagination-bullet {
+        width: 40px !important;
+        height: 40px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+        border-radius: 50% !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        border: 2px solid transparent !important;
+      }
+      .our-leader .swiper-pagination-bullet-active {
+        background: #3D89FB !important;
+        color: #ffffff !important;
+        border-color: #3D89FB !important;
+        transform: scale(1.1) !important;
+      }
+      /* 아이콘 배경 숨김 */
+      .our-leader .icon-background {
+        display: none !important;
+      }
+      /* 반응형 */
+      @media (max-width: 768px) {
+        .our-leader .flat-pages-title {
+          padding: 60px 0 !important;
+        }
+        .our-leader .pages-title .content h1 {
+          font-size: 32px !important;
+        }
+        .our-leader .flat-button {
+          flex-direction: column !important;
+        }
+        .our-leader .tf-button {
+          width: 100% !important;
+          max-width: 300px !important;
+        }
       }
     </style>
   </head>
@@ -45,16 +327,16 @@
                           <div class="col-9">
                             <div class="list-home p-32 flex-between gap-30">
                               <div class="item"> <i class="icon-chat-bot text-white fs-32"> </i><a class="display-block mt-20" href="index.html">
-                                  <div class="text-button text-white">홈 챗봇</div>
+                                  <div class="text-button text-white">AI 챗봇</div>
                                   <div class="caption1 text-placehover mt-8">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                               <div class="item"> <i class="icon-image text-white fs-32"> </i><a class="display-block mt-20" href="home2.html">
-                                  <div class="text-button text-white">홈 이미지 생성기</div>
+                                  <div class="text-button text-white">AI 생성기</div>
                                   <div class="caption1 text-placehover mt-8">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                               <div class="item"> <i class="icon-laptop text-white fs-32"> </i><a class="display-block mt-20" href="home3.html">
-                                  <div class="text-button text-white">홈 디지털 에이전시</div>
+                                  <div class="text-button text-white">웹 에이전시</div>
                                   <div class="caption1 text-placehover mt-8">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                               <div class="item"> <i class="icon-clip text-white fs-32"> </i><a class="display-block mt-20" href="home4.html">
-                                  <div class="text-button text-white">홈 비즈니스 에이전시</div>
+                                  <div class="text-button text-white">마케팅 에이전시</div>
                                   <div class="caption1 text-placehover mt-8">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                             </div>
                           </div>
@@ -62,36 +344,6 @@
                             <div class="explore-block bg-line-dark p-24 bora-12">
                               <div class="heading7 text-white">AI로 비즈니스 성장하기</div>
                               <div class="text-placehover mt-12">AI 기술을 활용하여 비즈니스를 혁신하고 성장시키세요. 지금 바로 시작하세요.</div><a class="button bg-blue button-blue-hover text-white mt-12" href="about.html"> <span> <span> </span></span><span class="bg-blue">지금 탐색하기</span></a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="flex-center"><a class="text-subtitle" href="#!">Services</a>
-                    <div class="sub-nav">
-                      <div class="sub-nav-main bg-black-surface p-24">
-                        <div class="row">
-                          <div class="col-8">
-                            <div class="list-home flex-between gap-30">
-                              <div class="item"> <a class="flex-column-center" href="service-one.html">
-                                  <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                                  <div class="text-button text-white text-center mt-8">AI 챗봇</div></a></div>
-                              <div class="item"> <a class="flex-column-center" href="service-two.html">
-                                  <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                                  <div class="text-button text-white text-center mt-8">AI 이미지 생성기</div></a></div>
-                              <div class="item"> <a class="flex-column-center" href="service-three.html">
-                                  <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                                  <div class="text-button text-white text-center mt-8">디지털 에이전시</div></a></div>
-                              <div class="item"> <a class="flex-column-center" href="service-four.html">
-                                  <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                                  <div class="text-button text-white text-center mt-8">비즈니스 에이전시</div></a></div>
-                            </div>
-                          </div>
-                          <div class="col-4">
-                            <div class="explore-block bg-line-dark p-24 bora-12">
-                              <div class="heading7 text-white">AI 이미지 생성</div>
-                              <div class="text-placehover mt-12">최첨단 AI 기술로 원하는 이미지를 생성하세요. 창의적인 아이디어를 현실로 만들어보세요.</div><a class="button bg-blue button-blue-hover text-white mt-12" href="about.html"> <span> <span> </span></span><span class="bg-blue">지금 탐색하기</span></a>
                             </div>
                           </div>
                         </div>
@@ -133,18 +385,14 @@
                   <li class="flex-center"><a class="text-subtitle" href="contact.html">Contact</a></li>
                 </ul>
               </div><a class="logo" href=""> 
-                                                          <svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                          <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <clipPath id="leftClipabout">
-                    <polygon points="0,0 120,0 100,40 0,40" />
-                  </clipPath>
-                  <clipPath id="rightClipabout">
-                    <polygon points="120,0 250,0 250,40 100,40" />
-                  </clipPath>
+                  <linearGradient id="bwGradientAbout" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#7D3CF3;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+                  </linearGradient>
                 </defs>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#3D89FB" clip-path="url(#leftClipabout)">BOOSTWEB</text>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" clip-path="url(#rightClipabout)">BOOSTWEB</text>
-                <line x1="100" y1="0" x2="120" y2="40" stroke="#3D89FB" stroke-width="2"/>
+                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="url(#bwGradientAbout)">BW</text>
               </svg></a>
               <div class="right-block flex-item-center">
                 <div class="search-icon pr-24 pointer"><i class="ph ph-magnifying-glass text-white fs-24"></i></div>
@@ -154,18 +402,14 @@
             <div id="menu-mobile-block">
               <div class="menu-mobile-main"> 
                 <div class="heading flex-between"><a class="logo" href=""> 
-                                                              <svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                              <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <clipPath id="leftClipabout">
-                    <polygon points="0,0 120,0 100,40 0,40" />
-                  </clipPath>
-                  <clipPath id="rightClipabout">
-                    <polygon points="120,0 250,0 250,40 100,40" />
-                  </clipPath>
+                  <linearGradient id="bwGradientAbout" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#7D3CF3;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+                  </linearGradient>
                 </defs>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#3D89FB" clip-path="url(#leftClipabout)">BOOSTWEB</text>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" clip-path="url(#rightClipabout)">BOOSTWEB</text>
-                <line x1="100" y1="0" x2="120" y2="40" stroke="#3D89FB" stroke-width="2"/>
+                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="url(#bwGradientAbout)">BW</text>
               </svg></a>
                   <div class="close-block"> <i class="ph-bold ph-x d-block fs-18 text-white pointer"></i></div>
                 </div>
@@ -178,47 +422,18 @@
                         <div class="close-block"> <i class="ph-bold ph-x d-block fs-18 text-white pointer"></i></div>
                       </div>
                       <div class="list-home"><a class="display-block item" href="index.html"> <i class="icon-chat-bot text-white fs-32"> </i>
-                          <div class="text-button text-white">홈 챗봇</div>
+                          <div class="text-button text-white">AI 챗봇</div>
                           <div class="caption1 text-placehover mt-4">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a><a class="display-block item mt-24" href="home2.html"><i class="icon-image text-white fs-32"> </i>
-                          <div class="text-button text-white">홈 이미지 생성기</div>
+                          <div class="text-button text-white">AI 생성기</div>
                           <div class="caption1 text-placehover mt-4">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a><a class="display-block item mt-24" href="home3.html"><i class="icon-laptop text-white fs-32"> </i>
-                          <div class="text-button text-white">홈 디지털 에이전시</div>
+                          <div class="text-button text-white">웹 에이전시</div>
                           <div class="caption1 text-placehover mt-4">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a><a class="display-block item mt-24" href="home4.html"><i class="icon-clip text-white fs-32"> </i>
-                          <div class="text-button text-white">홈 비즈니스 에이전시</div>
+                          <div class="text-button text-white">마케팅 에이전시</div>
                           <div class="caption1 text-placehover mt-4">기존 시스템에 AI 챗 서비스를 완벽하게 통합하세요</div></a></div>
                       <div class="explore-block">
                         <div class="main bg-line-dark p-16 bora-12">
                         <div class="heading7 text-white">AI로 비즈니스 성장하기</div>
                         <div class="text-placehover mt-12">AI 기술을 활용하여 비즈니스를 혁신하고 성장시키세요. 지금 바로 시작하세요.</div><a class="button bg-blue button-blue-hover text-white mt-12" href="about.html"> <span> <span> </span></span><span class="bg-blue">지금 탐색하기</span></a>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li><a class="text-subtitle text-white flex-between" href="#!"><span>Services</span><i class="ph ph-caret-right text-white fs-12"></i></a>
-                    <div class="sub-nav-mobile bg-black-surface">
-                      <div class="heading flex-between"> 
-                        <div class="back-block pointer"><i class="ph ph-caret-left text-white fs-18 d-block"></i></div>
-                        <div class="heading7 text-uppercase text-white">Services</div>
-                        <div class="close-block"> <i class="ph-bold ph-x d-block fs-18 text-white pointer"></i></div>
-                      </div>
-                      <div class="list-home">
-                        <div class="item"> <a class="flex-column-center" href="service-one.html">
-                            <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                            <div class="text-button text-white text-center mt-8">AI 챗봇</div></a></div>
-                        <div class="item mt-24"><a class="flex-column-center" href="service-two.html">
-                            <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                            <div class="text-button text-white text-center mt-8">AI 이미지 생성기</div></a></div>
-                        <div class="item mt-24"><a class="flex-column-center" href="service-three.html">
-                            <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                            <div class="text-button text-white text-center mt-8">디지털 에이전시</div></a></div>
-                        <div class="item mt-24"><a class="flex-column-center" href="service-four.html">
-                            <div class="bg-img bora-12 overflow-hidden"><img class="w-100" src="./assets/images/submenu/182x182.png" alt=""/></div>
-                            <div class="text-button text-white text-center mt-8">비즈니스 에이전시</div></a></div>
-                      </div>
-                      <div class="explore-block"> 
-                        <div class="main bg-line-dark p-16 bora-12">
-                        <div class="heading7 text-white">AI 이미지 생성</div>
-                        <div class="text-placehover mt-12">최첨단 AI 기술로 원하는 이미지를 생성하세요. 창의적인 아이디어를 현실로 만들어보세요.</div><a class="button bg-blue button-blue-hover text-white mt-12" href="about.html"> <span> <span> </span></span><span class="bg-blue">지금 탐색하기</span></a>
                         </div>
                       </div>
                     </div>
@@ -481,65 +696,197 @@
           </div>
         </div>
       </div>
-      <div class="our-leader pb-100"> 
-        <div class="container"> 
-          <div class="row"> 
-            <div class="heading3">리더십 소개</div>
-            <div class="col-xl-6 col-lg-7 body1 text-placehover mt-24">BOOSTWEB은 관리 파트너, 실무의 리더를 포함한 여러 핵심 조직으로 구성됩니다.</div>
-            <div class="list-our-team mt-40 position-relative"> 
-              <div class="team-slider">
-                <div class="item"> 
-                  <div class="bg-img"> <img class="w-100 d-block" src="./assets/images/avatar/300x400.png" alt=""/></div>
-                  <div class="infor mt-16"> 
-                    <div class="heading7">서배준</div>
-                    <div class="text-placehover mt-8">부스트웹 대표</div>
-                  </div>
-                  <div class="list-social bg-white"><a href="http://facebook.com" target="_blank"> <i class="icon-facebook fs-14"></i></a><a href="http://linkedin.com" target="_blank"> <i class="icon-linkedin fs-14"></i></a><a href="http://twitter.com" target="_blank"> <i class="icon-twitter fs-12"></i></a><a href="http://instagram.com" target="_blank"> <i class="icon-instagram fs-12"></i></a></div>
-                </div>
-                <div class="item"> 
-                  <div class="bg-img"> <img class="w-100" src="./assets/images/avatar/300x400.png" alt=""/></div>
-                  <div class="infor mt-16"> 
-                    <div class="heading7">성민성</div>
-                    <div class="text-placehover mt-8">부스트웹 팀장</div>
-                  </div>
-                  <div class="list-social bg-white"><a href="http://facebook.com" target="_blank"> <i class="icon-facebook fs-14"></i></a><a href="http://linkedin.com" target="_blank"> <i class="icon-linkedin fs-14"></i></a><a href="http://twitter.com" target="_blank"> <i class="icon-twitter fs-12"></i></a><a href="http://instagram.com" target="_blank"> <i class="icon-instagram fs-12"></i></a></div>
-                </div>
-                <div class="item"> 
-                  <div class="bg-img"> <img class="w-100" src="./assets/images/avatar/300x400.png" alt=""/></div>
-                  <div class="infor mt-16"> 
-                    <div class="heading7">박건휘</div>
-                    <div class="text-placehover mt-8">부스트웹 팀장</div>
-                  </div>
-                  <div class="list-social bg-white"><a href="http://facebook.com" target="_blank"> <i class="icon-facebook fs-14"></i></a><a href="http://linkedin.com" target="_blank"> <i class="icon-linkedin fs-14"></i></a><a href="http://twitter.com" target="_blank"> <i class="icon-twitter fs-12"></i></a><a href="http://instagram.com" target="_blank"> <i class="icon-instagram fs-12"></i></a></div>
-                </div>
-                <div class="item"> 
-                  <div class="bg-img"> <img class="w-100" src="./assets/images/avatar/300x400.png" alt=""/></div>
-                  <div class="infor mt-16"> 
-                    <div class="heading7">양민아</div>
-                    <div class="text-placehover mt-8">부스트웹 팀장</div>
-                  </div>
-                  <div class="list-social bg-white"><a href="http://facebook.com" target="_blank"> <i class="icon-facebook fs-14"></i></a><a href="http://linkedin.com" target="_blank"> <i class="icon-linkedin fs-14"></i></a><a href="http://twitter.com" target="_blank"> <i class="icon-twitter fs-12"></i></a><a href="http://instagram.com" target="_blank"> <i class="icon-instagram fs-12"></i></a></div>
-                </div>
-                <div class="item"> 
-                  <div class="bg-img"> <img class="w-100" src="./assets/images/avatar/300x400.png" alt=""/></div>
-                  <div class="infor mt-16"> 
-                    <div class="heading7">진하은</div>
-                    <div class="text-placehover mt-8">부스트웹 팀장</div>
-                  </div>
-                  <div class="list-social bg-white"><a href="http://facebook.com" target="_blank"> <i class="icon-facebook fs-14"></i></a><a href="http://linkedin.com" target="_blank"> <i class="icon-linkedin fs-14"></i></a><a href="http://twitter.com" target="_blank"> <i class="icon-twitter fs-12"></i></a><a href="http://instagram.com" target="_blank"> <i class="icon-instagram fs-12"></i></a></div>
-                </div>
-                <div class="item"> 
-                  <div class="bg-img"> <img class="w-100" src="./assets/images/avatar/300x400.png" alt=""/></div>
-                  <div class="infor mt-16"> 
-                    <div class="heading7">조아람</div>
-                    <div class="text-placehover mt-8">부스트웹 팀장</div>
-                  </div>
-                  <div class="list-social bg-white"><a href="http://facebook.com" target="_blank"> <i class="icon-facebook fs-14"></i></a><a href="http://linkedin.com" target="_blank"> <i class="icon-linkedin fs-14"></i></a><a href="http://twitter.com" target="_blank"> <i class="icon-twitter fs-12"></i></a><a href="http://instagram.com" target="_blank"> <i class="icon-instagram fs-12"></i></a></div>
-                </div>
+      <div class="our-leader pb-100 pt-100"> 
+        <div class="flat-pages-title">
+          <div class="widget-bg-line">
+            <div class="wraper">
+              <div class="bg-grid-line y bottom">
+                <div class="bg-line"></div>
               </div>
-              <div class="slider-controls flex-center gap-16 mt-40">
-                <button class="prev-btn team-prev-btn bg-line-dark bora-50 w-48 h-48 flex-center pointer"><i class="ph ph-caret-left text-white fs-20"></i></button>
-                <button class="next-btn team-next-btn bg-line-dark bora-50 w-48 h-48 flex-center pointer"><i class="ph ph-caret-right text-white fs-20"></i></button>
+            </div>
+          </div>
+          <div class="themesflat-container w1490">
+            <div class="row">
+              <div class="col-12 pages-title">
+                <div class="content">
+                  <h1 data-wow-delay="0s" class="wow fadeInUp heading3">리더십 소개</h1>
+                  <p class="wow fadeInUp body1 text-placehover mt-12" data-wow-delay="0.1s">BW은 관리 파트너, 실무의 리더를 포함한 여러 핵심 조직으로 구성됩니다. 우리 팀의 전문가들을 만나보세요.</p>
+                </div>
+                <div class="icon-background">
+                  <img class="absolute item1" src="assets/images/item-background/item1.png" alt="" style="display: none;">
+                  <img class="absolute item2" src="assets/images/item-background/item2.png" alt="" style="display: none;">
+                  <img class="absolute item3" src="assets/images/item-background/item3.png" alt="" style="display: none;">
+                  <img class="absolute item4" src="assets/images/item-background/item1.png" alt="" style="display: none;">
+                  <img class="absolute item5" src="assets/images/item-background/item1.png" alt="" style="display: none;">
+                  <img class="absolute item6" src="assets/images/item-background/item4.png" alt="" style="display: none;">
+                  <img class="absolute item7" src="assets/images/item-background/item5.png" alt="" style="display: none;">
+                  <img class="absolute item8" src="assets/images/item-background/item5.png" alt="" style="display: none;">
+                </div>
+                <div class="relative">
+                  <div class="swiper swiper-3d-7">
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/seo-bae-jun.png" alt="서배준">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">서배준</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 대표</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/sung-min-sung.jpg" alt="성민성">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">성민성</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/park-geon-hwi.jpg" alt="박건휘">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">박건휘</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/3.jpg" alt="양민아">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">양민아</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/1.jpg" alt="진하은">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">진하은</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/2.jpg" alt="조아람">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">조아람</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/seo-bae-jun.png" alt="서배준">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">서배준</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 대표</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/sung-min-sung.jpg" alt="성민성">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">성민성</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/park-geon-hwi.jpg" alt="박건휘">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">박건휘</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/3.jpg" alt="양민아">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">양민아</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/1.jpg" alt="진하은">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">진하은</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="tf-card-box">
+                          <div class="card-media">
+                            <a href="#">
+                              <img src="./assets/images/avatar/2.jpg" alt="조아람">
+                            </a>
+                          </div>
+                          <div class="meta-info text-center">
+                            <h5 class="name"><a href="#!">조아람</a></h5>
+                            <h6 class="price gem"><i class="ph-bold ph-star fs-16"></i>부스트웹 팀장</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="swiper-pagination pagination-number"></div>
+                  </div>
+                  <div class="swiper-button-next next-3d over"></div>
+                  <div class="swiper-button-prev prev-3d over"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -580,23 +927,18 @@
           <div class="container">
             <div class="heading flex-between">
               <div class="footer-company-infor d-flex flex-column gap-20"><a class="logo" href=""> 
-                                                            <svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <clipPath id="leftClipabout">
-                    <polygon points="0,0 120,0 100,40 0,40" />
-                  </clipPath>
-                  <clipPath id="rightClipabout">
-                    <polygon points="120,0 250,0 250,40 100,40" />
-                  </clipPath>
+                  <linearGradient id="bwGradientAbout" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#7D3CF3;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+                  </linearGradient>
                 </defs>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#3D89FB" clip-path="url(#leftClipabout)">BOOSTWEB</text>
-                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" clip-path="url(#rightClipabout)">BOOSTWEB</text>
-                <line x1="100" y1="0" x2="120" y2="40" stroke="#3D89FB" stroke-width="2"/>
+                <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="url(#bwGradientAbout)">BW</text>
               </svg></a></div>
               <div class="footer-navigate">
                 <ul class="flex-item-center gap-40">
                   <li class="flex-center"><a class="text-subtitle text-white" href="index.html">Home</a></li>
-                  <li class="flex-center"><a class="text-subtitle text-white" href="service-one.html">Services</a></li>
                   <li class="flex-center"><a class="text-subtitle text-white" href="about.html">About</a></li>
                   <li class="flex-center"><a class="text-subtitle text-white" href="contact.html">Contact</a></li>
                 </ul>
@@ -648,48 +990,52 @@
     <script src="./assets/js/phosphor-icons.js"></script>
     <script src="./assets/js/main.min.js"></script>
     <script>
-      // Team Slider
-      $(".team-slider").slick({
-        dots: false,
-        arrows: true,
-        prevArrow: '.team-prev-btn',
-        nextArrow: '.team-next-btn',
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        touchThreshold: 1000,
-        waitForAnimate: false,
-        swipe: true,
-        swipeToSlide: true,
-        autoplay: false,
-        pauseOnFocus: false,
-        pauseOnHover: false,
-        infinite: true,
-        responsive: [
-          {
-            breakpoint: 1200,
-            settings: {
-              slidesToShow: 3,
-            }
+      // Swiper 초기화
+      var swiper = new Swiper(".swiper-3d-7", {
+        loop: true,
+        spaceBetween: 0,
+        slidesPerView: 1,
+        centeredSlides: true,
+        freeMode: true,
+        watchSlidesProgress: true,
+        effect: "coverflow",
+        grabCursor: true,
+        coverflowEffect: {
+          rotate: 15,
+          stretch: 90,
+          depth: 0,
+          modifier: 1,
+          scale: 0.9,
+          slideShadows: false,
+        },
+        navigation: {
+          nextEl: ".next-3d",
+          prevEl: ".prev-3d",
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+          renderBullet: function (index, className) {
+            return '<span class="' + className + '">' + (index + 1) + "</span>";
           },
-          {
-            breakpoint: 992,
-            settings: {
-              slidesToShow: 2,
-            }
+        },
+        breakpoints: {
+          500: {
+            slidesPerView: 2,
           },
-          {
-            breakpoint: 768,
-            settings: {
-              slidesToShow: 2,
-            }
+          991: {
+            slidesPerView: 3,
           },
-          {
-            breakpoint: 576,
-            settings: {
-              slidesToShow: 1,
-            }
-          }
-        ]
+          1024: {
+            slidesPerView: 3,
+          },
+          1200: {
+            slidesPerView: 4,
+          },
+          1400: {
+            slidesPerView: 5,
+          },
+        },
       });
     </script>
     <!-- 서비스 약관 모달 -->
@@ -760,7 +1106,7 @@
               <p class="body3 text-placehover mt-12">③ "몰"이 회원 자격을 제한?정지 시킨 후, 동일한 행위가 2회 이상 반복되거나 30일 이내에 그 사유가 시정되지 아니하는 경우 "몰"은 회원자격을 상실시킬 수 있습니다.</p>
               <p class="body3 text-placehover mt-12">④ "몰"이 회원자격을 상실시키는 경우에는 회원등록을 말소합니다. 이 경우 회원에게 이를 통지하고, 회원등록 말소 전에 최소한 30일 이상의 기간을 정하여 소명할 기회를 부여합니다.</p>
             </div>
-          </div>
+                    </div>
         </div>
       </div>
     </div>
@@ -1011,77 +1357,72 @@
         }
       }
     </style>
-        <script>
-      // jQuery가 로드될 때까지 대기 후 실행
+    <script>
+      // jQuery ready를 사용하여 확실하게 실행
       (function() {
-        var attempts = 0;
-        var maxAttempts = 50;
-        
         function initModal() {
-          attempts++;
-          
           if (typeof jQuery !== 'undefined' && typeof jQuery.fn !== 'undefined') {
-            var $ = jQuery;
-            
-            // 서비스 약관 모달 열기
-            $(document).on('click', '.terms-modal-btn', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var $modal = $('#terms-modal');
-              if ($modal.length) {
-                $modal.addClass('active');
-                $('body').css('overflow', 'hidden');
-              }
-            });            
-            
-            // 개인정보 처리방침 모달 열기
-            $(document).on('click', '.privacy-modal-btn', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var $modal = $('#privacy-modal');
-              if ($modal.length) {
-                $modal.addClass('active');
-                $('body').css('overflow', 'hidden');
-              }
-            });
-            
-            // 환불정책 모달 열기
-            $(document).on('click', '.refund-modal-btn', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var $modal = $('#refund-modal');
-              if ($modal.length) {
-                $modal.addClass('active');
-                $('body').css('overflow', 'hidden');
-              }
-            });
-            
-            // 모달 닫기
-            $(document).on('click', '.terms-modal-close, .terms-modal-overlay', function(e) {
-              e.stopPropagation();
-              $('#terms-modal, #privacy-modal, #refund-modal').removeClass('active');
-              $('body').css('overflow', '');
-            });
-            
-            // ESC 키로 모달 닫기
-            $(document).on('keydown', function(e) {
-              if (e.key === 'Escape' || e.keyCode === 27) {
+            jQuery(document).ready(function($) {
+              // 서비스 약관 모달 열기
+              $(document).on('click', '.terms-modal-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $modal = $('#terms-modal');
+                if ($modal.length) {
+                  $modal.addClass('active');
+                  $('body').css('overflow', 'hidden');
+                }
+              });            
+              
+              // 개인정보 처리방침 모달 열기
+              $(document).on('click', '.privacy-modal-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $modal = $('#privacy-modal');
+                if ($modal.length) {
+                  $modal.addClass('active');
+                  $('body').css('overflow', 'hidden');
+                }
+              });
+              
+              // 환불정책 모달 열기
+              $(document).on('click', '.refund-modal-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $modal = $('#refund-modal');
+                if ($modal.length) {
+                  $modal.addClass('active');
+                  $('body').css('overflow', 'hidden');
+                }
+              });
+              
+              // 모달 닫기
+              $(document).on('click', '.terms-modal-close, .terms-modal-overlay', function(e) {
+                e.stopPropagation();
                 $('#terms-modal, #privacy-modal, #refund-modal').removeClass('active');
                 $('body').css('overflow', '');
-              }
+              });
+              
+              // ESC 키로 모달 닫기
+              $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' || e.keyCode === 27) {
+                  $('#terms-modal, #privacy-modal, #refund-modal').removeClass('active');
+                  $('body').css('overflow', '');
+                }
+              });
             });
-          } else if (attempts < maxAttempts) {
-            setTimeout(initModal, 100);
+          } else {
+            setTimeout(initModal, 50);
           }
         }
         
-        // DOM이 준비되면 시작
+        // 즉시 실행하고, DOMContentLoaded도 대기
+        initModal();
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', initModal);
-        } else {
-          initModal();
         }
       })();
+      
     </script>
   </body>
 </html>

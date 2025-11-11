@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>페이지를 찾을 수 없음 - 부스트웹</title>
+    <title>AI블로그 - 부스트웹</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"/>
@@ -14,31 +14,739 @@
     <link rel="stylesheet" href="./assets/icons/style.css"/>
     <link rel="stylesheet" href="./assets/css/style.css"/>
     <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
+    <style>
+      .blog-generator-container {
+        padding: 60px 0;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .blog-form-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 40px;
+        margin-bottom: 30px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .form-group {
+        margin-bottom: 24px;
+        flex-shrink: 0;
+      }
+      .form-group:has(.textarea-control) {
+        margin-bottom: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      .form-label {
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .form-control {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: #ffffff !important;
+        width: 100%;
+        transition: all 0.3s;
+        font-size: 16px;
+      }
+      .form-control:focus {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: #7D3CF3;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(125, 60, 243, 0.2);
+        color: #ffffff !important;
+      }
+      .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .form-control::-webkit-input-placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .form-control::-moz-placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .form-control:-ms-input-placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .keyword-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .keyword-tag {
+        background: rgba(125, 60, 243, 0.2);
+        border: 1px solid rgba(125, 60, 243, 0.5);
+        border-radius: 20px;
+        padding: 8px 16px;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+      }
+      .keyword-tag:hover {
+        background: rgba(125, 60, 243, 0.4);
+        border-color: #7D3CF3;
+      }
+      .keyword-tag.selected {
+        background: #7D3CF3;
+        border-color: #7D3CF3;
+      }
+      .btn-primary {
+        background: #7D3CF3;
+        border: none;
+        border-radius: 8px;
+        padding: 14px 32px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+      }
+      .btn-primary:hover:not(:disabled) {
+        background: #6a2dd4;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(125, 60, 243, 0.4);
+      }
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 14px 32px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        margin-top: 12px;
+      }
+      .btn-secondary:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 10px;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      .blog-result {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 40px;
+        margin-top: 30px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .blog-content {
+        color: #fff;
+        line-height: 1.8;
+      }
+      .blog-content h1 {
+        color: #fff;
+        font-size: 32px;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid rgba(125, 60, 243, 0.3);
+      }
+      .blog-content h2 {
+        color: #fff;
+        font-size: 24px;
+        margin-top: 32px;
+        margin-bottom: 16px;
+        color: #7D3CF3;
+      }
+      .blog-content p {
+        margin-bottom: 16px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .alert {
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+      .alert-info {
+        background: rgba(59, 130, 246, 0.2);
+        border: 1px solid rgba(59, 130, 246, 0.5);
+        color: #93c5fd;
+      }
+      .alert-error {
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.5);
+        color: #fca5a5;
+      }
+      .alert-success {
+        background: rgba(34, 197, 94, 0.2);
+        border: 1px solid rgba(34, 197, 94, 0.5);
+        color: #86efac;
+      }
+      .menu-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        height: 100%;
+      }
+      .menu-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(125, 60, 243, 0.3);
+        border-color: rgba(125, 60, 243, 0.5);
+      }
+      .menu-card-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+        color: #7D3CF3;
+      }
+      .menu-card-title {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+      .menu-card-description {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .back-button {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 10px 20px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-bottom: 20px;
+      }
+      .back-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      /* 검사기 스타일 */
+      .checker-wrapper {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 32px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 20px;
+      }
+      .checker-container {
+        display: flex;
+        gap: 32px;
+        align-items: stretch;
+        min-height: 600px;
+      }
+      .checker-input-section {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .checker-result-section {
+        flex: 0 0 380px;
+        display: flex;
+        flex-direction: column;
+      }
+      .checker-input-card {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+      }
+      .textarea-control {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: #ffffff !important;
+        width: 100%;
+        flex: 1;
+        min-height: 450px;
+        resize: none;
+        transition: all 0.3s;
+        font-size: 16px;
+        font-family: inherit;
+        line-height: 1.6;
+      }
+      .textarea-control:focus {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: #7D3CF3;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(125, 60, 243, 0.2);
+        color: #ffffff !important;
+      }
+      .textarea-control::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .checker-result-section h3 {
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        flex-shrink: 0;
+      }
+      #checkerResults {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+      }
+      .result-item {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .result-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+      .result-label {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .result-value {
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .result-detail {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+        margin-top: 8px;
+        line-height: 1.5;
+      }
+      .result-status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 8px;
+      }
+      .result-status.success {
+        background: rgba(34, 197, 94, 0.2);
+        color: #86efac;
+        border: 1px solid rgba(34, 197, 94, 0.5);
+      }
+      .result-status.warning {
+        background: rgba(251, 191, 36, 0.2);
+        color: #fde047;
+        border: 1px solid rgba(251, 191, 36, 0.5);
+      }
+      .result-status.error {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.5);
+      }
+      .result-list {
+        margin-top: 8px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      .result-list-item {
+        padding: 6px 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 6px;
+        margin-bottom: 6px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      @media (max-width: 992px) {
+        .checker-wrapper {
+          padding: 24px;
+        }
+        .checker-container {
+          flex-direction: column;
+          gap: 24px;
+        }
+        .checker-result-section {
+          flex: 1;
+          width: 100%;
+        }
+        .textarea-control {
+          min-height: 400px;
+        }
+      }
+    </style>
   </head>
   <body> 
     <div id="header">
     </div>
     <div id="content">
-      <div class="page-not-found-block flex-center">
+      <div class="blog-generator-container">
         <div class="container">
-          <div class="row flex-center row-gap-40">
-            <div class="col-lg-6 col-md-10">
-              <div class="bg-img scroll-left-to-right3"><img class="w-100" src="./assets/images/components/bg-404.png" alt=""/>
-                <svg xmlns="http://www.w3.org/2000/svg" width="41" height="38" viewBox="0 0 41 38" fill="none">
-                  <path d="M29.6255 21.3823L23.3129 29.8383L22.4561 29.2156C20.9945 28.1571 19.9361 27.1359 19.2683 26.1396C18.6005 25.1557 18.1343 24.0598 17.8697 22.8642C17.6051 21.6687 17.3657 19.2526 17.1515 15.6286C17.0507 13.6983 16.5971 12.4404 15.7655 11.8426C14.9339 11.2449 14.1149 11.0207 13.2959 11.1577C12.4769 11.3071 11.7083 11.8676 10.9775 12.8514C10.1963 13.91 9.89393 15.0308 10.0829 16.2388C10.2719 17.4468 11.1791 18.7794 12.7919 20.249L5.26973 28.1073C2.27093 25.4671 0.544734 22.4284 0.0911339 18.9911C-0.375066 15.5539 0.947933 11.7555 4.04753 7.59593C6.45413 4.35795 9.08753 2.2408 11.9351 1.2445C15.7907 -0.112958 19.2683 0.335386 22.3427 2.57706C23.6153 3.5111 24.5855 4.75647 25.2533 6.31319C25.9211 7.86991 26.3117 10.3606 26.4125 13.7481C26.5007 16.1267 26.7527 17.7706 27.1937 18.6922C27.6473 19.6512 28.4537 20.5354 29.6255 21.3823ZM25.3793 31.7936L32.1329 22.7272L40.2221 28.6179L33.4685 37.6842L25.3793 31.7936Z" fill="#7D3CF3"></path>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="59" viewBox="0 0 42 59" fill="none">
-                  <path d="M39.8461 25.1691L38.6869 24.6834C39.7327 22.2549 40.3249 20.2249 40.5139 18.5063L41.7613 18.6433C41.5723 20.4864 40.9423 22.616 39.8461 25.1691ZM39.3547 10.9095C36.9103 5.60419 32.3617 2.25414 26.2129 1.23293L26.4271 0C33.0169 1.09593 37.8805 4.69508 40.5013 10.3989L39.3547 10.9095Z" fill="#7D3CF3"></path>
-                  <path d="M32.7506 37.697L20.3522 43.2762L19.7852 42.0558C18.8276 39.976 18.2858 38.1702 18.1598 36.6509C18.0338 35.1315 18.2102 33.6246 18.6512 32.1301C19.1048 30.6357 20.3522 27.7838 22.4186 23.5869C23.5274 21.3701 23.8046 19.6764 23.2628 18.4933C22.721 17.3102 21.9398 16.5505 20.9318 16.2142C19.9238 15.878 18.7016 16.0274 17.2652 16.675C15.7154 17.3724 14.6822 18.4559 14.1278 19.913C13.586 21.3825 13.7498 23.4374 14.6192 26.0776L1.27582 30.2247C-0.41258 25.43 -0.425178 20.9716 1.23802 16.8369C2.88862 12.7023 6.76942 9.26503 12.8552 6.5252C17.5928 4.39561 21.8768 3.64837 25.6946 4.29597C30.8732 5.15528 34.4768 7.79548 36.5054 12.2041C37.3496 14.0348 37.652 16.0274 37.4126 18.1819C37.1732 20.3364 36.0392 23.3502 34.0106 27.2233C32.612 29.9383 31.856 31.9309 31.7552 33.2385C31.6418 34.5337 31.982 36.0157 32.7506 37.697ZM21.4358 46.7259L34.7162 40.7481L40.046 52.3177L26.7656 58.2955L21.4358 46.7259Z" fill="#7D3CF3"></path>
-                </svg>
+          <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+              <!-- 메인 메뉴 -->
+              <div id="mainMenu" style="width: 100%;">
+                <h1 class="text-white text-center mb-60" style="font-size: 36px; font-weight: 700; margin-bottom: 60px;">
+                  AI블로그
+                </h1>
+                
+                <div class="row">
+                  <div class="col-lg-4 col-md-6 col-12 mb-24">
+                    <div class="menu-card" onclick="showGenerator()">
+                      <div class="menu-card-icon">📝</div>
+                      <div class="menu-card-title">AI 블로그 포스팅 생성기</div>
+                      <div class="menu-card-description">
+                        주제와 키워드를 입력하면 AI가 자동으로 고품질 블로그 포스팅을 생성해드립니다.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-12 mb-24">
+                    <div class="menu-card" onclick="showChecker()">
+                      <div class="menu-card-icon">🔍</div>
+                      <div class="menu-card-title">AI 블로그 포스팅 검사기</div>
+                      <div class="menu-card-description">
+                        작성된 블로그 포스팅의 품질과 SEO 최적화를 검사하고 개선 사항을 제안합니다.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-12 mb-24">
+                    <div class="menu-card" onclick="showNeighborManager()">
+                      <div class="menu-card-icon">👥</div>
+                      <div class="menu-card-title">블로그 이웃관리 자동화</div>
+                      <div class="menu-card-description">
+                        블로그 이웃 관리와 상호작용을 자동화하여 효율적으로 커뮤니티를 관리합니다.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="text-center mt-40">
+                  <button 
+                    type="button" 
+                    class="back-button" 
+                    onclick="goToMainPage()"
+                    style="padding: 14px 32px; font-size: 16px;"
+                  >
+                    메인으로 돌아가기
+                  </button>
+                </div>
               </div>
-              <div class="text-content animate__animated animate__bounceInDown animate__delay-1s"><span class="text-purple">4</span><span class="text-purple">0</span><span class="text-purple">4</span><span>E</span><span>R</span><span>R</span><span>0</span><span>R</span></div>
+              
+              <!-- 생성기 화면 -->
+              <div id="generatorSection" style="display: none;">
+                <button class="back-button" onclick="showMainMenu()">
+                  ← 메인 메뉴로 돌아가기
+                </button>
+                <h2 class="text-white text-center mb-40" style="font-size: 28px; font-weight: 700; margin-bottom: 40px;">
+                  AI 블로그 포스팅 생성기
+                </h2>
+                
+                <div class="blog-form-card" style="margin-top: 20px;">
+                <form id="blogForm">
+                  <div class="form-group">
+                    <label class="form-label" for="topic">주제</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="topic" 
+                      name="topic" 
+                      placeholder="예: 웹 개발, 마케팅, 디자인 등"
+                      required
+                    />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label" for="mainKeyword">메인키워드</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="mainKeyword" 
+                      name="mainKeyword" 
+                      placeholder="예: React, SEO, UI/UX 등"
+                      required
+                    />
+                  </div>
+                  
+                  <div id="alertContainer"></div>
+                  
+                  <button 
+                    type="button" 
+                    class="btn-primary" 
+                    id="recommendBtn"
+                    onclick="recommendKeywords()"
+                  >
+                    서브키워드 추천
+                  </button>
+                </form>
+              </div>
+              
+              <div id="keywordsSection" class="blog-form-card" style="display: none;">
+                <h3 class="text-white mb-24" style="font-size: 20px; font-weight: 600;">
+                  추천 서브키워드
+                </h3>
+                <div id="keywordTags" class="keyword-tags"></div>
+                
+                <div class="mt-24" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                  <h4 class="text-white mb-16" style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">
+                    키워드 수동 추가
+                  </h4>
+                  <div style="display: flex; gap: 12px;">
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="manualKeyword" 
+                      placeholder="키워드를 입력하세요"
+                      style="flex: 1; margin-bottom: 0;"
+                      onkeypress="if(event.key === 'Enter') addManualKeyword()"
+                    />
+                    <button 
+                      type="button" 
+                      class="btn-secondary" 
+                      onclick="addManualKeyword()"
+                      style="width: auto; min-width: 100px; margin-top: 0;"
+                    >
+                      추가
+                    </button>
+                  </div>
+                </div>
+                
+                <div id="selectedKeywordsInfo" class="mt-16" style="margin-top: 16px; padding: 12px; background: rgba(125, 60, 243, 0.1); border-radius: 8px; display: none;">
+                  <div class="text-white" style="font-size: 14px;">
+                    <strong>선택된 키워드:</strong> <span id="selectedKeywordsCount">0</span>개
+                  </div>
+                </div>
+                
+                <button 
+                  type="button" 
+                  class="btn-primary mt-24" 
+                  id="generateBtn"
+                  onclick="generateBlog()"
+                  disabled
+                >
+                  블로그 글 생성
+                </button>
+              </div>
+              
+              <div id="blogResult" class="blog-result" style="display: none;">
+                <h3 class="text-white mb-24" style="font-size: 24px; font-weight: 600;">
+                  생성된 블로그 포스팅
+                </h3>
+                <div id="blogResultAlertContainer" style="margin-bottom: 20px;"></div>
+                
+                <!-- HTML 형식 보기 -->
+                <div id="blogContent" class="blog-content"></div>
+                
+                <!-- 텍스트 형식 보기 (복사용) -->
+                <div id="blogTextContainer" style="display: none; margin-top: 20px;">
+                  <label class="form-label" style="margin-bottom: 8px;">복사용 텍스트:</label>
+                  <textarea 
+                    id="blogTextContent" 
+                    class="form-control" 
+                    readonly 
+                    style="min-height: 300px; font-family: monospace; font-size: 14px; resize: vertical;"
+                  ></textarea>
+                </div>
+                
+                <div class="mt-24" style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <button 
+                    type="button" 
+                    class="btn-secondary" 
+                    onclick="copyTextContent()"
+                    style="flex: 1; min-width: 120px;"
+                  >
+                    텍스트 복사
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn-secondary" 
+                    onclick="downloadTextFile()"
+                    style="flex: 1; min-width: 120px;"
+                  >
+                    파일 다운로드
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn-secondary" 
+                    onclick="checkBlog()"
+                    style="flex: 1; min-width: 120px;"
+                  >
+                    검사하기
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn-secondary" 
+                    onclick="resetForm()"
+                    style="flex: 1; min-width: 120px;"
+                  >
+                    새로 작성하기
+                  </button>
+                </div>
             </div>
-            <div class="col-lg-6">
-              <div class="content"> 
-                <div class="text text-white scroll-right-to-left1">앗! 오류 404</div>
-                <div class="text-placehover mt-24 scroll-right-to-left2">찾으시는 페이지를 찾을 수 없습니다. 잠시 후 다시 시도해 주세요.</div>
-                <div class="block-button d-inline-block scroll-right-to-left3 mt-24"> <a class="button bg-purple button-purple-hover text-white" href="index.html"><span> <span> </span></span><span class="bg-purple">홈으로 돌아가기</span></a></div>
+              </div>
+              
+              <!-- 블로그 이웃관리 자동화 화면 -->
+              <div id="neighborManagerSection" style="display: none;">
+                <button class="back-button" onclick="showMainMenu()">
+                  ← 메인 메뉴로 돌아가기
+                </button>
+                <h2 class="text-white text-center mb-40" style="font-size: 28px; font-weight: 700; margin-bottom: 40px;">
+                  블로그 이웃관리 자동화
+                </h2>
+                
+                <div class="blog-form-card" style="margin-top: 20px;">
+                  <h3 class="text-white mb-24" style="font-size: 20px; font-weight: 600; margin-bottom: 24px;">
+                    프로그램 다운로드
+                  </h3>
+                  <p class="text-white mb-24" style="color: rgba(255, 255, 255, 0.8); margin-bottom: 24px; line-height: 1.6;">
+                    블로그 이웃관리 자동화 프로그램을 다운로드하여 사용하실 수 있습니다.
+                  </p>
+                  
+                  <div id="neighborManagerAlertContainer" style="margin-bottom: 16px;"></div>
+                  
+                  <button 
+                    type="button" 
+                    class="btn-primary" 
+                    id="downloadProgramBtn"
+                    onclick="downloadNeighborManagerProgram()"
+                  >
+                    프로그램 다운로드
+                  </button>
+                </div>
+                
+                <div class="blog-form-card" style="margin-top: 30px;">
+                  <h3 class="text-white mb-24" style="font-size: 20px; font-weight: 600; margin-bottom: 24px;">
+                    사용법
+                  </h3>
+                  <div class="text-white" style="color: rgba(255, 255, 255, 0.9); line-height: 1.8;">
+                    <ol style="padding-left: 20px; margin: 0;">
+                      <li style="margin-bottom: 12px;">압축파일을 다운로드 받는다</li>
+                      <li style="margin-bottom: 12px;">다운받은 폴더 압축을 해제한다.</li>
+                      <li style="margin-bottom: 12px;">EXE 파일을 관리자 권한으로 실행한다.</li>
+                      <li style="margin-bottom: 12px;">회원가입 후 관리자가 승인 해 줄때까지 기다린다.</li>
+                      <li style="margin-bottom: 12px;">하루가 지나도 승인이 안될시 관리자에게 문의한다.</li>
+                      <li style="margin-bottom: 12px;">승인이 완료되면 자동화 프로그램을 이용한다.</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 검사기 화면 -->
+              <div id="checkerSection" style="display: none;">
+                <button class="back-button" onclick="showMainMenu()">
+                  ← 메인 메뉴로 돌아가기
+                </button>
+                <h2 class="text-white text-center mb-40" style="font-size: 28px; font-weight: 700; margin-bottom: 40px;">
+                  AI 블로그 포스팅 검사기
+                </h2>
+                
+                <div class="checker-wrapper">
+                  <div class="checker-container">
+                    <!-- 왼쪽: 입력 영역 -->
+                    <div class="checker-input-section">
+                      <div class="checker-input-card">
+                        <div class="form-group">
+                          <label class="form-label" for="checkerTitle">제목</label>
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            id="checkerTitle" 
+                            name="checkerTitle" 
+                            placeholder="블로그 포스팅 제목을 입력하세요"
+                          />
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="form-label" for="checkerContent">포스팅 내용</label>
+                          <textarea 
+                            class="textarea-control" 
+                            id="checkerContent" 
+                            name="checkerContent" 
+                            placeholder="블로그 포스팅 내용을 입력하거나 붙여넣으세요"
+                          ></textarea>
+                        </div>
+                        
+                        <div id="checkerAlertContainer" style="margin-top: 16px;"></div>
+                        
+                        <button 
+                          type="button" 
+                          class="btn-primary" 
+                          id="checkBtn"
+                          onclick="checkPosting()"
+                          style="margin-top: 16px;"
+                        >
+                          검사하기
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <!-- 오른쪽: 검사 결과 영역 -->
+                    <div class="checker-result-section">
+                      <h3 class="text-white" style="font-size: 20px; font-weight: 600;">
+                        검사 결과
+                      </h3>
+                      
+                      <div id="checkerResults">
+                        <div class="result-item">
+                          <span class="result-label">글자수</span>
+                          <div class="result-value" id="resultCharCount">-</div>
+                          <div class="result-detail" id="resultCharDetail">내용을 입력하고 검사하기를 클릭하세요</div>
+                        </div>
+                        
+                        <div class="result-item">
+                          <span class="result-label">맞춤법</span>
+                          <div class="result-value" id="resultSpelling">-</div>
+                          <div class="result-detail" id="resultSpellingDetail">-</div>
+                          <div id="resultSpellingStatus"></div>
+                          <div id="resultSpellingList" class="result-list" style="display: none;"></div>
+                        </div>
+                        
+                        <div class="result-item">
+                          <span class="result-label">형태소</span>
+                          <div class="result-value" id="resultMorphology">-</div>
+                          <div class="result-detail" id="resultMorphologyDetail">-</div>
+                          <div id="resultMorphologyStatus"></div>
+                          <div id="resultMorphologyList" class="result-list" style="display: none;"></div>
+                        </div>
+                        
+                        <div class="result-item">
+                          <span class="result-label">금칙어</span>
+                          <div class="result-value" id="resultForbidden">-</div>
+                          <div class="result-detail" id="resultForbiddenDetail">-</div>
+                          <div id="resultForbiddenStatus"></div>
+                          <div id="resultForbiddenList" class="result-list" style="display: none;"></div>
+                        </div>
+                        
+                        <div class="result-item">
+                          <span class="result-label">반복어</span>
+                          <div class="result-value" id="resultRepetition">-</div>
+                          <div class="result-detail" id="resultRepetitionDetail">-</div>
+                          <div id="resultRepetitionStatus"></div>
+                          <div id="resultRepetitionList" class="result-list" style="display: none;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -57,5 +765,1779 @@
     <script src="./assets/js/waypoints.min.js"></script>
     <script src="./assets/js/phosphor-icons.js"></script>
     <script src="./assets/js/main.min.js"></script>
+    <script>
+      // 상수 정의
+      const API_BASE_URL = 'http://localhost:3001';
+      const MIN_CHAR_COUNT = 1500; // 최소 글자수 (공백 제외)
+      const MAX_CHAR_COUNT = 2000; // 권장 최대 글자수 (공백 제외)
+      const WARNING_CHAR_COUNT = 2500; // 주의 글자수 (공백 제외)
+      let selectedKeywords = [];
+
+      // 메뉴 전환 함수들
+      function showMainMenu() {
+        document.getElementById('mainMenu').style.display = 'block';
+        document.getElementById('generatorSection').style.display = 'none';
+        document.getElementById('checkerSection').style.display = 'none';
+        document.getElementById('neighborManagerSection').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // 메인 페이지로 이동
+      function goToMainPage() {
+        window.location.href = 'index.html';
+      }
+
+      // 원본 함수들 (내부 로직)
+      function _showGeneratorInternal() {
+        document.getElementById('mainMenu').style.display = 'none';
+        document.getElementById('generatorSection').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function _showCheckerInternal(scrollToTop = true) {
+        document.getElementById('mainMenu').style.display = 'none';
+        document.getElementById('checkerSection').style.display = 'block';
+        if (scrollToTop) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          // 검사기 섹션으로 스크롤
+          setTimeout(() => {
+            const checkerSection = document.getElementById('checkerSection');
+            if (checkerSection) {
+              checkerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 100);
+        }
+      }
+
+      function _showNeighborManagerInternal() {
+        document.getElementById('mainMenu').style.display = 'none';
+        document.getElementById('neighborManagerSection').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // 공개 함수들 (로그인 체크 포함) - Firebase 로드 후 재정의됨
+      function showGenerator() {
+        _showGeneratorInternal();
+      }
+
+      function showChecker(scrollToTop = true) {
+        _showCheckerInternal(scrollToTop);
+      }
+
+      function showNeighborManager() {
+        _showNeighborManagerInternal();
+      }
+      
+      // 블로그 이웃관리 자동화 프로그램 다운로드
+      async function downloadNeighborManagerProgram() {
+        // 로그인 체크 (Firebase가 로드된 경우)
+        if (typeof auth !== 'undefined' && auth) {
+          const user = auth.currentUser;
+          if (!user) {
+            const message = '로그인이 필요합니다. 로그인 후 이용해주세요.';
+            alert(message);
+            window.location.href = 'login.html';
+            return;
+          }
+        }
+        
+        const downloadBtn = document.getElementById('downloadProgramBtn');
+        const originalText = downloadBtn.innerHTML;
+        
+        try {
+          downloadBtn.disabled = true;
+          downloadBtn.innerHTML = '<span class="loading-spinner"></span>다운로드 준비 중...';
+          
+          // ZIP 파일 경로
+          const zipFilePath = './assets/downloads/blog_neighbor_manager.zip';
+          
+          try {
+            // 파일 다운로드
+            const response = await fetch(zipFilePath);
+            
+            if (response.ok) {
+              const blob = await response.blob();
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = '블로그_이웃관리_자동화.zip';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              window.URL.revokeObjectURL(url);
+              
+              // 성공 알림 표시
+              const alertContainer = document.getElementById('neighborManagerAlertContainer');
+              if (alertContainer) {
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-success';
+                alert.textContent = '프로그램 다운로드가 완료되었습니다.';
+                alertContainer.innerHTML = '';
+                alertContainer.appendChild(alert);
+                setTimeout(() => {
+                  alert.remove();
+                }, 5000);
+              }
+            } else {
+              throw new Error('파일을 찾을 수 없습니다.');
+            }
+          } catch (fetchError) {
+            console.error('다운로드 오류:', fetchError);
+            const alertContainer = document.getElementById('neighborManagerAlertContainer');
+            if (alertContainer) {
+              const alert = document.createElement('div');
+              alert.className = 'alert alert-error';
+              alert.textContent = '다운로드 중 오류가 발생했습니다. 파일 경로를 확인해주세요.';
+              alertContainer.innerHTML = '';
+              alertContainer.appendChild(alert);
+            }
+          }
+        } catch (error) {
+          console.error('다운로드 오류:', error);
+          const alertContainer = document.getElementById('neighborManagerAlertContainer');
+          if (alertContainer) {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-error';
+            alert.textContent = '다운로드 중 오류가 발생했습니다. 관리자에게 문의하세요.';
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alert);
+          }
+        } finally {
+          downloadBtn.disabled = false;
+          downloadBtn.innerHTML = originalText;
+        }
+      }
+
+      // 서브키워드 추천 함수
+      async function recommendKeywords() {
+        // 로그인 체크 (Firebase가 로드된 경우)
+        if (typeof auth !== 'undefined' && auth) {
+          const user = auth.currentUser;
+          if (!user) {
+            const message = '로그인이 필요합니다. 로그인 후 이용해주세요.';
+            alert(message);
+            window.location.href = 'login.html';
+            return;
+          }
+        }
+        
+        const topic = document.getElementById('topic').value.trim();
+        const mainKeyword = document.getElementById('mainKeyword').value.trim();
+        const alertContainer = document.getElementById('alertContainer');
+        const recommendBtn = document.getElementById('recommendBtn');
+        const keywordsSection = document.getElementById('keywordsSection');
+        const keywordTags = document.getElementById('keywordTags');
+
+        if (!topic || !mainKeyword) {
+          showAlert('주제와 메인키워드를 모두 입력해주세요.', 'error');
+          return;
+        }
+
+        // 로딩 상태
+        recommendBtn.disabled = true;
+        recommendBtn.innerHTML = '<span class="loading-spinner"></span>서브키워드 추천 중...';
+        alertContainer.innerHTML = '';
+
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 30000);
+          
+          const response = await fetch(`${API_BASE_URL}/api/recommend-keywords`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ topic, mainKeyword }),
+            signal: controller.signal
+          }).catch(fetchError => {
+            clearTimeout(timeoutId);
+            console.error('Fetch 오류:', fetchError);
+            if (fetchError.name === 'AbortError') {
+              throw new Error('요청 시간이 초과되었습니다. 네트워크 연결을 확인해주세요.');
+            }
+            throw new Error('서버에 연결할 수 없습니다. API 서버가 실행 중인지 확인해주세요. (http://localhost:3001)');
+          });
+          
+          clearTimeout(timeoutId);
+
+          if (!response) {
+            throw new Error('서버 응답을 받을 수 없습니다.');
+          }
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || '서브키워드 추천에 실패했습니다.');
+          }
+
+          // 키워드 태그 생성 (기존 선택된 키워드는 유지)
+          // 새로 추천된 키워드만 추가 (중복 제거)
+          if (data.keywords && data.keywords.length > 0) {
+            data.keywords.forEach((keyword) => {
+              // 이미 존재하는 태그인지 확인
+              const existingTags = Array.from(keywordTags.children);
+              const alreadyExists = existingTags.some(tag => tag.textContent.trim() === keyword.trim());
+              
+              if (!alreadyExists) {
+                const tag = document.createElement('div');
+                const isSelected = selectedKeywords.includes(keyword);
+                tag.className = isSelected ? 'keyword-tag selected' : 'keyword-tag';
+                tag.textContent = keyword;
+                tag.onclick = () => toggleKeyword(keyword, tag);
+                keywordTags.appendChild(tag);
+              }
+            });
+            
+            keywordsSection.style.display = 'block';
+            updateSelectedKeywordsInfo();
+            showAlert('서브키워드 추천이 완료되었습니다. 원하는 키워드를 선택해주세요.', 'success');
+          } else {
+            throw new Error('추천된 키워드가 없습니다.');
+          }
+        } catch (error) {
+          console.error('서브키워드 추천 오류:', error);
+          let errorMessage = error.message || '서브키워드 추천 중 오류가 발생했습니다.';
+          
+          // 네트워크 오류인 경우
+          if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.includes('연결') || error.message.includes('서버에 연결')) {
+            errorMessage = '서버에 연결할 수 없습니다.\n\n해결 방법:\n1. 터미널에서 "npm run server" 명령어로 API 서버를 실행하세요.\n2. 서버가 http://localhost:3001 에서 실행 중인지 확인하세요.';
+          }
+          
+          showAlert(errorMessage, 'error');
+        } finally {
+          recommendBtn.disabled = false;
+          recommendBtn.innerHTML = '서브키워드 추천';
+        }
+      }
+
+      // 키워드 선택 토글
+      function toggleKeyword(keyword, tagElement) {
+        const index = selectedKeywords.indexOf(keyword);
+        
+        if (index > -1) {
+          selectedKeywords.splice(index, 1);
+          tagElement.classList.remove('selected');
+        } else {
+          selectedKeywords.push(keyword);
+          tagElement.classList.add('selected');
+        }
+        
+        updateSelectedKeywordsInfo();
+      }
+
+      // 수동 키워드 추가 함수
+      function addManualKeyword() {
+        const manualKeywordInput = document.getElementById('manualKeyword');
+        const keyword = manualKeywordInput.value.trim();
+        const keywordTags = document.getElementById('keywordTags');
+
+        if (!keyword) {
+          showAlert('키워드를 입력해주세요.', 'error');
+          return;
+        }
+
+        // 이미 존재하는 키워드인지 확인
+        if (selectedKeywords.includes(keyword)) {
+          showAlert('이미 추가된 키워드입니다.', 'error');
+          manualKeywordInput.value = '';
+          return;
+        }
+
+        // 키워드 태그 생성 및 추가
+        const tag = document.createElement('div');
+        tag.className = 'keyword-tag selected';
+        tag.textContent = keyword;
+        tag.onclick = () => toggleKeyword(keyword, tag);
+        keywordTags.appendChild(tag);
+
+        // 선택된 키워드 목록에 추가
+        selectedKeywords.push(keyword);
+        
+        // 입력 필드 초기화
+        manualKeywordInput.value = '';
+        
+        // 선택된 키워드 정보 업데이트
+        updateSelectedKeywordsInfo();
+      }
+
+      // 선택된 키워드 정보 업데이트
+      function updateSelectedKeywordsInfo() {
+        const selectedKeywordsInfo = document.getElementById('selectedKeywordsInfo');
+        const selectedKeywordsCount = document.getElementById('selectedKeywordsCount');
+        const generateBtn = document.getElementById('generateBtn');
+
+        if (selectedKeywords.length > 0) {
+          selectedKeywordsInfo.style.display = 'block';
+          selectedKeywordsCount.textContent = selectedKeywords.length;
+          generateBtn.disabled = false;
+        } else {
+          selectedKeywordsInfo.style.display = 'none';
+          generateBtn.disabled = true;
+        }
+      }
+
+      // 블로그 글 생성 함수
+      async function generateBlog() {
+        // 로그인 체크 (필수)
+        if (typeof auth === 'undefined' || !auth) {
+          const message = '로그인이 필요합니다. 로그인 후 이용해주세요.';
+          alert(message);
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        const user = auth.currentUser;
+        if (!user) {
+          const message = '로그인이 필요합니다. 로그인 후 이용해주세요.';
+          alert(message);
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        // Firestore 초기화 확인
+        if (typeof db === 'undefined' || !db) {
+          showAlert('데이터베이스 연결 오류가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error');
+          return;
+        }
+        
+        // 사용자 정보 조회 및 일일 생성 제한 체크
+        try {
+          const userDoc = await db.collection('users').doc(user.uid).get();
+          if (!userDoc.exists) {
+            showAlert('사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.', 'error');
+            return;
+          }
+          
+          const userData = userDoc.data();
+          const membershipType = userData.membershipType || 'free';
+          
+          // 일일 생성 제한 설정
+          const dailyLimit = membershipType === 'premium' ? 10 : 1;
+          
+          // 오늘 날짜 (YYYY-MM-DD 형식)
+          const today = new Date();
+          const todayStr = today.toISOString().split('T')[0];
+          
+          // 사용자 일일 사용량 조회
+          const usageDoc = await db.collection('users').doc(user.uid)
+            .collection('usage').doc(todayStr).get();
+          
+          let todayCount = 0;
+          if (usageDoc.exists) {
+            todayCount = usageDoc.data().count || 0;
+          }
+          
+          // 제한 체크
+          if (todayCount >= dailyLimit) {
+            const limitText = membershipType === 'premium' ? '10개' : '1개';
+            showAlert(`일일 생성 제한(${limitText})에 도달했습니다. 내일 다시 이용해주세요.`, 'error');
+            return;
+          }
+          
+          // 생성 가능 - 계속 진행
+        } catch (error) {
+          console.error('사용자 정보 조회 오류:', error);
+          showAlert('사용자 정보를 확인하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error');
+          return;
+        }
+        
+        const topic = document.getElementById('topic').value.trim();
+        const mainKeyword = document.getElementById('mainKeyword').value.trim();
+        const alertContainer = document.getElementById('alertContainer');
+        const generateBtn = document.getElementById('generateBtn');
+        const blogResult = document.getElementById('blogResult');
+        const blogContent = document.getElementById('blogContent');
+
+        if (selectedKeywords.length === 0) {
+          showAlert('최소 1개 이상의 서브키워드를 선택해주세요.', 'error');
+          return;
+        }
+
+        // 로딩 상태
+        generateBtn.disabled = true;
+        generateBtn.innerHTML = '<span class="loading-spinner"></span>블로그 글 생성 중...';
+        alertContainer.innerHTML = '';
+
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 60000);
+          
+          const response = await fetch(`${API_BASE_URL}/api/generate-blog`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              topic,
+              mainKeyword,
+              subKeywords: selectedKeywords
+            }),
+            signal: controller.signal
+          }).catch(fetchError => {
+            clearTimeout(timeoutId);
+            console.error('Fetch 오류:', fetchError);
+            if (fetchError.name === 'AbortError') {
+              throw new Error('요청 시간이 초과되었습니다. 네트워크 연결을 확인해주세요.');
+            }
+            throw new Error('서버에 연결할 수 없습니다. API 서버가 실행 중인지 확인해주세요. (http://localhost:3001)');
+          });
+          
+          clearTimeout(timeoutId);
+
+          if (!response) {
+            throw new Error('서버 응답을 받을 수 없습니다.');
+          }
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || '블로그 글 생성에 실패했습니다.');
+          }
+
+          // 블로그 내용 표시
+          let htmlContent = data.content;
+          
+          // 마크다운 코드 블록 제거 (```HTML ... ``` 형식)
+          htmlContent = htmlContent.replace(/```\s*html\s*\n?/gi, '').trim();
+          htmlContent = htmlContent.replace(/```\s*HTML\s*\n?/gi, '').trim();
+          htmlContent = htmlContent.replace(/\n?\s*```\s*$/gm, '').trim();
+          htmlContent = htmlContent.replace(/^```\s*\n?/gm, '').trim();
+          htmlContent = htmlContent.replace(/```\s*$/gm, '').trim();
+          // 코드 블록 전체 제거 (```로 시작해서 ```로 끝나는 부분)
+          htmlContent = htmlContent.replace(/```[\s\S]*?```/g, '').trim();
+          
+          // HTML 텍스트 제거 (프롬프트에서 나온 "HTML 형식으로 작성해주되" 같은 텍스트 제거)
+          htmlContent = htmlContent.replace(/HTML\s*형식으로\s*작성/gi, '').trim();
+          htmlContent = htmlContent.replace(/HTML\s*형식/gi, '').trim();
+          htmlContent = htmlContent.replace(/^\s*HTML\s*$/gmi, '').trim();
+          htmlContent = htmlContent.replace(/\n\s*\n\s*\n/g, '\n\n');
+          
+          // HTML 내용 표시
+          blogContent.innerHTML = htmlContent;
+          
+          // 텍스트 내용 추출 (HTML 태그 제거)
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = htmlContent;
+          let textContent = tempDiv.innerText || tempDiv.textContent || '';
+          
+          // 마크다운 코드 블록 제거
+          textContent = textContent.replace(/```\s*html\s*\n?/gi, '').trim();
+          textContent = textContent.replace(/```\s*HTML\s*\n?/gi, '').trim();
+          textContent = textContent.replace(/\n?\s*```\s*$/gm, '').trim();
+          textContent = textContent.replace(/^```\s*\n?/gm, '').trim();
+          textContent = textContent.replace(/```\s*$/gm, '').trim();
+          // 코드 블록 전체 제거 (```로 시작해서 ```로 끝나는 부분)
+          textContent = textContent.replace(/```[\s\S]*?```/g, '').trim();
+          
+          // 텍스트 정리
+          textContent = textContent.replace(/HTML\s*형식으로\s*작성/gi, '').trim();
+          textContent = textContent.replace(/HTML\s*형식/gi, '').trim();
+          textContent = textContent.replace(/^\s*HTML\s*$/gmi, '').trim();
+          textContent = textContent.replace(/\n\s*\n\s*\n/g, '\n\n').trim();
+          
+          // 텍스트 영역에 표시
+          const blogTextContent = document.getElementById('blogTextContent');
+          const blogTextContainer = document.getElementById('blogTextContainer');
+          if (blogTextContent && blogTextContainer) {
+            blogTextContent.value = textContent;
+            blogTextContainer.style.display = 'block';
+          }
+          
+          blogResult.style.display = 'block';
+          
+          // 스크롤 이동
+          blogResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          
+          // 일일 사용량 증가 (생성 성공 후)
+          try {
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            const usageRef = db.collection('users').doc(user.uid)
+              .collection('usage').doc(todayStr);
+            
+            await usageRef.set({
+              count: firebase.firestore.FieldValue.increment(1),
+              date: todayStr,
+              lastUsed: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            
+            console.log('일일 사용량 업데이트 완료');
+          } catch (usageError) {
+            console.error('사용량 업데이트 오류:', usageError);
+            // 사용량 업데이트 실패해도 생성은 성공했으므로 계속 진행
+          }
+          
+          showAlert('블로그 글이 성공적으로 생성되었습니다!', 'success');
+        } catch (error) {
+          console.error('블로그 생성 오류:', error);
+          let errorMessage = error.message || '블로그 글 생성 중 오류가 발생했습니다.';
+          
+          // 네트워크 오류인 경우
+          if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.includes('연결') || error.message.includes('서버에 연결')) {
+            errorMessage = '서버에 연결할 수 없습니다.\n\n해결 방법:\n1. 터미널에서 "npm run server" 명령어로 API 서버를 실행하세요.\n2. 서버가 http://localhost:3001 에서 실행 중인지 확인하세요.';
+          }
+          
+          showAlert(errorMessage, 'error');
+        } finally {
+          generateBtn.disabled = false;
+          generateBtn.innerHTML = '블로그 글 생성';
+        }
+      }
+
+      // 텍스트 복사 함수
+      function copyTextContent() {
+        const blogTextContent = document.getElementById('blogTextContent');
+        
+        if (!blogTextContent || !blogTextContent.value.trim()) {
+          showBlogResultAlert('복사할 내용이 없습니다.', 'error');
+          return;
+        }
+
+        try {
+          // textarea 선택
+          blogTextContent.select();
+          blogTextContent.setSelectionRange(0, 99999); // 모바일 지원
+          
+          // 클립보드에 복사
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(blogTextContent.value).then(() => {
+              showBlogResultAlert('텍스트가 클립보드에 복사되었습니다!', 'success');
+            }).catch(err => {
+              // fallback 사용
+              copyWithFallback();
+            });
+          } else {
+            copyWithFallback();
+          }
+        } catch (error) {
+          console.error('복사 오류:', error);
+          copyWithFallback();
+        }
+        
+        function copyWithFallback() {
+          try {
+            const success = document.execCommand('copy');
+            if (success) {
+              showBlogResultAlert('텍스트가 클립보드에 복사되었습니다!', 'success');
+            } else {
+              showBlogResultAlert('복사에 실패했습니다. 텍스트를 직접 선택하여 복사해주세요.', 'error');
+            }
+          } catch (err) {
+            showBlogResultAlert('복사에 실패했습니다. 텍스트를 직접 선택하여 복사해주세요.', 'error');
+          }
+        }
+      }
+
+      // 텍스트 파일 다운로드 함수
+      function downloadTextFile() {
+        const blogTextContent = document.getElementById('blogTextContent');
+        const topic = document.getElementById('topic')?.value || '블로그포스팅';
+        const mainKeyword = document.getElementById('mainKeyword')?.value || '';
+        
+        if (!blogTextContent || !blogTextContent.value.trim()) {
+          showBlogResultAlert('다운로드할 내용이 없습니다.', 'error');
+          return;
+        }
+
+        try {
+          // 파일명 생성
+          const fileName = `${topic}_${mainKeyword}_${new Date().getTime()}.txt`.replace(/[^a-zA-Z0-9가-힣_]/g, '_');
+          
+          // Blob 생성
+          const blob = new Blob([blogTextContent.value], { type: 'text/plain;charset=utf-8' });
+          
+          // 다운로드 링크 생성
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = fileName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+          
+          showBlogResultAlert('파일이 다운로드되었습니다!', 'success');
+        } catch (error) {
+          console.error('다운로드 오류:', error);
+          showBlogResultAlert('파일 다운로드 중 오류가 발생했습니다.', 'error');
+        }
+      }
+
+      // 블로그 결과 섹션용 알림 표시 함수
+      function showBlogResultAlert(message, type) {
+        const alertContainer = document.getElementById('blogResultAlertContainer');
+        if (!alertContainer) {
+          console.error('blogResultAlertContainer를 찾을 수 없습니다.');
+          alert(message); // fallback
+          return;
+        }
+        
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
+        alertContainer.innerHTML = '';
+        alertContainer.appendChild(alert);
+        
+        // 5초 후 자동 제거 (에러는 제외)
+        if (type !== 'error') {
+          setTimeout(() => {
+            alert.remove();
+          }, 5000);
+        }
+      }
+
+      // 검사하기 함수 - 생성기에서 검사기로 이동
+      function checkBlog() {
+        // 생성된 블로그 내용을 검사기로 전달
+        const blogContent = document.getElementById('blogContent');
+        const blogTextContent = document.getElementById('blogTextContent');
+        const topic = document.getElementById('topic')?.value || '';
+        const mainKeyword = document.getElementById('mainKeyword')?.value || '';
+        
+        if (blogContent && blogTextContent) {
+          // 검사기 섹션으로 전환 (상단으로 스크롤하지 않음)
+          showChecker(false);
+          
+          // 제목 생성 (주제 + 메인키워드 조합)
+          let title = '';
+          if (topic && mainKeyword) {
+            title = `${topic} - ${mainKeyword}`;
+          } else if (topic) {
+            title = topic;
+          } else if (mainKeyword) {
+            title = mainKeyword;
+          } else {
+            // HTML에서 h1 태그 추출 시도
+            const h1Element = blogContent.querySelector('h1');
+            if (h1Element) {
+              title = h1Element.innerText || h1Element.textContent || '';
+            }
+          }
+          
+          // 제목 전달
+          const checkerTitle = document.getElementById('checkerTitle');
+          if (checkerTitle) {
+            checkerTitle.value = title;
+          }
+          
+          // 내용 전달
+          const checkerContent = document.getElementById('checkerContent');
+          if (checkerContent) {
+            checkerContent.value = blogTextContent.value || blogContent.innerText || '';
+          }
+          
+          // 검사 실행
+          setTimeout(() => {
+            checkPosting();
+          }, 300);
+        } else {
+          showAlert('검사할 내용이 없습니다.', 'error');
+        }
+      }
+      
+      // 포스팅 검사 함수
+      function checkPosting() {
+        // 검사기는 로그인 필요 (제한 없음)
+        if (typeof auth === 'undefined' || !auth) {
+          const message = '로그인이 필요합니다. 로그인 후 이용해주세요.';
+          alert(message);
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        const user = auth.currentUser;
+        if (!user) {
+          const message = '로그인이 필요합니다. 로그인 후 이용해주세요.';
+          alert(message);
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        const title = document.getElementById('checkerTitle').value.trim();
+        const content = document.getElementById('checkerContent').value.trim();
+        const checkBtn = document.getElementById('checkBtn');
+        const alertContainer = document.getElementById('checkerAlertContainer');
+        
+        if (!content) {
+          showCheckerAlert('포스팅 내용을 입력해주세요.', 'error');
+          return;
+        }
+        
+        // 로딩 상태
+        checkBtn.disabled = true;
+        checkBtn.innerHTML = '<span class="loading-spinner"></span>검사 중...';
+        alertContainer.innerHTML = '';
+        
+        // 검사 결과 초기화
+        resetCheckerResults();
+        
+        // 실제 검사 로직 (현재는 UI만 구현)
+        setTimeout(() => {
+          performCheck(title, content);
+          
+          checkBtn.disabled = false;
+          checkBtn.innerHTML = '검사하기';
+        }, 500);
+      }
+      
+      // 검사 결과 초기화
+      function resetCheckerResults() {
+        document.getElementById('resultCharCount').textContent = '-';
+        document.getElementById('resultCharDetail').textContent = '검사 중...';
+        document.getElementById('resultSpelling').textContent = '-';
+        document.getElementById('resultSpellingDetail').textContent = '-';
+        document.getElementById('resultSpellingStatus').innerHTML = '';
+        document.getElementById('resultSpellingList').style.display = 'none';
+        document.getElementById('resultMorphology').textContent = '-';
+        document.getElementById('resultMorphologyDetail').textContent = '-';
+        document.getElementById('resultMorphologyStatus').innerHTML = '';
+        document.getElementById('resultMorphologyList').style.display = 'none';
+        document.getElementById('resultForbidden').textContent = '-';
+        document.getElementById('resultForbiddenDetail').textContent = '-';
+        document.getElementById('resultForbiddenStatus').innerHTML = '';
+        document.getElementById('resultForbiddenList').style.display = 'none';
+        document.getElementById('resultRepetition').textContent = '-';
+        document.getElementById('resultRepetitionDetail').textContent = '-';
+        document.getElementById('resultRepetitionStatus').innerHTML = '';
+        document.getElementById('resultRepetitionList').style.display = 'none';
+      }
+      
+      // 실제 검사 수행 (UI 테스트용)
+      function performCheck(title, content) {
+        // 글자수 검사
+        const charCountWithSpace = content.length; // 공백 포함
+        const charCountWithoutSpace = content.replace(/\s/g, '').length; // 공백 제외
+        const wordCount = content.split(/\s+/).filter(word => word.length > 0).length;
+        
+        // 공백 포함/제외 글자수 표시
+        document.getElementById('resultCharCount').textContent = 
+          charCountWithSpace.toLocaleString() + '자 (공백 포함) / ' + 
+          charCountWithoutSpace.toLocaleString() + '자 (공백 제외)';
+        
+        // 1500~2000자 기준 체크 (공백 제외 기준)
+        let lengthStatus = '';
+        let lengthStatusClass = '';
+        if (charCountWithoutSpace < MIN_CHAR_COUNT) {
+          lengthStatus = '부족';
+          lengthStatusClass = 'warning';
+        } else if (charCountWithoutSpace > WARNING_CHAR_COUNT) {
+          lengthStatus = '주의';
+          lengthStatusClass = 'warning';
+        } else if (charCountWithoutSpace > MAX_CHAR_COUNT) {
+          lengthStatus = '초과';
+          lengthStatusClass = 'warning';
+        } else {
+          lengthStatus = '적정';
+          lengthStatusClass = 'success';
+        }
+        
+        document.getElementById('resultCharDetail').innerHTML = 
+          `공백 제외: ${charCountWithoutSpace.toLocaleString()}자 | 단어 수: ${wordCount}개<br>` +
+          `<span class="result-status ${lengthStatusClass}" style="margin-top: 8px; display: inline-block;">${lengthStatus} (권장: ${MIN_CHAR_COUNT.toLocaleString()}~${MAX_CHAR_COUNT.toLocaleString()}자${charCountWithoutSpace > WARNING_CHAR_COUNT ? `, 주의: ${WARNING_CHAR_COUNT.toLocaleString()}자 초과` : ''})</span>`;
+        
+        // 맞춤법 검사 (임시 - 실제로는 API 호출 필요)
+        const spellingErrors = checkSpelling(content);
+        if (spellingErrors.length === 0) {
+          document.getElementById('resultSpelling').textContent = '정상';
+          document.getElementById('resultSpellingDetail').textContent = '맞춤법 오류가 없습니다.';
+          document.getElementById('resultSpellingStatus').innerHTML = '<span class="result-status success">통과</span>';
+        } else {
+          document.getElementById('resultSpelling').textContent = spellingErrors.length + '개 오류';
+          document.getElementById('resultSpellingDetail').textContent = '맞춤법 오류를 확인하세요.';
+          document.getElementById('resultSpellingStatus').innerHTML = '<span class="result-status error">오류 발견</span>';
+          const spellingList = document.getElementById('resultSpellingList');
+          spellingList.innerHTML = '';
+          spellingErrors.forEach(error => {
+            const item = document.createElement('div');
+            item.className = 'result-list-item';
+            item.textContent = error;
+            spellingList.appendChild(item);
+          });
+          spellingList.style.display = 'block';
+        }
+        
+        // 형태소 검사 (임시)
+        const morphologyIssues = checkMorphology(content);
+        if (morphologyIssues.length === 0) {
+          document.getElementById('resultMorphology').textContent = '정상';
+          document.getElementById('resultMorphologyDetail').textContent = '형태소 분석 결과 정상입니다.';
+          document.getElementById('resultMorphologyStatus').innerHTML = '<span class="result-status success">통과</span>';
+        } else {
+          document.getElementById('resultMorphology').textContent = morphologyIssues.length + '개 이슈';
+          document.getElementById('resultMorphologyDetail').textContent = '형태소 분석 결과를 확인하세요.';
+          document.getElementById('resultMorphologyStatus').innerHTML = '<span class="result-status warning">주의</span>';
+          const morphologyList = document.getElementById('resultMorphologyList');
+          morphologyList.innerHTML = '';
+          morphologyIssues.forEach(issue => {
+            const item = document.createElement('div');
+            item.className = 'result-list-item';
+            item.textContent = issue;
+            morphologyList.appendChild(item);
+          });
+          morphologyList.style.display = 'block';
+        }
+        
+        // 금칙어 검사 (임시)
+        const forbiddenWords = checkForbiddenWords(content);
+        if (forbiddenWords.length === 0) {
+          document.getElementById('resultForbidden').textContent = '없음';
+          document.getElementById('resultForbiddenDetail').textContent = '금칙어가 발견되지 않았습니다.';
+          document.getElementById('resultForbiddenStatus').innerHTML = '<span class="result-status success">통과</span>';
+        } else {
+          document.getElementById('resultForbidden').textContent = forbiddenWords.length + '개 발견';
+          document.getElementById('resultForbiddenDetail').textContent = '금칙어를 수정해주세요.';
+          document.getElementById('resultForbiddenStatus').innerHTML = '<span class="result-status error">오류 발견</span>';
+          const forbiddenList = document.getElementById('resultForbiddenList');
+          forbiddenList.innerHTML = '';
+          forbiddenWords.forEach(word => {
+            const item = document.createElement('div');
+            item.className = 'result-list-item';
+            item.textContent = word;
+            forbiddenList.appendChild(item);
+          });
+          forbiddenList.style.display = 'block';
+        }
+        
+        // 반복어 검사
+        const repetitionWords = checkRepetition(content);
+        if (repetitionWords.length === 0) {
+          document.getElementById('resultRepetition').textContent = '정상';
+          document.getElementById('resultRepetitionDetail').textContent = '과도한 반복어가 없습니다.';
+          document.getElementById('resultRepetitionStatus').innerHTML = '<span class="result-status success">통과</span>';
+        } else {
+          document.getElementById('resultRepetition').textContent = repetitionWords.length + '개 발견';
+          document.getElementById('resultRepetitionDetail').textContent = '반복되는 단어를 확인하세요.';
+          document.getElementById('resultRepetitionStatus').innerHTML = '<span class="result-status warning">주의</span>';
+          const repetitionList = document.getElementById('resultRepetitionList');
+          repetitionList.innerHTML = '';
+          repetitionWords.forEach(item => {
+            const listItem = document.createElement('div');
+            listItem.className = 'result-list-item';
+            const typeLabel = item.type === '전체 반복' ? '[전체]' : '[단락]';
+            listItem.textContent = `${typeLabel} ${item.word} (${item.count}회) - ${item.description}`;
+            repetitionList.appendChild(listItem);
+          });
+          repetitionList.style.display = 'block';
+        }
+      }
+      
+      // 맞춤법 검사 함수 (클라이언트 사이드 규칙 기반)
+      function checkSpelling(content) {
+        const errors = [];
+        
+        // 1. 자주 틀리는 맞춤법 패턴 검사
+        const commonMistakes = [
+          {
+            pattern: /\b되\s+있\s+어/gi,
+            correct: '되어 있어',
+            description: '"되 있어" → "되어 있어"'
+          },
+          {
+            pattern: /\b되\s+있\s+는/gi,
+            correct: '되어 있는',
+            description: '"되 있는" → "되어 있는"'
+          },
+          {
+            pattern: /\b되\s+있\s+다/gi,
+            correct: '되어 있다',
+            description: '"되 있다" → "되어 있다"'
+          },
+          {
+            pattern: /\b되\s+있\s+었/gi,
+            correct: '되어 있었',
+            description: '"되 있었" → "되어 있었"'
+          },
+          {
+            pattern: /\b돼\s+있\s+어/gi,
+            correct: '되어 있어',
+            description: '"돼 있어" → "되어 있어"'
+          },
+          {
+            pattern: /\b돼\s+있\s+는/gi,
+            correct: '되어 있는',
+            description: '"돼 있는" → "되어 있는"'
+          },
+          {
+            pattern: /\b돼\s+있\s+다/gi,
+            correct: '되어 있다',
+            description: '"돼 있다" → "되어 있다"'
+          },
+          {
+            pattern: /\b안\s+되\s+어/gi,
+            correct: '안 돼어',
+            description: '"안 되어" → "안 돼어" 또는 "안 되어"'
+          },
+          {
+            pattern: /\b안\s+되\s+는/gi,
+            correct: '안 되는',
+            description: '"안 되는" → "안 되는" (올바름)'
+          },
+          {
+            pattern: /\b안\s+되\s+다/gi,
+            correct: '안 된다',
+            description: '"안 되다" → "안 된다"'
+          },
+          {
+            pattern: /\b안\s+돼\s+어/gi,
+            correct: '안 돼어',
+            description: '"안 돼어" → "안 돼어" (올바름)'
+          },
+          {
+            pattern: /\b되\s+돼/gi,
+            correct: '되',
+            description: '"되돼" → "되" 또는 "돼"'
+          },
+          {
+            pattern: /\b안\s+않\s+어/gi,
+            correct: '안 해',
+            description: '"안 않어" → "안 해" 또는 "않아"'
+          },
+          {
+            pattern: /\b안\s+않\s+는/gi,
+            correct: '않는',
+            description: '"안 않는" → "않는"'
+          },
+          {
+            pattern: /\b안\s+않\s+다/gi,
+            correct: '않다',
+            description: '"안 않다" → "않다"'
+          },
+          {
+            pattern: /\b되\s+고\s+있\s+어/gi,
+            correct: '되고 있어',
+            description: '"되 고 있어" → "되고 있어" (띄어쓰기)'
+          },
+          {
+            pattern: /\b되\s+고\s+있\s+는/gi,
+            correct: '되고 있는',
+            description: '"되 고 있는" → "되고 있는" (띄어쓰기)'
+          },
+          {
+            pattern: /\b되\s+고\s+있\s+다/gi,
+            correct: '되고 있다',
+            description: '"되 고 있다" → "되고 있다" (띄어쓰기)'
+          },
+          {
+            pattern: /\b돼\s+고\s+있\s+어/gi,
+            correct: '되고 있어',
+            description: '"돼 고 있어" → "되고 있어" (띄어쓰기)'
+          },
+          {
+            pattern: /\b돼\s+고\s+있\s+는/gi,
+            correct: '되고 있는',
+            description: '"돼 고 있는" → "되고 있는" (띄어쓰기)'
+          },
+          {
+            pattern: /\b돼\s+고\s+있\s+다/gi,
+            correct: '되고 있다',
+            description: '"돼 고 있다" → "되고 있다" (띄어쓰기)'
+          }
+        ];
+        
+        // 패턴 검사
+        commonMistakes.forEach(({ pattern, description }) => {
+          const matches = content.match(pattern);
+          if (matches) {
+            matches.forEach(match => {
+              errors.push(`${description} - 발견: "${match.trim()}"`);
+            });
+          }
+        });
+        
+        // 2. 띄어쓰기 오류 검사 (띄어쓰기 누락은 제외)
+        const spacingErrors = [
+          {
+            pattern: /\b([가-힣]+)\s+([이가을를의와과도만부터까지에서에게로부터])\s+/g,
+            description: '조사 앞 불필요한 띄어쓰기'
+          },
+          {
+            pattern: /\s+([이가을를의와과도만부터까지에서에게로부터])\s+([가-힣]+)/g,
+            description: '조사 뒤 불필요한 띄어쓰기'
+          }
+        ];
+        
+        // 3. 중복 띄어쓰기 검사 (오류로 표시하지 않음)
+        // const doubleSpacePattern = /\s{2,}/g;
+        // const doubleSpaces = content.match(doubleSpacePattern);
+        // if (doubleSpaces) {
+        //   errors.push(`중복 띄어쓰기 발견 (${doubleSpaces.length}곳)`);
+        // }
+        
+        // 4. 문장 부호 오류 검사 (띄어쓰기 누락은 제외)
+        const punctuationErrors = [];
+        
+        punctuationErrors.forEach(({ pattern, description }) => {
+          const matches = content.match(pattern);
+          if (matches) {
+            matches.forEach(match => {
+              errors.push(`${description} - 발견: "${match.trim()}"`);
+            });
+          }
+        });
+        
+        // 5. 자주 틀리는 단어 검사
+        const wrongWords = [
+          {
+            wrong: /\b되요\b/g,
+            correct: '돼요',
+            description: '"되요" → "돼요"'
+          },
+          {
+            wrong: /\b돼면\b/g,
+            correct: '되면',
+            description: '"돼면" → "되면"'
+          },
+          {
+            wrong: /\b되서\b/g,
+            correct: '되어서',
+            description: '"되서" → "되어서"'
+          },
+          {
+            wrong: /\b돼서\b/g,
+            correct: '되어서',
+            description: '"돼서" → "되어서"'
+          },
+          {
+            wrong: /\b돼는데\b/g,
+            correct: '되는데',
+            description: '"돼는데" → "되는데"'
+          },
+          {
+            wrong: /\b돼지만\b/g,
+            correct: '되지만',
+            description: '"돼지만" → "되지만"'
+          },
+          {
+            wrong: /\b돼도록\b/g,
+            correct: '되도록',
+            description: '"돼도록" → "되도록"'
+          },
+          {
+            wrong: /\b돼게\b/g,
+            correct: '되게',
+            description: '"돼게" → "되게"'
+          },
+          {
+            wrong: /\b안되\b/g,
+            correct: '안 돼',
+            description: '"안되" → "안 돼" (띄어쓰기)'
+          },
+          {
+            wrong: /\b안돼\b/g,
+            correct: '안 돼',
+            description: '"안돼" → "안 돼" (띄어쓰기)'
+          },
+          {
+            wrong: /\b안않\b/g,
+            correct: '않',
+            description: '"안않" → "않"'
+          },
+          {
+            wrong: /\b안해\b/g,
+            correct: '안 해',
+            description: '"안해" → "안 해" (띄어쓰기)'
+          },
+          {
+            wrong: /\b안했\b/g,
+            correct: '안 했',
+            description: '"안했" → "안 했" (띄어쓰기)'
+          },
+          {
+            wrong: /\b안할\b/g,
+            correct: '안 할',
+            description: '"안할" → "안 할" (띄어쓰기)'
+          },
+          {
+            wrong: /\b안하\b/g,
+            correct: '안 하',
+            description: '"안하" → "안 하" (띄어쓰기)'
+          }
+        ];
+        
+        wrongWords.forEach(({ wrong, description }) => {
+          const matches = content.match(wrong);
+          if (matches) {
+            matches.forEach(match => {
+              errors.push(`${description} - 발견: "${match}"`);
+            });
+          }
+        });
+        
+        // 중복 제거 (같은 오류가 여러 번 발견된 경우)
+        const uniqueErrors = [...new Set(errors)];
+        
+        return uniqueErrors;
+      }
+      
+      // 형태소 검사 함수 (클라이언트 사이드 규칙 기반)
+      function checkMorphology(content) {
+        const issues = [];
+        
+        // 1. 조사 오류 검사 (띄어쓰기 누락은 제외)
+        const particleErrors = [
+          {
+            pattern: /\b([가-힣]+)\s+([이가을를의와과도만부터까지에서에게로부터])\s+([가-힣]+)/g,
+            description: '조사 앞뒤 불필요한 띄어쓰기'
+          },
+          {
+            pattern: /\b([가-힣]+)\s+([이가을를의와과도만부터까지에서에게로부터])\s*$/gm,
+            description: '문장 끝 조사 앞 불필요한 띄어쓰기'
+          }
+        ];
+        
+        particleErrors.forEach(({ pattern, description }) => {
+          const matches = content.match(pattern);
+          if (matches && matches.length > 0) {
+            issues.push(`${description} (${matches.length}곳 발견)`);
+          }
+        });
+        
+        // 2. 어미 오류 검사 (띄어쓰기 누락은 제외)
+        const endingErrors = [
+          {
+            pattern: /\b([가-힣]+)\s+(습니다|습니다\.|습니까|습니까\?)/g,
+            description: '어미 앞 불필요한 띄어쓰기'
+          },
+          {
+            pattern: /\b([가-힣]+)\s+(어요|어요\.|아요|아요\.|지요|지요\.)/g,
+            description: '어미 앞 불필요한 띄어쓰기'
+          },
+          {
+            pattern: /\b([가-힣]+)\s+(네요|네요\.|죠|죠\.|어야|어야\.)/g,
+            description: '어미 앞 불필요한 띄어쓰기'
+          }
+        ];
+        
+        endingErrors.forEach(({ pattern, description }) => {
+          const matches = content.match(pattern);
+          if (matches && matches.length > 0) {
+            issues.push(`${description} (${matches.length}곳 발견)`);
+          }
+        });
+        
+        // 3. 문법 패턴 오류 검사
+        const grammarErrors = [
+          {
+            pattern: /\b([가-힣]+)\s+([가-힣]+)\s+([가-힣]+)\s+([가-힣]+)\s+([가-힣]+)\s+([가-힣]+)\s+([가-힣]+)\s+([가-힣]+)\s+([가-힣]+)\s+([가-힣]+)/g,
+            description: '과도하게 긴 문장 (10단어 이상)'
+          },
+          {
+            pattern: /([가-힣])\1{4,}/g,
+            description: '같은 글자 5회 이상 반복'
+          },
+          {
+            pattern: /\b([가-힣]+)\s+\1\s+\1/g,
+            description: '같은 단어 3회 연속 반복'
+          }
+        ];
+        
+        grammarErrors.forEach(({ pattern, description }) => {
+          const matches = content.match(pattern);
+          if (matches && matches.length > 0) {
+            issues.push(`${description} (${matches.length}곳 발견)`);
+          }
+        });
+        
+        // 4. 긍정어/부정어 판단
+        const positiveWords = [
+          '좋', '훌륭', '완벽', '우수', '탁월', '뛰어나', '훌륭하', '훌륭한', '훌륭하다',
+          '성공', '성장', '발전', '향상', '개선', '향상되', '개선되', '발전하',
+          '만족', '기쁨', '행복', '즐거', '즐겁', '기쁘', '행복하',
+          '효과', '효율', '효과적', '효율적', '유용', '유용하', '도움',
+          '추천', '권장', '추천하', '권장하', '제안',
+          '긍정', '긍정적', '낙관', '낙관적', '밝', '밝은',
+          '승리', '성취', '달성', '달성하', '완료', '완료하',
+          '신뢰', '신뢰하', '믿', '믿을', '확신', '확신하',
+          '감사', '감사하', '고마', '고마운', '감동', '감동하'
+        ];
+        
+        const negativeWords = [
+          '나쁜', '나쁘', '나쁘다', '나쁨', '불량', '불량하', '불량한',
+          '실패', '실패하', '실패한', '실망', '실망하', '실망한',
+          '문제', '문제가', '문제를', '문제는', '문제의', '문제점',
+          '어려움', '어려운', '어렵', '어렵다', '곤란', '곤란하',
+          '부족', '부족하', '부족한', '부족하다', '부족함',
+          '부정', '부정적', '비관', '비관적', '어둡', '어두운',
+          '걱정', '걱정하', '걱정되', '우려', '우려하', '우려되',
+          '위험', '위험하', '위험한', '위험하다', '위험함',
+          '불안', '불안하', '불안한', '불안하다', '불안함',
+          '부담', '부담되', '부담스럽', '부담스러운',
+          '피로', '피곤', '피곤하', '피곤한', '지치', '지친',
+          '불만', '불만족', '불만족하', '불만족한',
+          '비판', '비판하', '비판적', '비판하다',
+          '거부', '거부하', '거부하다', '거절', '거절하',
+          '거부감', '거부감이', '거부감을', '거부감은',
+          '혼란', '혼란스럽', '혼란스러운', '혼란하다',
+          '좌절', '좌절하', '좌절감', '좌절하다',
+          '절망', '절망하', '절망적', '절망하다',
+          '분노', '분노하', '분노하다', '화나', '화난',
+          '슬픔', '슬프', '슬픈', '슬프다', '우울', '우울하',
+          '스트레스', '스트레스를', '스트레스가', '스트레스는',
+          '불편', '불편하', '불편한', '불편하다',
+          '비난', '비난하', '비난하다',
+          '혐오', '혐오하', '혐오하다', '싫', '싫어', '싫은',
+          '두려움', '두려워', '두려운', '두려워하',
+          '공포', '공포를', '공포가', '공포스럽', '공포스러운',
+          '절망', '절망하', '절망적', '절망하다',
+          '포기', '포기하', '포기하다', '포기한',
+          '후회', '후회하', '후회하다', '후회한',
+          '아쉽', '아쉬운', '아쉽다', '아쉬워',
+          '불행', '불행하', '불행한', '불행하다',
+          '비참', '비참하', '비참한', '비참하다',
+          '고통', '고통스럽', '고통스러운', '고통을',
+          '괴로움', '괴로워', '괴로운', '괴로워하',
+          '힘듦', '힘들', '힘든', '힘들다', '힘들어',
+          '막막', '막막하', '막막한', '막막하다',
+          '막힘', '막히', '막힌', '막히다', '막혀'
+        ];
+        
+        // 긍정어/부정어 빈도 계산
+        const words = content.split(/\s+/);
+        let positiveCount = 0;
+        let negativeCount = 0;
+        const foundPositiveWords = [];
+        const foundNegativeWords = [];
+        
+        words.forEach(word => {
+          const cleanWord = word.replace(/[^\w가-힣]/g, '');
+          
+          // 긍정어 체크
+          positiveWords.forEach(positive => {
+            if (cleanWord.includes(positive) || positive.includes(cleanWord)) {
+              positiveCount++;
+              if (!foundPositiveWords.includes(positive)) {
+                foundPositiveWords.push(positive);
+              }
+            }
+          });
+          
+          // 부정어 체크
+          negativeWords.forEach(negative => {
+            if (cleanWord.includes(negative) || negative.includes(cleanWord)) {
+              negativeCount++;
+              if (!foundNegativeWords.includes(negative)) {
+                foundNegativeWords.push(negative);
+              }
+            }
+          });
+        });
+        
+        // 부정어가 긍정어보다 많거나, 부정어가 일정 수 이상이면 주의
+        if (negativeCount > positiveCount || negativeCount >= 3) {
+          const ratio = positiveCount > 0 ? (negativeCount / positiveCount).toFixed(1) : '무한대';
+          issues.push(`⚠️ 부정적 표현이 많습니다 (부정: ${negativeCount}회, 긍정: ${positiveCount}회, 비율: ${ratio}:1)`);
+          if (foundNegativeWords.length > 0) {
+            issues.push(`부정적 단어: ${foundNegativeWords.slice(0, 5).join(', ')}${foundNegativeWords.length > 5 ? '...' : ''}`);
+          }
+        } else if (negativeCount > 0 && negativeCount < 3) {
+          issues.push(`부정적 표현 발견 (${negativeCount}회) - 주의 필요`);
+        }
+        
+        // 긍정어가 부정어보다 훨씬 많으면 긍정적 톤
+        if (positiveCount > 0 && negativeCount === 0) {
+          // 긍정적 톤은 이슈가 아님
+        }
+        
+        return issues;
+      }
+      
+      // 금칙어 검사 함수
+      function checkForbiddenWords(content) {
+        // 금칙어 목록
+        const forbiddenList = [
+          // 기존 금칙어
+          '치료효과',
+          '완치',
+          '보장',
+          '100%효과',
+          '의학적으로 입증된',
+          '임상결과',
+          '부작용 없는',
+          '만병통치',
+          '즉시효과',
+          '확정 수익률',
+          '원금보장',
+          '무조건 수익',
+          '급등 예정',
+          '대박주',
+          '투자원금의 몇배',
+          '최저가로 판매중',
+          '100%효과보장',
+          '무료 혜택',
+          '완벽한 솔루션 제공',
+          // 의료/건강 관련
+          '시술',
+          '치료',
+          '무절개',
+          '최소절개',
+          '무통증',
+          '임플란트',
+          '질환',
+          '질병',
+          '의료',
+          '예방',
+          '내원',
+          '의사',
+          '의료기기',
+          '병원',
+          '수술',
+          '성형',
+          '의약품',
+          '확실',
+          '가장',
+          '제일',
+          '최신의',
+          '최고의',
+          '최상의',
+          '최소한',
+          '부작용없이',
+          '안전한',
+          '확률적으로',
+          '0%',
+          '100%',
+          '정확',
+          '치료경험담',
+          '시술후기',
+          '추천',
+          '선정의료기관',
+          '전문가',
+          // 금융/투자/대출 관련
+          '보험',
+          '대부업',
+          '대출',
+          '저금리',
+          '금리',
+          '햇살론',
+          '신용',
+          '키드',
+          '재무설계',
+          '수수료',
+          '보상',
+          '카드론',
+          '수익',
+          '코인',
+          '캐피탈',
+          '금융',
+          '계좌',
+          '이자',
+          '펀드',
+          // 마케팅/홍보/최상급 표현
+          '최고',
+          '최초',
+          '최대',
+          '최상',
+          '강추',
+          '1등',
+          '장담',
+          '할인',
+          '무료',
+          '공짜',
+          '대박',
+          '최저가',
+          '배송',
+          '총알',
+          '특급배송',
+          '직구',
+          '공구',
+          '구매대행',
+          '이벤트',
+          '대행',
+          '상담',
+          '바로가기',
+          '연락처',
+          '이메일',
+          '전화',
+          '추천인',
+          '다운로드',
+          '가입',
+          '빠른곳',
+          '저렴한곳',
+          '잘하는 곳',
+          // 불법/유해/민감 콘텐츠
+          '마약',
+          '총기',
+          '도검',
+          '폭약',
+          '음란물',
+          '점집',
+          '해킹',
+          '개인정보',
+          '이미테이션',
+          '도박',
+          '다이어트',
+          '담배술',
+          '건강기능식품',
+          '문신',
+          // 과장된 마케팅 표현
+          '무조건',
+          '반드시',
+          '확실히',
+          '절대',
+          '100%확실',
+          '100%보장',
+          '즉시',
+          '당장',
+          '지금 바로',
+          '지금 즉시',
+          '바로 지금',
+          '비밀',
+          '비공개',
+          '한정',
+          '한정판',
+          '오늘만',
+          '오늘 마감',
+          '마감 임박',
+          '마지막 기회',
+          '단 한 번',
+          '단 한 번만',
+          // 검증/증명 관련
+          '증명',
+          '검증',
+          '테스트',
+          '임상',
+          '실험',
+          '검사',
+          '분석',
+          // 후기/평가 관련
+          '후기',
+          '리뷰',
+          '평가',
+          '만족도',
+          '추천 후기',
+          '사용 후기',
+          '구매 후기',
+          // 가격/할인 관련
+          '할인율',
+          '특가',
+          '세일',
+          '파격',
+          '파격가',
+          '초특가',
+          '초저가',
+          '반값',
+          '반값세일',
+          '무료배송',
+          '배송비 무료',
+          '무료 배송',
+          // 가입/회원 유도
+          '회원가입',
+          '로그인',
+          '구독',
+          '구독하기',
+          '가입하기',
+          '회원가입하기',
+          '지금 가입',
+          '지금 구독',
+          // 클릭/링크 유도
+          '클릭',
+          '링크',
+          'URL',
+          '바로가기',
+          '클릭하세요',
+          '지금 클릭',
+          '여기 클릭',
+          // 광고/홍보 관련
+          '광고',
+          '홍보',
+          '프로모션',
+          '프로모션 진행중',
+          '광고 문의',
+          '제휴',
+          '협찬',
+          // 사기/피싱 관련
+          '스팸',
+          '피싱',
+          '사기',
+          '사기꾼',
+          '낚시',
+          '낚시글',
+          // 성인/음란 관련
+          '성인',
+          '19금',
+          '야한',
+          '음란',
+          '선정적',
+          // 도박/사행성
+          '로또',
+          '복권',
+          '경마',
+          '경륜',
+          '경정',
+          '사행성',
+          '베팅',
+          // 개인정보 수집
+          '개인정보',
+          '주민등록번호',
+          '신용카드',
+          '계좌번호',
+          '비밀번호',
+          '인증번호',
+          // 과장된 표현
+          '혁신',
+          '혁명',
+          '신기록',
+          '세계 최초',
+          '국내 최초',
+          '세계 최고',
+          '국내 최고',
+          '전국 최고',
+          '전국 1위',
+          '세계 1위',
+          '국내 1위',
+          '독점',
+          '독점 판매',
+          '단독',
+          '단독 제공',
+          '오직 여기서만',
+          '여기서만',
+          '이곳에서만'
+        ];
+        const found = [];
+        
+        forbiddenList.forEach(word => {
+          // 대소문자 구분 없이 검사
+          const regex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+          if (regex.test(content)) {
+            found.push(word);
+          }
+        });
+        
+        return found;
+      }
+      
+      // 반복어 검사 함수
+      function checkRepetition(content) {
+        const REPETITION_THRESHOLD = 6; // 전체 반복 임계값
+        const PARAGRAPH_REPETITION_THRESHOLD = 3; // 단락 내 반복 임계값
+        const repetitionWords = [];
+        
+        // 단락으로 분리 (줄바꿈 2개 이상 또는 문단 구분)
+        // 줄바꿈이 없으면 전체를 하나의 단락으로 처리
+        let paragraphs = content.split(/\n\s*\n+/).filter(p => p.trim().length > 0);
+        if (paragraphs.length === 0) {
+          paragraphs = [content];
+        }
+        
+        // 전체 단어 빈도 분석
+        const allWords = content.split(/\s+/).filter(word => word.length > 1);
+        const wordCount = {};
+        
+        allWords.forEach(word => {
+          const cleanWord = word.replace(/[^\w가-힣]/g, '');
+          if (cleanWord.length > 1) {
+            wordCount[cleanWord] = (wordCount[cleanWord] || 0) + 1;
+          }
+        });
+        
+        // 전체에서 6회 이상 반복된 단어 찾기
+        Object.keys(wordCount).forEach(word => {
+          if (wordCount[word] >= REPETITION_THRESHOLD) {
+            repetitionWords.push({ 
+              word: word, 
+              count: wordCount[word],
+              type: '전체 반복',
+              description: `전체에서 ${wordCount[word]}회 반복`
+            });
+          }
+        });
+        
+        // 각 단락 내에서 2회 이상 반복된 단어 찾기
+        paragraphs.forEach((paragraph, paraIndex) => {
+          const paraWords = paragraph.split(/\s+/).filter(word => word.length > 1);
+          const paraWordCount = {};
+          
+          paraWords.forEach(word => {
+            const cleanWord = word.replace(/[^\w가-힣]/g, '');
+            if (cleanWord.length > 1) {
+              paraWordCount[cleanWord] = (paraWordCount[cleanWord] || 0) + 1;
+            }
+          });
+          
+          // 단락 내 2회 이상 반복된 단어 찾기
+          Object.keys(paraWordCount).forEach(word => {
+            if (paraWordCount[word] >= PARAGRAPH_REPETITION_THRESHOLD) {
+              // 이미 전체 반복으로 추가된 단어는 제외
+              const existingIndex = repetitionWords.findIndex(item => item.word === word && item.type === '단락 반복');
+              if (existingIndex === -1) {
+                repetitionWords.push({ 
+                  word: word, 
+                  count: paraWordCount[word],
+                  type: '단락 반복',
+                  description: `${paraIndex + 1}번째 단락에서 ${paraWordCount[word]}회 반복`
+                });
+              } else {
+                // 같은 단어가 여러 단락에서 반복되면 카운트 증가
+                repetitionWords[existingIndex].count += paraWordCount[word];
+                repetitionWords[existingIndex].description = `여러 단락에서 반복 (${paraIndex + 1}번째 단락 포함)`;
+              }
+            }
+          });
+        });
+        
+        // 중복 제거 및 정렬 (전체 반복 우선, 그 다음 단락 반복)
+        const uniqueWords = {};
+        repetitionWords.forEach(item => {
+          if (!uniqueWords[item.word] || item.type === '전체 반복') {
+            uniqueWords[item.word] = item;
+          }
+        });
+        
+        const result = Object.values(uniqueWords);
+        return result.sort((a, b) => {
+          // 전체 반복이 우선
+          if (a.type === '전체 반복' && b.type !== '전체 반복') return -1;
+          if (a.type !== '전체 반복' && b.type === '전체 반복') return 1;
+          // 같은 타입이면 빈도순
+          return b.count - a.count;
+        }).slice(0, 15);
+      }
+      
+      // 검사기 알림 표시 함수
+      function showCheckerAlert(message, type) {
+        const alertContainer = document.getElementById('checkerAlertContainer');
+        if (!alertContainer) {
+          console.error('checkerAlertContainer를 찾을 수 없습니다.');
+          return;
+        }
+        
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
+        alertContainer.innerHTML = '';
+        alertContainer.appendChild(alert);
+        
+        // 5초 후 자동 제거 (에러는 제외)
+        if (type !== 'error') {
+          setTimeout(() => {
+            alert.remove();
+          }, 5000);
+        }
+      }
+
+      // 폼 리셋 함수
+      function resetForm() {
+        document.getElementById('blogForm').reset();
+        document.getElementById('keywordsSection').style.display = 'none';
+        document.getElementById('blogResult').style.display = 'none';
+        document.getElementById('blogTextContainer').style.display = 'none';
+        document.getElementById('alertContainer').innerHTML = '';
+        document.getElementById('blogResultAlertContainer').innerHTML = '';
+        document.getElementById('manualKeyword').value = '';
+        document.getElementById('keywordTags').innerHTML = '';
+        selectedKeywords = [];
+        updateSelectedKeywordsInfo();
+        
+        // 생성기 섹션 상단으로 스크롤
+        const generatorSection = document.getElementById('generatorSection');
+        if (generatorSection) {
+          generatorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      // 알림 표시 함수
+      function showAlert(message, type) {
+        const alertContainer = document.getElementById('alertContainer');
+        if (!alertContainer) {
+          console.error('alertContainer를 찾을 수 없습니다.');
+          return;
+        }
+        
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
+        alertContainer.innerHTML = '';
+        alertContainer.appendChild(alert);
+        
+        // 5초 후 자동 제거 (에러는 제외)
+        if (type !== 'error') {
+          setTimeout(() => {
+            alert.remove();
+          }, 5000);
+        }
+      }
+
+      // Enter 키로 서브키워드 추천
+      document.addEventListener('DOMContentLoaded', function() {
+        // 생성기 섹션이 표시될 때 이벤트 리스너 추가
+        const mainKeywordInput = document.getElementById('mainKeyword');
+        if (mainKeywordInput) {
+          mainKeywordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              recommendKeywords();
+            }
+          });
+        }
+      });
+    </script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+      // Firebase 설정
+      const firebaseConfig = {
+        apiKey: "AIzaSyCQP1vx3cEtQUYOOqMsKS5HPM3SFMNxasY",
+        authDomain: "boostweb-93027.firebaseapp.com",
+        projectId: "boostweb-93027",
+        storageBucket: "boostweb-93027.firebasestorage.app",
+        messagingSenderId: "402354704129",
+        appId: "1:402354704129:web:0c5cdd4f51b93ba4ef1500",
+        measurementId: "G-2C1TW1KZ7X"
+      };
+
+      // Firebase 초기화
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // 로그인 체크 함수
+      function checkAuthAndShowMessage() {
+        const user = auth.currentUser;
+        if (!user) {
+          // 로그인 안내 메시지 표시
+          const message = '로그인이 필요합니다. 로그인 후 이용해주세요.';
+          alert(message);
+          // 로그인 페이지로 이동
+          window.location.href = 'login.html';
+          return false;
+        }
+        return true;
+      }
+
+      // 기존 함수들을 로그인 체크가 포함된 버전으로 재정의
+      const originalShowGenerator = showGenerator;
+      const originalShowChecker = showChecker;
+      const originalShowNeighborManager = showNeighborManager;
+
+      window.showGenerator = function() {
+        if (checkAuthAndShowMessage()) {
+          originalShowGenerator();
+        }
+      };
+
+      window.showChecker = function(scrollToTop = true) {
+        // 검사기는 로그인 필요 (제한 없음)
+        if (checkAuthAndShowMessage()) {
+          originalShowChecker(scrollToTop);
+        }
+      };
+
+      window.showNeighborManager = function() {
+        if (checkAuthAndShowMessage()) {
+          originalShowNeighborManager();
+        }
+      };
+      
+      // 인증 상태 변경 감지 (페이지 로드 후 로그인 상태 확인)
+      auth.onAuthStateChanged(function(user) {
+        // 인증 상태가 변경될 때마다 실행 (초기 로드 시에도 실행됨)
+        // 여기서는 특별한 처리가 필요 없으므로 비워둠
+      });
+    </script>
   </body>
 </html>

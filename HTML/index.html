@@ -1525,6 +1525,21 @@
       }
       const auth = firebase.auth();
 
+      // URL 파라미터에서 추천인 아이디 읽기 및 sessionStorage 저장
+      (function() {
+        function getUrlParameter(name) {
+          name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+          const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+          const results = regex.exec(location.search);
+          return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        const referralIdFromUrl = getUrlParameter('referrer') || getUrlParameter('ref');
+        if (referralIdFromUrl && referralIdFromUrl.trim() !== '') {
+          sessionStorage.setItem('pendingReferralId', referralIdFromUrl.trim());
+          console.log('✅ URL에서 추천인 아이디 감지 및 저장:', referralIdFromUrl.trim());
+        }
+      })();
 
       // 상수 정의 - 관리자 이메일 목록
       const ADMIN_EMAILS = [

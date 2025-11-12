@@ -248,12 +248,24 @@
         const referralIdFromUrl = getUrlParameter('referrer') || getUrlParameter('ref');
         const referralIdInput = document.getElementById('loginReferralId');
         
+        // URL 파라미터에서 추천인 아이디 확인
+        let referralId = '';
         if (referralIdFromUrl && referralIdFromUrl.trim() !== '') {
-          const trimmedReferralId = referralIdFromUrl.trim();
-          
+          referralId = referralIdFromUrl.trim();
+          // sessionStorage에도 저장 (회원가입에서 온 경우)
+          sessionStorage.setItem('pendingReferralId', referralId);
+        } else {
+          // URL에 없으면 sessionStorage에서 확인 (회원가입에서 저장한 경우)
+          const pendingReferralId = sessionStorage.getItem('pendingReferralId');
+          if (pendingReferralId && pendingReferralId.trim() !== '') {
+            referralId = pendingReferralId.trim();
+          }
+        }
+        
+        if (referralId && referralId !== '') {
           // 입력 필드에 자동으로 채우기
           if (referralIdInput) {
-            referralIdInput.value = trimmedReferralId;
+            referralIdInput.value = referralId;
             referralIdInput.readOnly = true; // 자동 입력된 값은 읽기 전용으로 설정
             referralIdInput.style.backgroundColor = '#1f1f1f';
             referralIdInput.style.cursor = 'not-allowed';
@@ -265,7 +277,7 @@
             }
           }
           
-          console.log('✅ URL에서 추천인 아이디 감지:', trimmedReferralId);
+          console.log('✅ 추천인 아이디 자동 입력:', referralId);
         }
       });
 
@@ -553,6 +565,10 @@
           
           // 기존 사용자 데이터 마이그레이션
           await migrateUserData(user, name, referralId);
+          
+          // sessionStorage에서 추천인 아이디 정리 (로그인 성공 후)
+          sessionStorage.removeItem('pendingReferralId');
+          console.log('✅ sessionStorage에서 추천인 아이디 정리 완료');
           
           showMessage('로그인 성공! 홈페이지로 이동합니다...', 'success');
           

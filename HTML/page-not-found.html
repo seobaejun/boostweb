@@ -767,7 +767,11 @@
     <script src="./assets/js/main.min.js"></script>
     <script>
       // 상수 정의
-      const API_BASE_URL = 'http://localhost:3001';
+      // 환경에 따라 API URL 동적 설정
+      // 로컬 개발 환경: localhost:3001 사용
+      // 프로덕션 환경: Vercel Serverless Functions 사용 (/api)
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const API_BASE_URL = isLocalhost ? 'http://localhost:3001' : '';
       const MIN_CHAR_COUNT = 1500; // 최소 글자수 (공백 제외)
       const MAX_CHAR_COUNT = 2000; // 권장 최대 글자수 (공백 제외)
       const WARNING_CHAR_COUNT = 2500; // 주의 글자수 (공백 제외)
@@ -943,7 +947,8 @@
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 30000);
           
-          const response = await fetch(`${API_BASE_URL}/api/recommend-keywords`, {
+          const apiUrl = isLocalhost ? `${API_BASE_URL}/api/recommend-keywords` : '/api/recommend-keywords';
+          const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -956,7 +961,11 @@
             if (fetchError.name === 'AbortError') {
               throw new Error('요청 시간이 초과되었습니다. 네트워크 연결을 확인해주세요.');
             }
-            throw new Error('서버에 연결할 수 없습니다. API 서버가 실행 중인지 확인해주세요. (http://localhost:3001)');
+            if (isLocalhost) {
+              throw new Error('서버에 연결할 수 없습니다. API 서버가 실행 중인지 확인해주세요. (http://localhost:3001)');
+            } else {
+              throw new Error('서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
+            }
           });
           
           clearTimeout(timeoutId);
@@ -1001,7 +1010,11 @@
           
           // 네트워크 오류인 경우
           if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.includes('연결') || error.message.includes('서버에 연결')) {
-            errorMessage = '서버에 연결할 수 없습니다.\n\n해결 방법:\n1. 터미널에서 "npm run server" 명령어로 API 서버를 실행하세요.\n2. 서버가 http://localhost:3001 에서 실행 중인지 확인하세요.';
+            if (isLocalhost) {
+              errorMessage = '서버에 연결할 수 없습니다.\n\n해결 방법:\n1. 터미널에서 "npm run server" 명령어로 API 서버를 실행하세요.\n2. 서버가 http://localhost:3001 에서 실행 중인지 확인하세요.';
+            } else {
+              errorMessage = '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.';
+            }
           }
           
           showAlert(errorMessage, 'error');
@@ -1163,7 +1176,8 @@
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 60000);
           
-          const response = await fetch(`${API_BASE_URL}/api/generate-blog`, {
+          const apiUrl = isLocalhost ? `${API_BASE_URL}/api/generate-blog` : '/api/generate-blog';
+          const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -1180,7 +1194,11 @@
             if (fetchError.name === 'AbortError') {
               throw new Error('요청 시간이 초과되었습니다. 네트워크 연결을 확인해주세요.');
             }
-            throw new Error('서버에 연결할 수 없습니다. API 서버가 실행 중인지 확인해주세요. (http://localhost:3001)');
+            if (isLocalhost) {
+              throw new Error('서버에 연결할 수 없습니다. API 서버가 실행 중인지 확인해주세요. (http://localhost:3001)');
+            } else {
+              throw new Error('서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
+            }
           });
           
           clearTimeout(timeoutId);
@@ -1275,7 +1293,11 @@
           
           // 네트워크 오류인 경우
           if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.includes('연결') || error.message.includes('서버에 연결')) {
-            errorMessage = '서버에 연결할 수 없습니다.\n\n해결 방법:\n1. 터미널에서 "npm run server" 명령어로 API 서버를 실행하세요.\n2. 서버가 http://localhost:3001 에서 실행 중인지 확인하세요.';
+            if (isLocalhost) {
+              errorMessage = '서버에 연결할 수 없습니다.\n\n해결 방법:\n1. 터미널에서 "npm run server" 명령어로 API 서버를 실행하세요.\n2. 서버가 http://localhost:3001 에서 실행 중인지 확인하세요.';
+            } else {
+              errorMessage = '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.';
+            }
           }
           
           showAlert(errorMessage, 'error');

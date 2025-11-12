@@ -204,19 +204,6 @@
             />
           </div>
           
-          <div class="auth-form-group">
-            <label class="auth-label" for="referralId">추천인 아이디 <span style="color: #999999; font-weight: 400;">(선택사항)</span></label>
-            <input 
-              type="text" 
-              id="referralId" 
-              class="auth-input" 
-              placeholder="추천인 이메일을 입력하세요 (선택사항)"
-            />
-            <div style="color: #999999; font-size: 12px; margin-top: 4px;">
-              추천인의 이메일 주소를 입력하세요. 비워두셔도 됩니다.
-            </div>
-          </div>
-          
           <button type="submit" id="signupBtn" class="auth-button">회원가입</button>
         </form>
         
@@ -264,39 +251,6 @@
       console.log('Firestore 인스턴스:', db ? '생성됨' : '생성 실패');
       console.log('Firestore 타입:', typeof db);
 
-      // URL 파라미터에서 추천인 아이디 읽기
-      function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        const results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-      }
-
-      // 페이지 로드 시 URL 파라미터에서 추천인 아이디 확인
-      document.addEventListener('DOMContentLoaded', function() {
-        const referralIdFromUrl = getUrlParameter('referrer') || getUrlParameter('ref');
-        const referralIdInput = document.getElementById('referralId');
-        
-        if (referralIdFromUrl && referralIdFromUrl.trim() !== '') {
-          const trimmedReferralId = referralIdFromUrl.trim();
-          
-          // 입력 필드에 자동으로 채우기
-          if (referralIdInput) {
-            referralIdInput.value = trimmedReferralId;
-            referralIdInput.readOnly = true; // 자동 입력된 값은 읽기 전용으로 설정
-            referralIdInput.style.backgroundColor = '#1f1f1f';
-            referralIdInput.style.cursor = 'not-allowed';
-            
-            // 안내 메시지 표시
-            const referralLabel = referralIdInput.previousElementSibling;
-            if (referralLabel && referralLabel.tagName === 'LABEL') {
-              referralLabel.innerHTML = '추천인 아이디 <span style="color: #7D3CF3; font-weight: 600;">(자동 등록됨)</span>';
-            }
-          }
-          
-          console.log('✅ URL에서 추천인 아이디 감지:', trimmedReferralId);
-        }
-      });
 
       // 메시지 표시 함수
       function showMessage(message, type) {
@@ -377,7 +331,6 @@
         const emailInput = document.getElementById('signupEmail');
         const passwordInput = document.getElementById('signupPassword');
         const passwordConfirmInput = document.getElementById('signupPasswordConfirm');
-        const referralIdInput = document.getElementById('referralId');
         const signupBtn = document.getElementById('signupBtn');
         
         // 입력값 가져오기
@@ -385,14 +338,12 @@
         const email = emailInput ? emailInput.value.trim() : '';
         const password = passwordInput ? passwordInput.value : '';
         const passwordConfirm = passwordConfirmInput ? passwordConfirmInput.value : '';
-        const referralId = referralIdInput ? referralIdInput.value.trim() : '';
         
         console.log('입력값 확인:', {
           name: name,
           email: email,
           password: password ? '***' : '',
-          passwordConfirm: passwordConfirm ? '***' : '',
-          referralId: referralId
+          passwordConfirm: passwordConfirm ? '***' : ''
         });
         
         // 유효성 검사
@@ -466,41 +417,24 @@
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           };
           
-          // 2. 추천인 아이디 저장 (회원가입할 때 적는 추천인 아이디)
-          console.log('=== 추천인 ID 확인 ===');
-          console.log('원본 referralId 값:', referralId);
-          console.log('referralId 타입:', typeof referralId);
-          console.log('referralId 길이:', referralId ? referralId.length : 0);
-          
-          // 이름과 추천인 ID를 localStorage에 임시 저장 (로그인 시 사용)
+          // 이름을 localStorage에 임시 저장 (로그인 시 사용)
           if (finalName) {
             localStorage.setItem(`name_${user.uid}`, finalName);
             console.log('이름을 localStorage에 저장:', finalName);
           }
           
-          if (referralId && referralId.trim() !== '') {
-            const trimmedReferralId = referralId.trim();
-            localStorage.setItem(`referralId_${user.uid}`, trimmedReferralId);
-            userData.referralId = trimmedReferralId;
-            userData.referredAt = firebase.firestore.FieldValue.serverTimestamp();
-            console.log('✅ 추천인 ID 저장:', trimmedReferralId);
-            console.log('추천인 ID를 localStorage에 저장:', trimmedReferralId);
-          } else {
-            userData.referralId = null;
-            console.log('추천인 ID: 없음 (null로 저장)');
-          }
+          // 추천인 ID는 로그인 시 입력받으므로 여기서는 null로 설정
+          userData.referralId = null;
           
           console.log('=== 최종 저장할 데이터 ===');
           console.log('userData.name:', userData.name, '타입:', typeof userData.name, '길이:', userData.name ? userData.name.length : 0);
           console.log('userData.email:', userData.email);
           console.log('userData.role:', userData.role);
-          console.log('userData.referralId:', userData.referralId, '타입:', typeof userData.referralId);
           console.log('전체 userData:', JSON.stringify(userData, null, 2));
           
           // userData 객체 직접 확인
           console.log('userData 객체 키:', Object.keys(userData));
           console.log('userData.name 직접 접근:', userData['name']);
-          console.log('userData.referralId 직접 접근:', userData['referralId']);
           
           // Firestore에 사용자 정보 저장
           console.log('=== Firestore 저장 시작 ===');
@@ -543,16 +477,12 @@
               nameLength: userData.name ? userData.name.length : 0,
               email: userData.email,
               role: userData.role,
-              referralId: userData.referralId,
-              referralIdType: typeof userData.referralId,
-              referralIdLength: userData.referralId ? userData.referralId.length : 0,
               hasCreatedAt: !!userData.createdAt,
               hasUpdatedAt: !!userData.updatedAt
             });
             console.log('11-2. userData 전체:', JSON.stringify(userData, null, 2));
             console.log('11-3. userData 객체 키:', Object.keys(userData));
             console.log('11-4. userData.name 존재:', userData.hasOwnProperty('name'));
-            console.log('11-5. userData.referralId 존재:', userData.hasOwnProperty('referralId'));
             
             // 저장 직전 최종 확인
             const dataToSave = {
@@ -560,14 +490,10 @@
               email: String(userData.email || '').trim(),
               role: String(userData.role || 'user'),
               membershipType: String(userData.membershipType || 'free'),
-              referralId: userData.referralId ? String(userData.referralId).trim() : null,
+              referralId: null, // 추천인 ID는 로그인 시 입력받음
               createdAt: userData.createdAt,
               updatedAt: userData.updatedAt
             };
-            
-            if (dataToSave.referralId && dataToSave.referralId !== '') {
-              dataToSave.referredAt = firebase.firestore.FieldValue.serverTimestamp();
-            }
             
             console.log('11-6. 최종 저장할 dataToSave:', JSON.stringify(dataToSave, null, 2));
             
@@ -604,7 +530,6 @@
               console.log('13. ✅ 저장 확인 성공!');
               console.log('14. 저장된 데이터:', JSON.stringify(savedData, null, 2));
               console.log('14-1. 저장된 name:', savedData.name, '타입:', typeof savedData.name);
-              console.log('14-2. 저장된 referralId:', savedData.referralId, '타입:', typeof savedData.referralId);
               
               // 필수 필드 확인
               if (savedData.name && savedData.email && savedData.role) {

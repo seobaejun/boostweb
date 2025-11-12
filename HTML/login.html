@@ -235,6 +235,40 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
 
+      // URL 파라미터에서 추천인 아이디 읽기
+      function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        const results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+      }
+
+      // 페이지 로드 시 URL 파라미터에서 추천인 아이디 확인
+      document.addEventListener('DOMContentLoaded', function() {
+        const referralIdFromUrl = getUrlParameter('referrer') || getUrlParameter('ref');
+        const referralIdInput = document.getElementById('loginReferralId');
+        
+        if (referralIdFromUrl && referralIdFromUrl.trim() !== '') {
+          const trimmedReferralId = referralIdFromUrl.trim();
+          
+          // 입력 필드에 자동으로 채우기
+          if (referralIdInput) {
+            referralIdInput.value = trimmedReferralId;
+            referralIdInput.readOnly = true; // 자동 입력된 값은 읽기 전용으로 설정
+            referralIdInput.style.backgroundColor = '#1f1f1f';
+            referralIdInput.style.cursor = 'not-allowed';
+            
+            // 안내 메시지 표시
+            const referralLabel = referralIdInput.previousElementSibling;
+            if (referralLabel && referralLabel.tagName === 'LABEL') {
+              referralLabel.innerHTML = '추천인 아이디 <span style="color: #7D3CF3; font-weight: 600;">(자동 등록됨)</span> <span style="color: #999999; font-weight: 400;">(정보가 없을 경우만 입력)</span>';
+            }
+          }
+          
+          console.log('✅ URL에서 추천인 아이디 감지:', trimmedReferralId);
+        }
+      });
+
       // 메시지 표시 함수
       function showMessage(message, type) {
         const messageDiv = document.getElementById('authMessage');
@@ -313,12 +347,18 @@
             console.log('이름 업데이트:', user.email, '->', inputName.trim());
           }
           
-          // 입력된 추천인 ID가 있으면 저장
+          // 입력된 추천인 ID가 있으면 저장 (기존 값이 없거나 사용자가 명시적으로 입력한 경우)
           if (inputReferralId && inputReferralId.trim() !== '') {
-            updates.referralId = inputReferralId.trim();
-            updates.referredAt = firebase.firestore.FieldValue.serverTimestamp();
-            hasUpdates = true;
-            console.log('추천인 ID 업데이트:', user.email, '->', inputReferralId.trim());
+            const existingReferralId = userDoc.exists ? userDoc.data().referralId : null;
+            // 기존 추천인 ID가 없거나 비어있는 경우에만 업데이트
+            if (!existingReferralId || existingReferralId.trim() === '') {
+              updates.referralId = inputReferralId.trim();
+              updates.referredAt = firebase.firestore.FieldValue.serverTimestamp();
+              hasUpdates = true;
+              console.log('추천인 ID 저장:', user.email, '->', inputReferralId.trim());
+            } else {
+              console.log('추천인 ID가 이미 존재하여 업데이트하지 않음:', user.email, '기존:', existingReferralId);
+            }
           }
           
           if (hasUpdates) {

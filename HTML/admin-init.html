@@ -265,7 +265,6 @@
           <h1 style="margin-top: 16px;">관리자 페이지</h1>
         </div>
         <div style="display: flex; gap: 12px;">
-          <button id="createTestUserBtn" class="refresh-btn" style="background: #4caf50;">테스트 유저 생성</button>
           <button id="refreshBtn" class="refresh-btn">새로고침</button>
         </div>
       </div>
@@ -277,6 +276,9 @@
         <h2 class="section-title">👥 회원 목록</h2>
         <div class="filter-buttons">
           <button class="filter-btn active" onclick="filterUsers('all', this)">전체</button>
+          <button class="filter-btn" onclick="filterUsers('admin_seobaejun', this)">서배준 관리자</button>
+          <button class="filter-btn" onclick="filterUsers('admin_sungmin', this)">성민성 관리자</button>
+          <button class="filter-btn" onclick="filterUsers('admin_yangmin', this)">양민아 관리자</button>
           <button class="filter-btn" onclick="filterUsers('premium', this)">유료회원</button>
           <button class="filter-btn" onclick="filterUsers('free', this)">무료회원</button>
         </div>
@@ -305,6 +307,34 @@
         'kylesung0901@gmail.com',      // 성민성님
         'didalsdk1@naver.com'          // 양민아님
       ];
+
+      // 관리자별 추천인 아이디 매핑
+      const ADMIN_REFERRAL_IDS = {
+        'kylesung0901@gmail.com': 'skylinemss',  // 성민성님
+        'didalsdk1@naver.com': 'boost313'         // 양민아님
+      };
+      
+      // 추천인 아이디로 관리자 찾기 함수
+      function getAdminByReferralId(referralId) {
+        if (!referralId) return 'sprince1004@naver.com'; // 서배준님 (기본값)
+        
+        for (const [adminEmail, adminReferralId] of Object.entries(ADMIN_REFERRAL_IDS)) {
+          if (referralId === adminReferralId) {
+            return adminEmail;
+          }
+        }
+        return 'sprince1004@naver.com'; // 서배준님 (기본값)
+      }
+      
+      // 관리자 이름 가져오기 함수
+      function getAdminName(adminEmail) {
+        const adminNames = {
+          'sprince1004@naver.com': '서배준',
+          'kylesung0901@gmail.com': '성민성',
+          'didalsdk1@naver.com': '양민아'
+        };
+        return adminNames[adminEmail] || '서배준';
+      }
 
       // Firebase 설정
       const firebaseConfig = {
@@ -423,7 +453,7 @@
               return;
             }
             
-            let tableHTML = '<table><thead><tr><th>이름</th><th>이메일</th><th>역할</th><th>회원 유형</th><th>추천인 ID</th><th>가입일</th><th>관리</th></tr></thead><tbody>';
+            let tableHTML = '<table><thead><tr><th>이름</th><th>이메일</th><th>역할</th><th>회원 유형</th><th>추천인 ID</th><th>관리자</th><th>가입일</th><th>관리</th></tr></thead><tbody>';
             
             // XSS 방지를 위한 이스케이프 함수
             const escapeHtml = (text) => {
@@ -486,6 +516,10 @@
               
               const toggleBtnText = membershipType === 'premium' ? '무료로 변경' : '유료로 변경';
               
+              // 관리자 정보 계산
+              const adminEmail = getAdminByReferralId(displayReferralId === '-' ? '' : displayReferralId);
+              const adminName = getAdminName(adminEmail);
+              
               tableHTML += `
                 <tr data-membership="${membershipType}">
                   <td>${escapeHtml(displayName)}</td>
@@ -493,8 +527,13 @@
                   <td>${roleBadge}</td>
                   <td>${membershipBadge}</td>
                   <td>${escapeHtml(displayReferralId)}</td>
+                  <td>${escapeHtml(adminName)}</td>
                   <td>${createdAt}</td>
                   <td>
+                    ${userData.role === 'admin' ? 
+                      `<button class="action-btn" style="background: #f44336;" onclick="toggleUserRole('${userId}', 'admin')">일반으로 변경</button>` : 
+                      `<button class="action-btn" style="background: #2196F3;" onclick="toggleUserRole('${userId}', 'user')">관리자로 변경</button>`
+                    }
                     <button class="action-btn toggle" onclick="toggleMembership('${userId}', '${membershipType}')">${toggleBtnText}</button>
                     <button class="action-btn delete" onclick="deleteUser('${userId}', '${escapeHtml(userData.email || '')}')">삭제</button>
                   </td>
@@ -574,7 +613,7 @@
             return;
           }
           
-          let tableHTML = '<table><thead><tr><th>이름</th><th>이메일</th><th>역할</th><th>회원 유형</th><th>추천인 ID</th><th>가입일</th><th>관리</th></tr></thead><tbody>';
+          let tableHTML = '<table><thead><tr><th>이름</th><th>이메일</th><th>역할</th><th>회원 유형</th><th>추천인 ID</th><th>관리자</th><th>가입일</th><th>관리</th></tr></thead><tbody>';
           
           // XSS 방지를 위한 이스케이프 함수
           const escapeHtml = (text) => {
@@ -637,6 +676,10 @@
             
             const toggleBtnText = membershipType === 'premium' ? '무료로 변경' : '유료로 변경';
             
+            // 관리자 정보 계산
+            const adminEmail = getAdminByReferralId(displayReferralId === '-' ? '' : displayReferralId);
+            const adminName = getAdminName(adminEmail);
+            
             tableHTML += `
               <tr data-membership="${membershipType}">
                 <td>${escapeHtml(displayName)}</td>
@@ -644,10 +687,15 @@
                 <td>${roleBadge}</td>
                 <td>${membershipBadge}</td>
                 <td>${escapeHtml(displayReferralId)}</td>
+                <td>${escapeHtml(adminName)}</td>
                 <td>${createdAt}</td>
-                <td>
-                  <button class="action-btn toggle" onclick="toggleMembership('${userId}', '${membershipType}')">${toggleBtnText}</button>
-                  <button class="action-btn delete" onclick="deleteUser('${userId}', '${escapeHtml(userData.email || '')}')">삭제</button>
+                  <td>
+                    ${userData.role === 'admin' ? 
+                      `<button class="action-btn" style="background: #f44336;" onclick="toggleUserRole('${userId}', 'admin')">일반으로 변경</button>` : 
+                      `<button class="action-btn" style="background: #2196F3;" onclick="toggleUserRole('${userId}', 'user')">관리자로 변경</button>`
+                    }
+                    <button class="action-btn toggle" onclick="toggleMembership('${userId}', '${membershipType}')">${toggleBtnText}</button>
+                    <button class="action-btn delete" onclick="deleteUser('${userId}', '${escapeHtml(userData.email || '')}')">삭제</button>
                 </td>
               </tr>
             `;
@@ -830,75 +878,6 @@
         }
       }
 
-      // 테스트 유저 생성 함수 (users 컬렉션 생성 확인용)
-      async function createTestUser() {
-        const createBtn = document.getElementById('createTestUserBtn');
-        
-        if (!auth.currentUser) {
-          showMessage('먼저 로그인해주세요.', 'error');
-          return;
-        }
-        
-        if (!ADMIN_EMAILS.includes(auth.currentUser.email)) {
-          showMessage('관리자만 접근할 수 있습니다.', 'error');
-          return;
-        }
-        
-        createBtn.disabled = true;
-        createBtn.textContent = '생성 중...';
-        
-        try {
-          // 테스트용 추천인 ID (예시)
-          const testReferralId = 'test-referrer@example.com';
-          
-          const testUserData = {
-            name: '테스트 사용자',
-            email: 'test@example.com',
-            role: 'user',
-            membershipType: 'free',  // 기본값: 무료회원
-            referralId: testReferralId,  // 추천인 ID 포함
-            referredAt: firebase.firestore.FieldValue.serverTimestamp(),
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          };
-          
-          console.log('테스트 유저 생성 시작...');
-          console.log('저장할 데이터:', JSON.stringify(testUserData, null, 2));
-          console.log('추천인 ID:', testReferralId);
-          
-          // users 컬렉션에 테스트 문서 생성
-          const testDocRef = db.collection('users').doc('test-user-' + Date.now());
-          
-          // set() 사용
-          await testDocRef.set(testUserData);
-          console.log('✅ 테스트 유저 set() 완료');
-          
-          // 저장 확인
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          const savedDoc = await testDocRef.get();
-          
-          if (savedDoc.exists) {
-            const savedData = savedDoc.data();
-            console.log('✅ 저장 확인 성공!');
-            console.log('저장된 데이터:', JSON.stringify(savedData, null, 2));
-            console.log('저장된 추천인 ID:', savedData.referralId || '없음');
-            
-            showMessage('테스트 유저가 성공적으로 생성되었습니다! (추천인 ID 포함)', 'success');
-            // 실시간 리스너가 자동으로 업데이트하므로 loadUsers() 호출 불필요
-          } else {
-            showMessage('테스트 유저 생성은 완료되었지만 확인에 실패했습니다.', 'error');
-          }
-          
-        } catch (error) {
-          console.error('테스트 유저 생성 오류:', error);
-          console.error('오류 코드:', error.code);
-          console.error('오류 메시지:', error.message);
-          showMessage('테스트 유저 생성 중 오류가 발생했습니다: ' + error.message, 'error');
-        } finally {
-          createBtn.disabled = false;
-          createBtn.textContent = '테스트 유저 생성';
-        }
-      }
 
       // 모든 데이터 불러오기
       async function loadAllData() {
@@ -956,6 +935,38 @@
         }
       }
 
+      // 사용자 Role 전환 함수
+      async function toggleUserRole(userId, currentRole) {
+        try {
+          const newRole = currentRole === 'admin' ? 'user' : 'admin';
+          const roleName = newRole === 'admin' ? '관리자' : '일반 사용자';
+          
+          // 사용자 정보 가져오기
+          const userDoc = await db.collection('users').doc(userId).get();
+          if (!userDoc.exists) {
+            showMessage('사용자를 찾을 수 없습니다.', 'error');
+            return;
+          }
+          
+          const userEmail = userDoc.data().email || '';
+          
+          if (!confirm(`${userEmail} 회원을 ${roleName}로 변경하시겠습니까?`)) {
+            return;
+          }
+          
+          await db.collection('users').doc(userId).update({
+            role: newRole,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          
+          showMessage(`회원의 역할이 ${roleName}로 변경되었습니다.`, 'success');
+          // 실시간 리스너가 자동으로 업데이트하므로 별도 로드 불필요
+        } catch (error) {
+          console.error('사용자 Role 변경 오류:', error);
+          showMessage('사용자 Role 변경 중 오류가 발생했습니다: ' + error.message, 'error');
+        }
+      }
+
       // 회원 유형 전환 함수
       async function toggleMembership(userId, currentType) {
         try {
@@ -994,7 +1005,24 @@
           // onclick에서 호출된 경우
           const buttons = document.querySelectorAll('.filter-btn');
           buttons.forEach(btn => {
-            if (btn.textContent.trim() === (filterType === 'all' ? '전체' : filterType === 'premium' ? '유료회원' : '무료회원')) {
+            const btnText = btn.textContent.trim();
+            let shouldActivate = false;
+            
+            if (filterType === 'all' && btnText === '전체') {
+              shouldActivate = true;
+            } else if (filterType === 'premium' && btnText === '유료회원') {
+              shouldActivate = true;
+            } else if (filterType === 'free' && btnText === '무료회원') {
+              shouldActivate = true;
+            } else if (filterType === 'admin_seobaejun' && btnText === '서배준 관리자') {
+              shouldActivate = true;
+            } else if (filterType === 'admin_sungmin' && btnText === '성민성 관리자') {
+              shouldActivate = true;
+            } else if (filterType === 'admin_yangmin' && btnText === '양민아 관리자') {
+              shouldActivate = true;
+            }
+            
+            if (shouldActivate) {
               btn.classList.add('active');
             }
           });
@@ -1004,16 +1032,27 @@
         const tableRows = document.querySelectorAll('#usersTableContainer table tbody tr');
         tableRows.forEach(row => {
           const membership = row.getAttribute('data-membership') || 'free';
+          const referralIdCell = row.querySelector('td:nth-child(5)'); // 추천인 ID 셀 (6번째 컬럼)
+          const referralId = referralIdCell ? referralIdCell.textContent.trim() : '';
+          const adminEmail = getAdminByReferralId(referralId);
+          
+          let shouldShow = false;
           
           if (filterType === 'all') {
-            row.style.display = '';
-          } else if (filterType === 'premium' && membership === 'premium') {
-            row.style.display = '';
-          } else if (filterType === 'free' && membership === 'free') {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
+            shouldShow = true;
+          } else if (filterType === 'admin_seobaejun') {
+            shouldShow = adminEmail === 'sprince1004@naver.com';
+          } else if (filterType === 'admin_sungmin') {
+            shouldShow = adminEmail === 'kylesung0901@gmail.com';
+          } else if (filterType === 'admin_yangmin') {
+            shouldShow = adminEmail === 'didalsdk1@naver.com';
+          } else if (filterType === 'premium') {
+            shouldShow = membership === 'premium';
+          } else if (filterType === 'free') {
+            shouldShow = membership === 'free';
           }
+          
+          row.style.display = shouldShow ? '' : 'none';
         });
       }
 
@@ -1023,11 +1062,11 @@
       window.deleteContact = deleteContact;
       window.toggleMessageDetail = toggleMessageDetail;
       window.toggleMembership = toggleMembership;
+      window.toggleUserRole = toggleUserRole;
       window.filterUsers = filterUsers;
 
       // 이벤트 리스너
       document.getElementById('refreshBtn').addEventListener('click', loadAllData);
-      document.getElementById('createTestUserBtn').addEventListener('click', createTestUser);
 
       // 페이지 로드 시 데이터 불러오기 및 실시간 업데이트 시작
       auth.onAuthStateChanged(function(user) {

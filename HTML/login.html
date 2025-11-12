@@ -210,8 +210,12 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script>
-      // 상수 정의
-      const ADMIN_EMAIL = 'sprince1004@naver.com';
+      // 상수 정의 - 관리자 이메일 목록
+      const ADMIN_EMAILS = [
+        'sprince1004@naver.com',      // 서배준님
+        'kylesung0901@gmail.com',      // 성민성님
+        'didalsdk1@naver.com'          // 양민아님
+      ];
       const USER_ROLE_ADMIN = 'admin';
       const USER_ROLE_USER = 'user';
 
@@ -247,7 +251,7 @@
 
       // 사용자 역할 결정 함수
       function determineUserRole(email) {
-        return email === ADMIN_EMAIL ? USER_ROLE_ADMIN : USER_ROLE_USER;
+        return ADMIN_EMAILS.includes(email) ? USER_ROLE_ADMIN : USER_ROLE_USER;
       }
 
       // 추천인 정보 조회 함수

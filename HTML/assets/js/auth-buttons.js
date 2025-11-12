@@ -1,7 +1,11 @@
 // Firebase Auth 상태 확인 및 로그아웃 공통 스크립트
 (function() {
-  // 상수 정의
-  const ADMIN_EMAIL = 'sprince1004@naver.com';
+  // 상수 정의 - 관리자 이메일 목록
+  const ADMIN_EMAILS = [
+    'sprince1004@naver.com',      // 서배준님
+    'kylesung0901@gmail.com',      // 성민성님
+    'didalsdk1@naver.com'          // 양민아님
+  ];
 
   // Firebase 설정
   const firebaseConfig = {
@@ -31,7 +35,7 @@
       
       if (user) {
         // Admin 여부 확인
-        const isAdmin = user.email === ADMIN_EMAIL;
+        const isAdmin = ADMIN_EMAILS.includes(user.email);
         
         // 로그인된 경우: 로그아웃 버튼 표시
         let buttonsHTML = '<a class="text-white text-button pr-24 hover-underline" href="#" id="logoutBtn" style="text-decoration: none; cursor: pointer;">로그아웃</a>';

@@ -299,8 +299,12 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script>
-      // 상수 정의
-      const ADMIN_EMAIL = 'sprince1004@naver.com';
+      // 상수 정의 - 관리자 이메일 목록
+      const ADMIN_EMAILS = [
+        'sprince1004@naver.com',      // 서배준님
+        'kylesung0901@gmail.com',      // 성민성님
+        'didalsdk1@naver.com'          // 양민아님
+      ];
 
       // Firebase 설정
       const firebaseConfig = {
@@ -835,7 +839,7 @@
           return;
         }
         
-        if (auth.currentUser.email !== ADMIN_EMAIL) {
+        if (!ADMIN_EMAILS.includes(auth.currentUser.email)) {
           showMessage('관리자만 접근할 수 있습니다.', 'error');
           return;
         }
@@ -1027,7 +1031,7 @@
 
       // 페이지 로드 시 데이터 불러오기 및 실시간 업데이트 시작
       auth.onAuthStateChanged(function(user) {
-        if (user && user.email === ADMIN_EMAIL) {
+        if (user && ADMIN_EMAILS.includes(user.email)) {
           console.log('관리자 로그인 확인, 실시간 업데이트 시작');
           console.log('현재 사용자:', user.email);
           

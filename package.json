@@ -6,7 +6,7 @@
   "scripts": {
     "update-deps": "node scripts/copy-dependencies.js",
     "postinstall": "node scripts/copy-dependencies.js",
-    "build": "echo 'Static site - no build needed'",
+    "build": "node scripts/prepare-vercel-build.js",
     "dev": "live-server HTML --port=3000 --open=/index.html",
     "start": "live-server HTML --port=3000 --open=/index.html",
     "server": "node server.js"

@@ -463,6 +463,26 @@
               return;
             }
             
+            // 관리자로 변경된 사용자들의 정보 수집 (부스트마스터 관리자 제외)
+            const adminUsers = new Map(); // referralId -> {name, referralId}
+            usersArray.forEach(item => {
+              const userData = item.data;
+              const userEmail = userData.email || '';
+              // 부스트마스터 관리자 이메일 제외
+              const isBoostMaster = ADMIN_EMAILS.includes(userEmail);
+              
+              if (userData.role === 'admin' && userData.referralId && !isBoostMaster) {
+                const name = userData.name || userData.email || '관리자';
+                adminUsers.set(userData.referralId, {
+                  name: name,
+                  referralId: userData.referralId
+                });
+              }
+            });
+            
+            // 동적으로 관리자 필터 버튼 생성
+            updateAdminFilterButtons(adminUsers);
+            
             let tableHTML = '<table><thead><tr><th>이름</th><th>이메일</th><th>역할</th><th>회원 유형</th><th>추천인 ID</th><th>관리자</th><th>가입일</th><th>관리</th></tr></thead><tbody>';
             
             // XSS 방지를 위한 이스케이프 함수
@@ -1000,6 +1020,41 @@
         }
       }
 
+      // 관리자 필터 버튼 동적 생성 함수
+      function updateAdminFilterButtons(adminUsers) {
+        const filterButtonsContainer = document.querySelector('.filter-buttons');
+        if (!filterButtonsContainer) return;
+        
+        // 기존 동적 관리자 버튼 제거 (고정 버튼은 유지)
+        const existingDynamicButtons = filterButtonsContainer.querySelectorAll('.filter-btn[data-dynamic-admin]');
+        existingDynamicButtons.forEach(btn => btn.remove());
+        
+        // 새로운 관리자 버튼 추가
+        adminUsers.forEach((adminInfo, referralId) => {
+          // 고정 관리자 버튼과 중복되지 않는지 확인
+          const isFixedAdmin = 
+            referralId === 'skylinemss' || 
+            referralId === 'boost313' || 
+            !referralId;
+          
+          if (!isFixedAdmin && referralId && adminInfo.name) {
+            const button = document.createElement('button');
+            button.className = 'filter-btn';
+            button.setAttribute('data-dynamic-admin', referralId);
+            button.textContent = `${adminInfo.name} 관리자`;
+            button.onclick = function() { filterUsers(`admin_${referralId}`, this); };
+            
+            // 유료회원 버튼 앞에 추가
+            const premiumBtn = filterButtonsContainer.querySelector('.filter-btn[onclick*="premium"]');
+            if (premiumBtn) {
+              filterButtonsContainer.insertBefore(button, premiumBtn);
+            } else {
+              filterButtonsContainer.appendChild(button);
+            }
+          }
+        });
+      }
+
       // 회원 목록 필터링 함수
       let currentFilter = 'all';
       function filterUsers(filterType, eventElement) {
@@ -1030,6 +1085,13 @@
               shouldActivate = true;
             } else if (filterType === 'admin_yangmin' && btnText === '양민아 관리자') {
               shouldActivate = true;
+            } else if (filterType.startsWith('admin_')) {
+              // 동적 관리자 필터 버튼 활성화
+              const dynamicReferralId = filterType.replace('admin_', '');
+              const dynamicBtn = document.querySelector(`.filter-btn[data-dynamic-admin="${dynamicReferralId}"]`);
+              if (dynamicBtn && btnText === dynamicBtn.textContent.trim()) {
+                shouldActivate = true;
+              }
             }
             
             if (shouldActivate) {
@@ -1056,6 +1118,10 @@
             shouldShow = adminEmail === 'kylesung0901@gmail.com';
           } else if (filterType === 'admin_yangmin') {
             shouldShow = adminEmail === 'didalsdk1@naver.com';
+          } else if (filterType.startsWith('admin_')) {
+            // 동적 관리자 필터: referralId로 필터링
+            const dynamicReferralId = filterType.replace('admin_', '');
+            shouldShow = referralId === dynamicReferralId;
           } else if (filterType === 'premium') {
             shouldShow = membership === 'premium';
           } else if (filterType === 'free') {
@@ -1074,6 +1140,7 @@
       window.toggleMembership = toggleMembership;
       window.toggleUserRole = toggleUserRole;
       window.filterUsers = filterUsers;
+      window.updateAdminFilterButtons = updateAdminFilterButtons;
 
       // 이벤트 리스너
       document.getElementById('refreshBtn').addEventListener('click', loadAllData);

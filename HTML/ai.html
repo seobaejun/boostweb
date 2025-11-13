@@ -3,7 +3,17 @@
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>AI블로그 - 부스트웹</title>
+    <title>부스트웹 - AI 자동화</title>
+    <meta name="description" content="AI 자동화 서비스로 비즈니스를 혁신하세요. 부스트웹의 AI 블로그 포스팅 생성기와 검사기를 활용해보세요."/>
+    <meta property="og:title" content="부스트웹 - AI 자동화"/>
+    <meta property="og:description" content="AI 자동화 서비스로 비즈니스를 혁신하세요. 부스트웹의 AI 블로그 포스팅 생성기와 검사기를 활용해보세요."/>
+    <meta property="og:image" content="./assets/images/og-images.png"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="부스트웹"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="부스트웹 - AI 자동화"/>
+    <meta name="twitter:description" content="AI 자동화 서비스로 비즈니스를 혁신하세요. 부스트웹의 AI 블로그 포스팅 생성기와 검사기를 활용해보세요."/>
+    <meta name="twitter:image" content="./assets/images/og-images.png"/>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"/>
@@ -208,6 +218,7 @@
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         height: 100%;
+        margin-bottom: 24px;
       }
       .menu-card:hover {
         background: rgba(255, 255, 255, 0.1);
@@ -394,6 +405,20 @@
           min-height: 400px;
         }
       }
+      @media (max-width: 768px) {
+        .menu-card {
+          margin-bottom: 32px;
+        }
+        #mainMenu .row > [class*="col-"] {
+          padding-left: 12px;
+          padding-right: 12px;
+          margin-bottom: 32px;
+        }
+        #mainMenu .row {
+          margin-left: -12px;
+          margin-right: -12px;
+        }
+      }
     </style>
   </head>
   <body> 
@@ -410,8 +435,8 @@
                   AI블로그
                 </h1>
                 
-                <div class="row">
-                  <div class="col-lg-4 col-md-6 col-12 mb-24">
+                <div class="row" style="row-gap: 24px; column-gap: 0;">
+                  <div class="col-lg-4 col-md-6 col-12">
                     <div class="menu-card" onclick="showGenerator()">
                       <div class="menu-card-icon">📝</div>
                       <div class="menu-card-title">AI 블로그 포스팅 생성기</div>
@@ -420,7 +445,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6 col-12 mb-24">
+                  <div class="col-lg-4 col-md-6 col-12">
                     <div class="menu-card" onclick="showChecker()">
                       <div class="menu-card-icon">🔍</div>
                       <div class="menu-card-title">AI 블로그 포스팅 검사기</div>
@@ -429,7 +454,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6 col-12 mb-24">
+                  <div class="col-lg-4 col-md-6 col-12">
                     <div class="menu-card" onclick="showNeighborManager()">
                       <div class="menu-card-icon">👥</div>
                       <div class="menu-card-title">블로그 이웃관리 자동화</div>

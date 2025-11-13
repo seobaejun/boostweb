@@ -384,6 +384,22 @@
           align-items: center !important;
         }
       }
+      /* Contact 메뉴 밑줄 제거 - 모든 상태에서 */
+      .style-purple.style-pages .header-menu>.container .header-main .menu-main>ul li>a[href="contact.html"]::before,
+      .style-purple.style-pages .header-menu>.container .header-main .menu-main>ul li>a[href="contact.html"]:hover::before,
+      .style-purple.style-pages .header-menu>.container .header-main .menu-main>ul li>a[href="contact.html"].active::before,
+      .style-purple.style-pages .header-menu>.container .header-main .menu-main>ul li:hover>a[href="contact.html"]::before,
+      .style-purple.style-pages .header-menu>.container .header-main .menu-main>ul li:nth-child(3)>a[href="contact.html"]::before {
+        width: 0 !important;
+        display: none !important;
+      }
+      /* 모바일 메뉴 Contact 밑줄 제거 */
+      .nav li>a[href="contact.html"]::before,
+      .nav li>a[href="contact.html"]:hover::before,
+      .nav li>a[href="contact.html"].active::before {
+        width: 0 !important;
+        display: none !important;
+      }
     </style>
   </head>
   <body> 

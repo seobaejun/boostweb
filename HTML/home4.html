@@ -24,6 +24,34 @@
     <link rel="stylesheet" href="./assets/icons/style.css"/>
     <link rel="stylesheet" href="./assets/css/style.css"/>
     <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
+    <style>
+      /* 마케팅 자동화 텍스트 색상 애니메이션 */
+      @keyframes colorShift {
+        0%, 100% {
+          color: #FFFFFF;
+        }
+        50% {
+          color: #6D28D9;
+        }
+      }
+      .marketing-automation-text {
+        animation: colorShift 3s ease-in-out infinite;
+      }
+      /* 모바일에서 자동화 동그란 원 숨기기 */
+      @media (max-width: 768px) {
+        .list-sub-icons .avatar-block {
+          display: none !important;
+        }
+        /* 모바일에서 마케팅 자동화 박스 상하 여백 줄이기 */
+        .how-it-work.style-four .col-lg-7 > .bora-24 {
+          padding: 40px 30px !important;
+          min-height: 350px !important;
+        }
+        .how-it-work.style-four .col-lg-7 .bora-24 .heading3 {
+          margin-bottom: 16px !important;
+        }
+      }
+    </style>
   </head>
   <body> 
     <div id="header">
@@ -408,7 +436,7 @@
             <div class="col-lg-7"> 
               <div class="bora-24 overflow-hidden" style="background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #C4B5FD 100%); padding: 60px 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 400px; box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);">
                 <div class="text-white text-center" style="max-width: 100%;">
-                  <div class="heading3 text-white mb-24" style="font-size: 32px; font-weight: 700; margin-bottom: 24px;">마케팅 자동화로<br>비즈니스 성장을 가속화하세요</div>
+                  <div class="heading3 text-white mb-24" style="font-size: 32px; font-weight: 700; margin-bottom: 24px;"><span class="marketing-automation-text">마케팅 자동화</span>로<br>비즈니스 성장을 가속화하세요</div>
                   <div class="body2 text-white" style="font-size: 18px; line-height: 1.6; opacity: 0.95;">부스트웹의 전문 마케팅 솔루션으로<br>고객 확보와 매출 증대를 동시에 달성하세요</div>
                 </div>
               </div>

@@ -122,6 +122,38 @@
         opacity: 1 !important;
         visibility: visible !important;
       }
+      /* 모바일에서 아바타 크기 및 간격 조정 */
+      @media (max-width: 768px) {
+        .counter-block.style-three .list-img .bg-img .list-avatar .avatar {
+          width: 64px !important;
+          height: 64px !important;
+          font-size: 12px !important;
+        }
+        .counter-block.style-three .list-img .bg-img .list-avatar .avatar:nth-child(1) {
+          top: -32px !important;
+          margin-left: -32px !important;
+        }
+        .counter-block.style-three .list-img .bg-img .list-avatar .avatar:nth-child(2) {
+          top: 24px !important;
+          right: -20px !important;
+        }
+        .counter-block.style-three .list-img .bg-img .list-avatar .avatar:nth-child(3) {
+          bottom: 24px !important;
+          right: -20px !important;
+        }
+        .counter-block.style-three .list-img .bg-img .list-avatar .avatar:nth-child(4) {
+          bottom: -32px !important;
+          margin-left: -32px !important;
+        }
+        .counter-block.style-three .list-img .bg-img .list-avatar .avatar:nth-child(5) {
+          bottom: 24px !important;
+          left: -20px !important;
+        }
+        .counter-block.style-three .list-img .bg-img .list-avatar .avatar:nth-child(6) {
+          top: 24px !important;
+          left: -20px !important;
+        }
+      }
       /* About 섹션 이미지 반응형 최적화 */
       @media (max-width: 991.98px) {
         .about-us.style-about.style-three .bg-img {

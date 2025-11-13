@@ -104,6 +104,19 @@
       .list-home .item:has(a[href="home2.html"]) {
         display: none !important;
       }
+      /* 모바일에서 카드 영역 잘림 방지 */
+      @media (max-width: 768px) {
+        .how-it-work .bg-img.bora-24 {
+          padding: 40px 20px !important;
+          min-height: 450px !important;
+        }
+        .how-it-work .bg-img.bora-24 > div > div:first-child {
+          margin-bottom: 32px !important;
+        }
+        .how-it-work .bg-img.bora-24 > div > div:last-child {
+          margin-top: 32px !important;
+        }
+      }
     </style>
   </head>
   <body> 
@@ -573,10 +586,10 @@
                       원스톱 솔루션으로 모든 것을 한 곳에서<br/>빠르고 효율적으로 완성하세요
                     </div>
                   </div>
-                  <div style="display: flex; justify-content: center; gap: 24px; margin-top: 40px;">
-                    <div style="flex: 1; background: rgba(61, 137, 251, 0.1); border-radius: 12px; padding: 20px; text-align: center;">
-                      <div style="font-size: 24px; font-weight: 600; color: #3D89FB; margin-bottom: 8px;">브랜딩</div>
-                      <div style="font-size: 14px; color: #94a3b8;">로고 & 아이덴티티</div>
+                  <div style="display: flex; justify-content: center; gap: 24px; margin-top: 40px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 120px; background: rgba(61, 137, 251, 0.1); border-radius: 12px; padding: 20px; text-align: center;">
+                      <div style="font-size: 24px; font-weight: 600; color: #3D89FB; margin-bottom: 8px;">AI</div>
+                      <div style="font-size: 14px; color: #94a3b8;">자동화</div>
                     </div>
                     <div style="flex: 1; background: rgba(61, 137, 251, 0.1); border-radius: 12px; padding: 20px; text-align: center;">
                       <div style="font-size: 24px; font-weight: 600; color: #3D89FB; margin-bottom: 8px;">홈페이지</div>

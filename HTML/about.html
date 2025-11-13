@@ -369,6 +369,14 @@
         .how-it-work .bg-img.bora-24 > div > div:last-child {
           margin-top: 32px !important;
         }
+        /* 모바일에서 3개 박스 세로 비율 동일하게 */
+        .how-it-work .bg-img.bora-24 > div > div:last-child > div {
+          min-height: 100px !important;
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: center !important;
+          align-items: center !important;
+        }
       }
     </style>
   </head>

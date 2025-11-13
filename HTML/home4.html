@@ -25,6 +25,14 @@
     <link rel="stylesheet" href="./assets/css/style.css"/>
     <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
     <style>
+      /* AI 생성기 서브섹션 숨김 처리 */
+      .list-home a[href="home2.html"] {
+        display: none !important;
+      }
+      /* 데스크톱 메뉴: home2.html 링크를 포함하는 .item 숨김 */
+      .list-home .item:has(a[href="home2.html"]) {
+        display: none !important;
+      }
       /* 마케팅 자동화 텍스트 색상 애니메이션 */
       @keyframes colorShift {
         0%, 100% {

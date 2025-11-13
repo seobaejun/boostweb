@@ -104,6 +104,18 @@
       .list-home .item:has(a[href="home2.html"]) {
         display: none !important;
       }
+      /* 홈페이지 텍스트 색상 애니메이션 */
+      @keyframes homepageColorShift {
+        0%, 100% {
+          color: #FFFFFF;
+        }
+        50% {
+          color: #3D89FB;
+        }
+      }
+      .homepage-text-animation {
+        animation: homepageColorShift 3s ease-in-out infinite;
+      }
       /* 모바일에서 카드 영역 잘림 방지 */
       @media (max-width: 768px) {
         .how-it-work .bg-img.bora-24 {
@@ -115,6 +127,14 @@
         }
         .how-it-work .bg-img.bora-24 > div > div:last-child {
           margin-top: 32px !important;
+        }
+        /* 모바일에서 3개 박스 세로 비율 동일하게 */
+        .how-it-work .bg-img.bora-24 > div > div:last-child > div {
+          min-height: 100px !important;
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: center !important;
+          align-items: center !important;
         }
       }
     </style>
@@ -292,7 +312,7 @@
               <div class="col-xl-6">
                 <div class="text-content"> 
                   <div class="heading1">
-                    <div class="scroll-bottom-to-top2">맞춤형 홈페이지</div>
+                    <div class="scroll-bottom-to-top2">맞춤형 <span class="homepage-text-animation">홈페이지</span></div>
                     <div class="scroll-bottom-to-top3">AI 자동화 <span class="scroll-bottom-to-top4">마케팅</span></div>
                   </div>
                   <div class="body2 text-placehover mt-40">우리는 기업이 브랜드를 구축하고, 스토리를 전달하며, 대담하고 전략적인 디자인을 통해 청중과 소통할 수 있도록 돕는 풀서비스 크리에이티브 에이전시입니다.</div><a class="button button-blue-hover mt-40" href="about.html"> <span> <span></span></span><span class="bg-blue">더 알아보기<i class="ph-bold ph-arrow-up-right fs-18 flex-center"></i></span></a>

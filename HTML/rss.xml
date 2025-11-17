@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>부스트웹 - AI 자동화 마케팅 솔루션</title>
+    <link>https://boostweb1.vercel.app</link>
+    <description>당신의 비즈니스에 날개를 달아 드립니다. 부스트웹은 홈페이지, 쇼핑몰, 랜딩페이지 제작 서비스를 제공합니다.</description>
+    <language>ko-KR</language>
+    <copyright>Copyright 2024 부스트웹</copyright>
+    <managingEditor>sprince1004@naver.com (서배준)</managingEditor>
+    <webMaster>sprince1004@naver.com (서배준)</webMaster>
+    <lastBuildDate>Mon, 01 Jan 2024 00:00:00 +0900</lastBuildDate>
+    <atom:link href="https://boostweb1.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
+    
+    <!-- 메인 페이지 -->
+    <item>
+      <title>부스트웹 - AI 자동화 마케팅 솔루션</title>
+      <link>https://boostweb1.vercel.app/index.html</link>
+      <description>맞춤형 홈페이지 제작부터 AI 자동화 마케팅까지 원스톱 솔루션을 제공합니다.</description>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://boostweb1.vercel.app/index.html</guid>
+    </item>
+    
+    <!-- AI 자동화 -->
+    <item>
+      <title>AI 자동화 - 마케팅 업무 자동화 솔루션</title>
+      <link>https://boostweb1.vercel.app/ai.html</link>
+      <description>지능형 AI 시스템으로 마케팅 업무를 자동화하고 비즈니스 성장을 가속화하세요. 블로그 자동화, 스레드 자동화, 인스타 자동화, AI 웹사이트 제작 서비스를 제공합니다.</description>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://boostweb1.vercel.app/ai.html</guid>
+    </item>
+    
+    <!-- 회사 소개 -->
+    <item>
+      <title>회사소개 - 부스트웹</title>
+      <link>https://boostweb1.vercel.app/about.html</link>
+      <description>브랜딩부터 홈페이지 제작과 마케팅을 원스톱으로 빠르게 해결하는 풀서비스 크리에이티브 에이전시입니다.</description>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://boostweb1.vercel.app/about.html</guid>
+    </item>
+    
+    <!-- 가격 -->
+    <item>
+      <title>가격 정보 - 부스트웹 서비스 요금제</title>
+      <link>https://boostweb1.vercel.app/pricing.html</link>
+      <description>무료와 유료 구독제로 사용 가능한 맞춤형 서비스를 제공합니다.</description>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://boostweb1.vercel.app/pricing.html</guid>
+    </item>
+    
+    <!-- 문의하기 -->
+    <item>
+      <title>문의하기 - 부스트웹 고객 지원</title>
+      <link>https://boostweb1.vercel.app/contact.html</link>
+      <description>부스트웹 서비스에 대한 문의사항을 남겨주세요. 빠르고 친절한 상담을 제공합니다.</description>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://boostweb1.vercel.app/contact.html</guid>
+    </item>
+    
+    <!-- 자주 묻는 질문 -->
+    <item>
+      <title>자주 묻는 질문 - FAQ</title>
+      <link>https://boostweb1.vercel.app/faqs.html</link>
+      <description>부스트웹 서비스에 대한 자주 묻는 질문과 답변을 확인하세요.</description>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://boostweb1.vercel.app/faqs.html</guid>
+    </item>
+  </channel>
+</rss>
+

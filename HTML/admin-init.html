@@ -464,18 +464,22 @@
             }
             
             // 관리자로 변경된 사용자들의 정보 수집 (부스트마스터 관리자 제외)
-            const adminUsers = new Map(); // referralId -> {name, referralId}
+            const adminUsers = new Map(); // identifier -> {name, referralId, userId}
             usersArray.forEach(item => {
               const userData = item.data;
               const userEmail = userData.email || '';
               // 부스트마스터 관리자 이메일 제외
               const isBoostMaster = ADMIN_EMAILS.includes(userEmail);
               
-              if (userData.role === 'admin' && userData.referralId && !isBoostMaster) {
+              if (userData.role === 'admin' && !isBoostMaster) {
                 const name = userData.name || userData.email || '관리자';
-                adminUsers.set(userData.referralId, {
+                // referralId가 있으면 사용, 없으면 userId 사용
+                const identifier = userData.referralId || item.id;
+                
+                adminUsers.set(identifier, {
                   name: name,
-                  referralId: userData.referralId
+                  referralId: userData.referralId || item.id,
+                  userId: item.id
                 });
               }
             });
@@ -550,8 +554,11 @@
               const adminEmail = getAdminByReferralId(displayReferralId === '-' ? '' : displayReferralId);
               const adminName = getAdminName(adminEmail);
               
+              // 필터링을 위한 identifier (referralId가 있으면 사용, 없으면 userId)
+              const identifier = displayReferralId !== '-' ? displayReferralId : userId;
+              
               tableHTML += `
-                <tr data-membership="${membershipType}">
+                <tr data-membership="${membershipType}" data-user-id="${userId}" data-identifier="${identifier}">
                   <td>${escapeHtml(displayName)}</td>
                   <td>${escapeHtml(userData.email || '-')}</td>
                   <td>${roleBadge}</td>
@@ -710,8 +717,11 @@
             const adminEmail = getAdminByReferralId(displayReferralId === '-' ? '' : displayReferralId);
             const adminName = getAdminName(adminEmail);
             
+            // 필터링을 위한 identifier (referralId가 있으면 사용, 없으면 userId)
+            const identifier = displayReferralId !== '-' ? displayReferralId : userId;
+            
             tableHTML += `
-              <tr data-membership="${membershipType}">
+              <tr data-membership="${membershipType}" data-user-id="${userId}" data-identifier="${identifier}">
                 <td>${escapeHtml(displayName)}</td>
                 <td>${escapeHtml(userData.email || '-')}</td>
                 <td>${roleBadge}</td>
@@ -965,6 +975,50 @@
         }
       }
 
+      // 관리자 목록 수집 및 필터 버튼 업데이트 헬퍼 함수
+      async function refreshAdminFilterButtons() {
+        try {
+          const allUsersSnapshot = await db.collection('users').get();
+          const adminUsers = new Map();
+          
+          console.log('=== 관리자 필터 버튼 업데이트 시작 ===');
+          
+          allUsersSnapshot.forEach(doc => {
+            const data = doc.data();
+            const email = data.email || '';
+            const isBoostMasterAdmin = ADMIN_EMAILS.includes(email);
+            
+            // 관리자이고 부스트마스터가 아닌 경우
+            if (data.role === 'admin' && !isBoostMasterAdmin) {
+              const name = data.name || data.email || '관리자';
+              // referralId가 있으면 사용, 없으면 userId 사용
+              const identifier = data.referralId || doc.id;
+              
+              console.log('관리자 발견:', {
+                name: name,
+                email: email,
+                referralId: data.referralId || '없음',
+                identifier: identifier
+              });
+              
+              adminUsers.set(identifier, {
+                name: name,
+                referralId: data.referralId || doc.id,
+                userId: doc.id
+              });
+            }
+          });
+          
+          console.log('수집된 관리자 수:', adminUsers.size);
+          console.log('관리자 목록:', Array.from(adminUsers.entries()));
+          
+          // 관리자 필터 버튼 즉시 업데이트
+          updateAdminFilterButtons(adminUsers);
+        } catch (error) {
+          console.error('관리자 필터 버튼 업데이트 오류:', error);
+        }
+      }
+
       // 사용자 Role 전환 함수
       async function toggleUserRole(userId, currentRole) {
         try {
@@ -978,7 +1032,8 @@
             return;
           }
           
-          const userEmail = userDoc.data().email || '';
+          const userData = userDoc.data();
+          const userEmail = userData.email || '';
           
           if (!confirm(`${userEmail} 회원을 ${roleName}로 변경하시겠습니까?`)) {
             return;
@@ -988,6 +1043,9 @@
             role: newRole,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           });
+          
+          // 역할 변경 후 관리자 필터 버튼 즉시 업데이트
+          await refreshAdminFilterButtons();
           
           showMessage(`회원의 역할이 ${roleName}로 변경되었습니다.`, 'success');
           // 실시간 리스너가 자동으로 업데이트하므로 별도 로드 불필요
@@ -1023,26 +1081,38 @@
       // 관리자 필터 버튼 동적 생성 함수
       function updateAdminFilterButtons(adminUsers) {
         const filterButtonsContainer = document.querySelector('.filter-buttons');
-        if (!filterButtonsContainer) return;
+        if (!filterButtonsContainer) {
+          console.warn('필터 버튼 컨테이너를 찾을 수 없습니다.');
+          return;
+        }
         
         // 기존 동적 관리자 버튼 제거 (고정 버튼은 유지)
         const existingDynamicButtons = filterButtonsContainer.querySelectorAll('.filter-btn[data-dynamic-admin]');
         existingDynamicButtons.forEach(btn => btn.remove());
         
+        console.log('=== 관리자 필터 버튼 생성 시작 ===');
+        console.log('관리자 수:', adminUsers.size);
+        
         // 새로운 관리자 버튼 추가
-        adminUsers.forEach((adminInfo, referralId) => {
+        adminUsers.forEach((adminInfo, identifier) => {
           // 고정 관리자 버튼과 중복되지 않는지 확인
           const isFixedAdmin = 
-            referralId === 'skylinemss' || 
-            referralId === 'boost313' || 
-            !referralId;
+            identifier === 'skylinemss' || 
+            identifier === 'boost313' || 
+            !identifier;
           
-          if (!isFixedAdmin && referralId && adminInfo.name) {
+          if (!isFixedAdmin && identifier && adminInfo.name) {
+            console.log('관리자 버튼 생성:', {
+              name: adminInfo.name,
+              identifier: identifier,
+              referralId: adminInfo.referralId
+            });
+            
             const button = document.createElement('button');
             button.className = 'filter-btn';
-            button.setAttribute('data-dynamic-admin', referralId);
+            button.setAttribute('data-dynamic-admin', identifier);
             button.textContent = `${adminInfo.name} 관리자`;
-            button.onclick = function() { filterUsers(`admin_${referralId}`, this); };
+            button.onclick = function() { filterUsers(`admin_${identifier}`, this); };
             
             // 유료회원 버튼 앞에 추가
             const premiumBtn = filterButtonsContainer.querySelector('.filter-btn[onclick*="premium"]');
@@ -1051,8 +1121,18 @@
             } else {
               filterButtonsContainer.appendChild(button);
             }
+          } else {
+            console.log('관리자 버튼 생성 건너뜀:', {
+              name: adminInfo.name,
+              identifier: identifier,
+              isFixedAdmin: isFixedAdmin,
+              hasIdentifier: !!identifier,
+              hasName: !!adminInfo.name
+            });
           }
         });
+        
+        console.log('관리자 필터 버튼 생성 완료');
       }
 
       // 회원 목록 필터링 함수
@@ -1104,9 +1184,10 @@
         const tableRows = document.querySelectorAll('#usersTableContainer table tbody tr');
         tableRows.forEach(row => {
           const membership = row.getAttribute('data-membership') || 'free';
+          const identifier = row.getAttribute('data-identifier') || '';
           const referralIdCell = row.querySelector('td:nth-child(5)'); // 추천인 ID 셀 (6번째 컬럼)
           const referralId = referralIdCell ? referralIdCell.textContent.trim() : '';
-          const adminEmail = getAdminByReferralId(referralId);
+          const adminEmail = getAdminByReferralId(referralId === '-' ? '' : referralId);
           
           let shouldShow = false;
           
@@ -1119,9 +1200,9 @@
           } else if (filterType === 'admin_yangmin') {
             shouldShow = adminEmail === 'didalsdk1@naver.com';
           } else if (filterType.startsWith('admin_')) {
-            // 동적 관리자 필터: referralId로 필터링
-            const dynamicReferralId = filterType.replace('admin_', '');
-            shouldShow = referralId === dynamicReferralId;
+            // 동적 관리자 필터: identifier로 필터링 (referralId가 있으면 referralId, 없으면 userId)
+            const dynamicIdentifier = filterType.replace('admin_', '');
+            shouldShow = identifier === dynamicIdentifier;
           } else if (filterType === 'premium') {
             shouldShow = membership === 'premium';
           } else if (filterType === 'free') {
